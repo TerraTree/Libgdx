@@ -158,7 +158,7 @@ public class Main extends ApplicationAdapter {
 
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        ui.render();
+
         int column = 1;
         int row =30;
         batch.begin();
@@ -179,6 +179,7 @@ public class Main extends ApplicationAdapter {
 
         //batch.draw(texture,200,200);
         batch.end();
+        ui.render();
     }
 
     public void dispose(){
