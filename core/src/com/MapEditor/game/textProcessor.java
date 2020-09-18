@@ -12,6 +12,24 @@ public class textProcessor {
     String fileName;
     boolean fileLoad;
     private ArrayList<ArrayList<String>> mapContent;
+    int originX;
+    int originY;
+
+    public int getOriginX() {
+        return originX;
+    }
+
+    public void setOriginX(int originX) {
+        this.originX = originX;
+    }
+
+    public int getOriginY() {
+        return originY;
+    }
+
+    public void setOriginY(int originY) {
+        this.originY = originY;
+    }
 
     public textProcessor(){
         setMapContent();
@@ -22,10 +40,29 @@ public class textProcessor {
     }
 
     public void setMapContent() {
+        originX=0;
+        originY=0;
         this.mapContent = new ArrayList<>();
         this.mapContent.add(new ArrayList<String>());
     }
 
+    public void tileAdd(String currentTile, int x, int y) {
+    	int tileX = (x / 20)*20;
+    	int tileY = (y / 20)*20;
+    	//if (originY< 0){
+
+        //}
+    	getMapContent().add(new ArrayList<String>() );
+    	ArrayList<String> row = mapContent.get(0);
+    	//System.out.println("X:"+tileX+" Y:"+tileY);
+    	for (int i=0;i<tileY-20;i=i+20) {
+    		row.add("");
+    	}
+    	row.add(currentTile);
+    	System.out.println(row);
+    	
+    }
+    
     public void fileChoice(String newFileName){
 
         try{
@@ -52,11 +89,13 @@ public class textProcessor {
                     }
                 }
                 lineReader.close();
+                System.out.println("It is working");
         }
         catch (Exception e){
             System.out.println("something went wrong");
             try {
                 File file = new File(newFileName);
+                System.out.println(file.createNewFile());
                 if(file.createNewFile()) {
                     System.out.println("file created");
                 }
@@ -75,8 +114,8 @@ public class textProcessor {
         text=text.toLowerCase();
         if (fileLoad){
             //System.out.println(text);
-            fileChoice(text);// goes to seperate method to ask for file name.
             fileLoad = false;
+            fileChoice(text);// goes to separate method to ask for file name.
         }
 
         if(text.equals("save")){

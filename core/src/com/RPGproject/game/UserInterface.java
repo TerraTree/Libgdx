@@ -106,7 +106,6 @@ public class UserInterface {
         int counter=1-(this.inputText.getTextContent().size());
         int countOffset = 0;
         counter = this.inputText.drawText(this.getBatch(),this.getFont(),counter,countOffset);
-        //System.out.println(counter);
         countOffset = this.inputText.getTextContent().size()-1;
         this.mainText.drawText(batch,font,counter-1,countOffset);
     }
