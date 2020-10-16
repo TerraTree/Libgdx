@@ -10,7 +10,6 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector3;
 
 import java.util.ArrayList;
 
@@ -25,17 +24,19 @@ public class Main extends ApplicationAdapter {
     SpriteBatch batch;
     String currentTile;
     Camera camera;
+    Map currentMap;
     public void create(){
-    	texture = new Texture("char2.png");
+    	currentTile="grass";
         batch = new SpriteBatch();
         tp = new textProcessor();
+        currentMap = new Map(tp.fileName);
         ui = new UserInterface();
-        camera = new OrthographicCamera(1920,1080);
-        
+        camera = new OrthographicCamera(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
+        tp.tileName="grass";
         Gdx.input.setInputProcessor(new InputProcessor() {
             @Override
             public boolean keyDown(int keycode) {
-
+            	
                 return false;
             }
 
@@ -57,32 +58,28 @@ public class Main extends ApplicationAdapter {
             		else if (Gdx.input.isKeyPressed(Input.Keys.ENTER)){
             			String inputString = ui.getMainText().input(ui.getInputText());
             			tp.processing(inputString);
+            			if(tp.fileName.length()!=0) {
+            			    System.out.println(tp.fileName);
+            			    tp.fileChoice(fileName);
+            			    tp.fileName="";
+                        }
             		}
             		else {
             			ui.getInputText().addChar(character,ui.getFont());
             		}
             	}
             	else {
-                    System.out.println(Gdx.graphics.getDeltaTime());
             		if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-            			camera.translate(0, -5, 0);
-            			System.out.println("camera moved");
-            			camera.update();
+            			currentMap.setOriginY(currentMap.getOriginY()-5);
             		}
             		else if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-            			camera.translate(5,0,0);
-                        System.out.println("camera moved");
-            			camera.update();
+            			currentMap.setOriginX(currentMap.getOriginX()+5);
             		}
             		else if (Gdx.input.isKeyPressed(Input.Keys.S)) {
-            			camera.translate(0,5,0);
-                        System.out.println("camera moved");
-            			camera.update();
+            			currentMap.setOriginY(currentMap.getOriginY()+5);
             		}
             		else if (Gdx.input.isKeyPressed(Input.Keys.D)) {
-            			camera.translate(-5,0,0);
-                        System.out.println("camera moved");
-            			camera.update();
+            			currentMap.setOriginX(currentMap.getOriginX()-5);
             		}
             	}
 
@@ -92,18 +89,13 @@ public class Main extends ApplicationAdapter {
 
             @Override
             public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-                System.out.println(ui.getScreenHeight()-screenY);
-                System.out.println(ui.getScreenHeight());
-                System.out.println(screenY);
                 screenY=ui.getScreenHeight()-screenY;
                 if(screenY>ui.getScrollbar().getMaxHeight()) {
                 	if(typing) {
                 		typing = false;
                 	}
                 	else {
-                        Vector3 cameraCoord = camera.position;
-                        int newX= (int) (screenX-cameraCoord.x);
-                		//tp.tileAdd(currentTile,screenX,screenY);
+                		currentMap.tileAdd(screenX,screenY,tp.tileName);
                 	}
                 }
                 else if(screenY<ui.getScrollbar().getMaxHeight() && (!typing)) {
@@ -159,25 +151,25 @@ public class Main extends ApplicationAdapter {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        int column = 1;
-        int row =30;
+        int column = 0;
+        int row =0;
         batch.begin();
         batch.setProjectionMatrix(camera.combined);
         camera.update();
-        for (ArrayList<String> a:tp.getMapContent()) {
+        for (ArrayList<String> a:currentMap.getMapContent()) {
             for (String s:a) {
+            	if(s=="") {
+            	}
+            	else {
                 texture = new Texture(s+".png");
-                //System.out.println(texture.toString());
-                batch.draw(texture,-200+(row*32),-200+(column*32));
+                batch.draw(texture,(column*32)+currentMap.getOriginX(),-currentMap.getOriginY()-(row*32)-32);
+            	}
                 column++;
             }
-            row--;
-            column=1;
+            row++;
+            column=0;
         }
-
         //camera.update();
-
-        //batch.draw(texture,200,200);
         batch.end();
         ui.render();
     }

@@ -1,68 +1,18 @@
 package com.MapEditor.game;
 
-import com.badlogic.gdx.Gdx;
-
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class textProcessor {
     String fileName;
+    String tileName;
     boolean fileLoad;
-    private ArrayList<ArrayList<String>> mapContent;
-    int originX;
-    int originY;
-
-    public int getOriginX() {
-        return originX;
-    }
-
-    public void setOriginX(int originX) {
-        this.originX = originX;
-    }
-
-    public int getOriginY() {
-        return originY;
-    }
-
-    public void setOriginY(int originY) {
-        this.originY = originY;
-    }
 
     public textProcessor(){
-        setMapContent();
+        fileName="";
     }
 
-    public ArrayList<ArrayList<String>> getMapContent() {
-        return mapContent;
-    }
-
-    public void setMapContent() {
-        originX=0;
-        originY=0;
-        this.mapContent = new ArrayList<>();
-        this.mapContent.add(new ArrayList<String>());
-    }
-
-    public void tileAdd(String currentTile, int x, int y) {
-    	int tileX = (x / 20)*20;
-    	int tileY = (y / 20)*20;
-    	//if (originY< 0){
-
-        //}
-    	getMapContent().add(new ArrayList<String>() );
-    	ArrayList<String> row = mapContent.get(0);
-    	//System.out.println("X:"+tileX+" Y:"+tileY);
-    	for (int i=0;i<tileY-20;i=i+20) {
-    		row.add("");
-    	}
-    	row.add(currentTile);
-    	System.out.println(row);
-    	
-    }
-    
     public void fileChoice(String newFileName){
 
         try{
@@ -71,20 +21,20 @@ public class textProcessor {
                 String line = "";
                 boolean check = true;
                 int row=0;
-                setMapContent();
+            Map currentMap = new Map(fileName);
                 while (lineReader.hasNextLine() && (check)){
                     line = lineReader.nextLine();
                     System.out.println(line);
                     if(line.equals("")){
-                        this.getMapContent().add(new ArrayList<String>());
+                        currentMap.getMapContent().add(new ArrayList<String>());
                         row++;
                         System.out.println("new line");
                     }
                     else {
                         int num = Integer.parseInt(line.substring(0, line.indexOf(" ")));
                         for (int i = 0; i < num; i++) {
-                            this.getMapContent().get(row).add(line.substring(line.indexOf(" ") + 1));
-                            System.out.println(this.getMapContent().get(row));
+                            currentMap.getMapContent().get(row).add(line.substring(line.indexOf(" ") + 1));
+                            System.out.println(currentMap.getMapContent().get(row));
                         }
                     }
                 }
@@ -93,18 +43,19 @@ public class textProcessor {
         }
         catch (Exception e){
             System.out.println("something went wrong");
-            try {
-                File file = new File(newFileName);
-                System.out.println(file.createNewFile());
-                if(file.createNewFile()) {
-                    System.out.println("file created");
-                }
+            e.printStackTrace();
+            //try {
+                //File file = new File(newFileName);
+                //System.out.println(file.createNewFile());
+                //if(file.createNewFile()) {
+                //    System.out.println("file created");
+                //}
 
-            }
-            catch(IOException e2){
-                e2.printStackTrace();
-                System.out.println("File can't be created");
-            }
+            //}
+            //catch(IOException e2){
+            //    e2.printStackTrace();
+            //    System.out.println("File can't be created");
+            //}
         }
         //If file is not found, it will ask if you want a new file with that name.
     }
@@ -113,9 +64,9 @@ public class textProcessor {
 
         text=text.toLowerCase();
         if (fileLoad){
-            //System.out.println(text);
             fileLoad = false;
-            fileChoice(text);// goes to separate method to ask for file name.
+            fileName = text;
+            //fileChoice(text);// goes to separate method to ask for file name.
         }
 
         if(text.equals("save")){
@@ -130,10 +81,13 @@ public class textProcessor {
             //Lists the commands that can be typed in the console.
         }
         else if (text.equals("1")){
-
+            tileName = "grass";
         }
         else if (text.equals("2")){
-
+            tileName = "water";
+        }
+        else if (text.equals("3")){
+            tileName = "stone";
         }
     }
 }
