@@ -60,8 +60,9 @@ public class Main extends ApplicationAdapter {
             			tp.processing(inputString);
             			if(tp.fileName.length()!=0) {
             			    System.out.println(tp.fileName);
-            			    tp.fileChoice(fileName);
+            			    tp.fileChoice(tp.fileName);
             			    tp.fileName="";
+            			    tp.fileLoad=false;
                         }
             		}
             		else {
@@ -156,6 +157,7 @@ public class Main extends ApplicationAdapter {
         batch.begin();
         batch.setProjectionMatrix(camera.combined);
         camera.update();
+        //System.out.println(currentMap.getMapContent());
         for (ArrayList<String> a:currentMap.getMapContent()) {
             for (String s:a) {
             	if(s=="") {
@@ -163,6 +165,7 @@ public class Main extends ApplicationAdapter {
             	else {
                 texture = new Texture(s+".png");
                 batch.draw(texture,(column*32)+currentMap.getOriginX(),-currentMap.getOriginY()-(row*32)-32);
+                //System.out.println(column*32 +currentMap.getOriginX());
             	}
                 column++;
             }

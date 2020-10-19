@@ -10,6 +10,18 @@ public class Map {
     int originY;
     String fileName;
 
+    public void setMapContent(ArrayList<ArrayList<String>> mapContent) {
+        this.mapContent = mapContent;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
     public int getOriginX() {
         return originX;
     }

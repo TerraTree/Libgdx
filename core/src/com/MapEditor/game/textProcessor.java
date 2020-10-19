@@ -1,6 +1,7 @@
 package com.MapEditor.game;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -14,7 +15,6 @@ public class textProcessor {
     }
 
     public void fileChoice(String newFileName){
-
         try{
             File file = new File(newFileName);
                 Scanner lineReader = new Scanner(file);
@@ -40,22 +40,23 @@ public class textProcessor {
                 }
                 lineReader.close();
                 System.out.println("It is working");
+                currentMap.setFileName(this.fileName);
         }
         catch (Exception e){
             System.out.println("something went wrong");
             e.printStackTrace();
-            //try {
-                //File file = new File(newFileName);
-                //System.out.println(file.createNewFile());
-                //if(file.createNewFile()) {
-                //    System.out.println("file created");
-                //}
+            try {
+                File file = new File(newFileName);
+                System.out.println(file.createNewFile());
+                if(file.createNewFile()) {
+                    System.out.println("file created");
+                }
 
-            //}
-            //catch(IOException e2){
-            //    e2.printStackTrace();
-            //    System.out.println("File can't be created");
-            //}
+            }
+            catch(IOException e2){
+                e2.printStackTrace();
+                System.out.println("File can't be created");
+            }
         }
         //If file is not found, it will ask if you want a new file with that name.
     }
@@ -81,13 +82,13 @@ public class textProcessor {
             //Lists the commands that can be typed in the console.
         }
         else if (text.equals("1")){
-            tileName = "grass";
+            this.tileName = "grass";
         }
         else if (text.equals("2")){
-            tileName = "water";
+            this.tileName = "water";
         }
         else if (text.equals("3")){
-            tileName = "stone";
+            this.tileName = "stone";
         }
     }
 }
