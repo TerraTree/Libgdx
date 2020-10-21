@@ -10,7 +10,7 @@ public class Map {
     int originY;
     String fileName;
 
-    public void setMapContent(ArrayList<ArrayList<String>> mapContent) {
+    public void setMapContent() {
         this.mapContent = mapContent;
     }
 

@@ -14,14 +14,14 @@ public class textProcessor {
         fileName="";
     }
 
-    public void fileChoice(String newFileName){
+    public Map fileChoice(String newFileName, Map currentMap){
         try{
             File file = new File(newFileName);
                 Scanner lineReader = new Scanner(file);
                 String line = "";
                 boolean check = true;
                 int row=0;
-            Map currentMap = new Map(fileName);
+                currentMap = new Map(fileName);
                 while (lineReader.hasNextLine() && (check)){
                     line = lineReader.nextLine();
                     System.out.println(line);
@@ -59,6 +59,7 @@ public class textProcessor {
             }
         }
         //If file is not found, it will ask if you want a new file with that name.
+        return currentMap;
     }
 
     public void processing(String text){

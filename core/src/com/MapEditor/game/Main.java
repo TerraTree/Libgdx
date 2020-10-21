@@ -60,7 +60,8 @@ public class Main extends ApplicationAdapter {
             			tp.processing(inputString);
             			if(tp.fileName.length()!=0) {
             			    System.out.println(tp.fileName);
-            			    tp.fileChoice(tp.fileName);
+            			    currentMap=tp.fileChoice(tp.fileName, currentMap);
+            			    System.out.println(currentMap.getMapContent());
             			    tp.fileName="";
             			    tp.fileLoad=false;
                         }
