@@ -60,10 +60,15 @@ public class Main extends ApplicationAdapter {
             			tp.processing(inputString);
             			if(tp.fileName.length()!=0) {
             			    System.out.println(tp.fileName);
-            			    tp.fileChoice(tp.fileName);
+            			    currentMap = tp.fileChoice(tp.fileName,currentMap);
             			    tp.fileName="";
             			    tp.fileLoad=false;
+            			    System.out.println(currentMap.getMapContent());
                         }
+            			if (tp.fileSaving == true) {
+            				tp.fileSave(currentMap);
+            				tp.fileSaving = false;
+            			}
             		}
             		else {
             			ui.getInputText().addChar(character,ui.getFont());

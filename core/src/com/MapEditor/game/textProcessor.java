@@ -1,6 +1,7 @@
 package com.MapEditor.game;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -9,20 +10,41 @@ public class textProcessor {
     String fileName;
     String tileName;
     boolean fileLoad;
+    boolean fileSaving;
 
     public textProcessor(){
         fileName="";
     }
 
-    public void fileChoice(String newFileName){
+    public void fileSave(Map currentMap) {
+    	try {
+    	int tileCount = 0;
+    	FileWriter fileWriter = new FileWriter(currentMap.getFileName());
+    	for(ArrayList<String> A:currentMap.getMapContent()) {
+    		for(String S:A) {
+    			
+    		}
+    	}
+    	fileWriter.write("hi");
+    	fileWriter.close();
+    	}
+    	catch (IOException e){
+    		e.printStackTrace();
+    	}
+    	
+    }
+    
+    public Map fileChoice(String newFileName,Map currentMap){
         try{
             File file = new File(newFileName);
                 Scanner lineReader = new Scanner(file);
                 String line = "";
                 boolean check = true;
                 int row=0;
-            Map currentMap = new Map(fileName);
+                System.out.println("File: "+file.getAbsoluteFile());
+                currentMap = new Map(fileName);
                 while (lineReader.hasNextLine() && (check)){
+                	
                     line = lineReader.nextLine();
                     System.out.println(line);
                     if(line.equals("")){
@@ -58,6 +80,7 @@ public class textProcessor {
                 System.out.println("File can't be created");
             }
         }
+        return currentMap;
         //If file is not found, it will ask if you want a new file with that name.
     }
 
@@ -71,6 +94,7 @@ public class textProcessor {
         }
 
         if(text.equals("save")){
+        	fileSaving = true;
             //Saves the file. Creates a backup of the old file;
         }
         else if (text.equals("load")){
