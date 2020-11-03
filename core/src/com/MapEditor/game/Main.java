@@ -66,8 +66,12 @@ public class Main extends ApplicationAdapter {
             			    System.out.println(currentMap.getMapContent());
                         }
             			if (tp.fileSaving == true) {
-            				tp.fileSave(currentMap);
-            				tp.fileSaving = false;
+            			    if(!inputString.equals("save")){
+            			        currentMap.setFileName(inputString+".txt");
+            			        tp.fileSaving = false;
+                            }
+            				tp.fileSave(currentMap,ui);
+            				//tp.fileSaving = false;
             			}
             		}
             		else {

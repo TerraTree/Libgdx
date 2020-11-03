@@ -88,6 +88,10 @@ public class Textbox {
         return inputtedText;
     }
 
+    public void input(String string){
+        this.getTextContent().add(string);
+    }
+
     public int drawText(SpriteBatch batch, BitmapFont font,int counter,int countOffset){
         this.checkText();
         batch.begin();
