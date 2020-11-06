@@ -28,6 +28,7 @@ public class UserInterface {
         font.getData().setScale(fontSize);
         mainText = new Textbox(6,screenHeight/5,fontSize);
         inputText = new Textbox(1,15 * (int) fontSize,fontSize);
+        menuText = new Textbox(6,screenHeight/5,fontSize);
         scrollbar = new Scrollbar(Gdx.graphics.getWidth()*2/3, Gdx.graphics.getWidth()/80, Gdx.graphics.getHeight()/5);
         inputText.setTextContent();
         //mainText.randomText();

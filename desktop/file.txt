@@ -1,7 +1,78 @@
+6 space
 10 water
 10 grass
 2 stone
 
+6 space
 1 grass
 5 water
 6 grass
+
+6 space
+12 grass
+
+5 space
+2 grass
+1 space
+1 grass
+1 space
+1 grass
+1 space
+1 grass
+1 space
+2 grass
+
+5 space
+3 grass
+1 space
+1 grass
+1 space
+1 grass
+1 space
+1 grass
+1 space
+1 grass
+
+5 space
+2 grass
+1 space
+1 grass
+1 space
+1 grass
+1 space
+1 grass
+1 space
+2 grass
+
+8 grass
+1 space
+1 grass
+1 space
+1 grass
+1 space
+1 grass
+1 space
+1 grass
+
+5 space
+2 grass
+1 space
+1 grass
+1 space
+1 grass
+1 space
+1 grass
+1 space
+2 grass
+
+5 space
+3 grass
+1 space
+1 grass
+1 space
+1 grass
+1 space
+1 grass
+1 space
+1 grass
+

@@ -1,0 +1,39 @@
+4 grass
+1 space
+4 grass
+
+3 grass
+2 space
+1 grass
+1 space
+1 grass
+2 space
+1 grass
+
+3 grass
+2 space
+1 grass
+1 space
+1 grass
+2 space
+1 grass
+
+6 grass
+1 space
+4 grass
+
+
+14 grass
+7 space
+1 grass
+
+3 grass
+7 space
+1 grass
+
+3 grass
+7 space
+1 grass
+
+11 grass
+

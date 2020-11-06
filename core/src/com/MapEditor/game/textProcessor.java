@@ -21,8 +21,9 @@ public class textProcessor {
     public void fileSave(Map currentMap, UserInterface ui) {
         System.out.println("hi");
     	try {
-            int tileCount = 0;
+            int tileCount = 1;
             String tileType = "!";
+            System.out.println("FileName: "+currentMap.getFileName());
             if (currentMap.getFileName() == "") {
                 ui.getMainText().input("Enter new map name");
             }
@@ -30,25 +31,31 @@ public class textProcessor {
                 FileWriter fileWriter = new FileWriter(currentMap.getFileName());
                 for (ArrayList<String> A : currentMap.getMapContent()) {
                     for (String S : A) {
+                    	if(S.equals("")) {
+                    		S="space";
+                    	}
                         if (tileType.equals("!")) {
                             tileType = S;
-                        } else if (tileType.equals(S)) {
+                        }
+                        else if (tileType.equals(S)) {
                             tileCount++;
-                        } else {
-                            if (tileType.equals("")){
-                                tileType="space";
-                            }
+                        }
+                        else {
                             fileWriter.write(tileCount + " " + tileType);
                             fileWriter.write("\n");
                             tileType = S;
                             tileCount = 1;
+                            }
                         }
-                    }
-                    fileWriter.write("\n");
+                    fileWriter.write(tileCount+" "+tileType +"\n"+"\n");
+                    //fileWriter.write("\n");
+                    //fileWriter.write("\n");
+                    tileCount=1;
+                    tileType="!";
                 }
                 fileWriter.close();
             }
-        }
+            }
     	catch (IOException e){
                 e.printStackTrace();
             }
@@ -65,7 +72,7 @@ public class textProcessor {
                 boolean check = true;
                 int row=0;
                 System.out.println("File: "+file.getAbsoluteFile());
-                currentMap = new Map(fileName);
+                currentMap = new Map(newFileName);
                 while (lineReader.hasNextLine() && (check)){
                 	
                     line = lineReader.nextLine();
@@ -90,7 +97,7 @@ public class textProcessor {
                 }
                 lineReader.close();
                 System.out.println("It is working");
-                currentMap.setFileName(this.fileName);
+                currentMap.setFileName(newFileName);
         }
         catch (Exception e){
             System.out.println("File unable to be read");

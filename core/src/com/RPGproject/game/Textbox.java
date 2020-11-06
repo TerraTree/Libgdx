@@ -10,6 +10,7 @@ import java.util.ArrayList;
 public class Textbox {
     private int rows;
     private int y;
+    private int x;
     private int percent;
     private float fontSize;
     private ArrayList<String> textContent = new ArrayList<>();
@@ -51,6 +52,14 @@ public class Textbox {
         this.y = y;
     }
 
+    public int getX() {
+    	return x;
+    }
+    
+    public void setX(int x) {
+    	this.x=x;
+    }
+    
     public Textbox(int rows, int y, float fontSize) {
         this.rows = rows;
         this.y = y;
@@ -95,17 +104,13 @@ public class Textbox {
     public int drawText(SpriteBatch batch, BitmapFont font,int counter,int countOffset){
         this.checkText();
         batch.begin();
-    //for(int i= Math.max(0,countOffset+this.g))
         int startInt = Math.max(0,countOffset+this.getPercent()-this.getRows());
-        //i<(Math.max(0,countOffset+this.getPercent()-this.getRows()))+Math.min(this.textContent.size(),this.getRows())
-        //i<Math.min(this.getPercent(),this.textContent.size()+countOffset+this.getPercent()-this.getRows())
         for(int i = startInt;i<startInt+Math.min(this.textContent.size(),this.getRows());i++){
-            //System.out.println(counter);
             if (counter>6-countOffset){
-                //System.out.println("active");
                 break;
             }
             else {
+            	//font.draw(batch,this.getTextContent().get(i),
                 font.draw(batch, this.getTextContent().get(i), Gdx.graphics.getWidth() / 3, this.getY() - counter * 15 * fontSize);
             }
             counter++;
@@ -113,14 +118,6 @@ public class Textbox {
         batch.end();
         return counter;
     }
-
-//    public ArrayList<String> randomText(){
-//        for (int i = 0; i < 9; i++) {
-//            textContent.add("Hello: " + i);
-//
-//        }
-//        return textContent;
-//    }
 
     public void checkText(){
         if (this.getTextContent().size()>100){
