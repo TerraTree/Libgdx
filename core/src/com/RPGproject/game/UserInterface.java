@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 public class UserInterface {
     private Textbox mainText;
     private Textbox inputText;
+    Textbox menuText;
     private SpriteBatch batch;
     private BitmapFont font;
     private Scrollbar scrollbar;
@@ -26,14 +27,14 @@ public class UserInterface {
         float fontSize = ((screenHeight/5)/ (font.getLineHeight()*6)); //resizes the text to fit the screen size
         font.setColor(Color.WHITE);
         font.getData().setScale(fontSize);
-        mainText = new Textbox(6,screenHeight/5,fontSize);
-        inputText = new Textbox(1,15 * (int) fontSize,fontSize);
-        menuText = new Textbox(6,screenHeight/5,fontSize);
+        mainText = new Textbox(6,screenHeight/5,screenWidth/3,fontSize);
+        inputText = new Textbox(1,15 * (int) fontSize,screenWidth/3,fontSize);
+        menuText = new Textbox(6,screenHeight/5,screenWidth/9,fontSize);
         scrollbar = new Scrollbar(Gdx.graphics.getWidth()*2/3, Gdx.graphics.getWidth()/80, Gdx.graphics.getHeight()/5);
         inputText.setTextContent();
-        //mainText.randomText();
+        menuText.input("hello");
     }
-
+    
     public Textbox getMainText() {
         return mainText;
     }
@@ -99,6 +100,7 @@ public class UserInterface {
     }
 
     public void render(){
+    	
         this.getSr().begin(ShapeRenderer.ShapeType.Filled);
         this.getSr().setColor(Color.GRAY);
         this.getSr().rect(0,0,screenWidth,screenHeight/5);
@@ -106,8 +108,10 @@ public class UserInterface {
         this.getSr().end();
         int counter=1-(this.inputText.getTextContent().size());
         int countOffset = 0;
+        this.menuText.drawText(batch, font, counter, countOffset);
         counter = this.inputText.drawText(this.getBatch(),this.getFont(),counter,countOffset);
         countOffset = this.inputText.getTextContent().size()-1;
         this.mainText.drawText(batch,font,counter-1,countOffset);
+        
     }
 }

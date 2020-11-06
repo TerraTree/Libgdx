@@ -60,9 +60,10 @@ public class Textbox {
     	this.x=x;
     }
     
-    public Textbox(int rows, int y, float fontSize) {
+    public Textbox(int rows, int y,int x, float fontSize) {
         this.rows = rows;
         this.y = y;
+        this.x=x;
         this.fontSize = fontSize;
     }
 
@@ -111,7 +112,7 @@ public class Textbox {
             }
             else {
             	//font.draw(batch,this.getTextContent().get(i),
-                font.draw(batch, this.getTextContent().get(i), Gdx.graphics.getWidth() / 3, this.getY() - counter * 15 * fontSize);
+                font.draw(batch, this.getTextContent().get(i), this.getX(), this.getY() - counter * 15 * fontSize);
             }
             counter++;
         }
