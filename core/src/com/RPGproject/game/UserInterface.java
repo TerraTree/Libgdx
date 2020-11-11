@@ -10,7 +10,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 public class UserInterface {
     private Textbox mainText;
     private Textbox inputText;
-    Textbox menuText;
+    private Textbox menuText;
     private SpriteBatch batch;
     private BitmapFont font;
     private Scrollbar scrollbar;
@@ -34,7 +34,19 @@ public class UserInterface {
         inputText.setTextContent();
         menuText.input("hello");
     }
-    
+
+    public Textbox getMenuText() {
+        return menuText;
+    }
+
+    public void setMenuText() {
+        if(this.menuText.getTextContent().size()>0){
+            for (int i = this.menuText.getTextContent().size()-1; i > 0; i--) {
+                this.menuText.getTextContent().remove(i);
+            }
+        }
+    }
+
     public Textbox getMainText() {
         return mainText;
     }
