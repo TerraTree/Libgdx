@@ -36,6 +36,7 @@ public class Main extends ApplicationAdapter {
         camera = new OrthographicCamera(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
         tp.setTileName("grass");
         menuTier = 1;
+        tp.menuDialogue(menuTier,ui);
         Gdx.input.setInputProcessor(new InputProcessor() {
             @Override
             public boolean keyDown(int keycode) {
@@ -59,13 +60,13 @@ public class Main extends ApplicationAdapter {
             		}
             		else if (Gdx.input.isKeyPressed(Input.Keys.ENTER)){
             			String inputString = ui.getMainText().input(ui.getInputText());
-            			tp.processing(inputString);
+                        ArrayList<String> menuContent = ui.getMenuText().getTextContent();
+            			menuTier = tp.processing(inputString,menuTier,menuContent);
+            			tp.menuDialogue(menuTier,ui);
             			if(tp.getFileName().length()!=0) {
-            			    System.out.println(tp.getFileName());
             			    currentMap = tp.fileChoice(tp.getFileName(),currentMap);
             			    tp.setFileName("");
             			    tp.setFileLoad(false);
-            			    System.out.println(currentMap.getMapContent());
                         }
             			if (tp.setFileSaving(true)) {
             			    if(!inputString.equals("save")){

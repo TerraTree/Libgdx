@@ -132,58 +132,74 @@ public class textProcessor {
         return currentMap;
     }
 
-    public static int menuDialogue(String inputText, String menuTier,UserInterface ui){
-        int choice;
+    public void menuDialogue(int menuTier, UserInterface ui){
+        System.out.println("menuTier:" + menuTier);
         int entry = 1;
         try {
-            File text = new File("menu.txt");
+            File text = new File("text/menu.txt");
             Scanner myReader = new Scanner(text);
             String data = myReader.nextLine();
-            while(myReader.hasNextLine() && !data.equals(menuTier) ){
+            while(myReader.hasNextLine() && !data.equals(menuTier+":") ){
                 data = myReader.nextLine();
             }
             ui.setMenuText();
-            while(myReader.hasNextLine()){
-                data = myReader.nextLine();
+            data = myReader.nextLine();
+            while(myReader.hasNextLine() && !data.equals("")){
                 ui.getMenuText().input(entry+": "+data);
+                entry++;
+                data = myReader.nextLine();
             }
             myReader.close();
         }
         catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        return 0;
     }
 
-    public void processing(String text){
+    public int processing(String text,int menuTier,ArrayList<String> menuContent){
         text=text.toLowerCase();
-        if (fileLoad){
-            fileLoad = false;
-            fileName = text;
-            //fileChoice(text);// goes to separate method to ask for file name.
-        }
-
-        if(text.equals("save")){
-        	fileSaving = true;
-        	System.out.println("fileSaving is true");
-            //Saves the file. Creates a backup of the old file;
-        }
-        else if (text.equals("load")){
-            System.out.println("file loading!");
-            fileLoad = true;//sets a boolean so the next entered text will load a file.
-
-        }
-        else if (text.equals("help")){
+        if (text.equals("help")){
             //Lists the commands that can be typed in the console.
         }
-        else if (text.equals("1")){
-            this.tileName = "grass";
+        else {
+            try {
+                int intText = Character.getNumericValue(text.charAt(0));
+                System.out.println(intText);
+                String action = menuContent.get(intText-1).substring(menuContent.get(intText-1).indexOf(":")+2);
+                System.out.println(action);
+                if(action.equals("back")){
+                    System.out.println("true");
+                    int mod = menuTier%10;
+                    String menuComp = Integer.toString(menuTier);
+                    //menuComp = menuComp.substring(menuComp.length())
+                    menuTier = (menuTier-1-10*mod)/10;
+                    if (menuTier<1){
+                        menuTier=1;
+                    }
+                    System.out.println("menu: " + menuTier);
+                }
+                else {
+                    menuTier=(menuTier+intText-1)*10 +1;
+                    switch (menuTier) {
+                        case 11:
+                            System.out.println("hi");
+                            break;
+                        case 21:
+                            fileSaving = true;
+                            menuTier = 1;
+                            System.out.println("it works!");
+                            break;
+                        case 31:
+                            menuTier = 1;
+                            System.out.println("loading file");
+                            fileLoad = true;
+                            break;
+                    }
+                }
+            } catch (Exception e) {
+
+            }
         }
-        else if (text.equals("2")){
-            this.tileName = "water";
-        }
-        else if (text.equals("3")){
-            this.tileName = "stone";
-        }
+        return menuTier;
     }
 }

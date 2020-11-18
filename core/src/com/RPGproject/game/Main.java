@@ -2,13 +2,14 @@ package com.RPGproject.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.ApplicationListener;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.ObjectMap;
 
-public class Main extends ApplicationAdapter implements stageInterface {
+public class Main extends Game implements stageInterface {
     UserInterface mainUI;
     Actor actor;
     startStage startStage;

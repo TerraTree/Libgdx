@@ -41,7 +41,7 @@ public class UserInterface {
 
     public void setMenuText() {
         if(this.menuText.getTextContent().size()>0){
-            for (int i = this.menuText.getTextContent().size()-1; i > 0; i--) {
+            for (int i = this.menuText.getTextContent().size()-1; i >= 0; i--) {
                 this.menuText.getTextContent().remove(i);
             }
         }
