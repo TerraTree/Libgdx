@@ -25,18 +25,21 @@ public class Main extends ApplicationAdapter {
     String currentTile;
     Camera camera;
     Map currentMap;
+    int menuTier;
+
     public void create(){
     	currentTile="grass";
         batch = new SpriteBatch();
         tp = new textProcessor();
-        currentMap = new Map(tp.fileName);
+        currentMap = new Map(tp.getFileName());
         ui = new UserInterface();
         camera = new OrthographicCamera(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
-        tp.tileName="grass";
+        tp.setTileName("grass");
+        menuTier = 1;
+        tp.menuDialogue(menuTier,ui);
         Gdx.input.setInputProcessor(new InputProcessor() {
             @Override
             public boolean keyDown(int keycode) {
-            	
                 return false;
             }
 
@@ -57,21 +60,20 @@ public class Main extends ApplicationAdapter {
             		}
             		else if (Gdx.input.isKeyPressed(Input.Keys.ENTER)){
             			String inputString = ui.getMainText().input(ui.getInputText());
-            			tp.processing(inputString);
-            			if(tp.fileName.length()!=0) {
-            			    System.out.println(tp.fileName);
-            			    currentMap = tp.fileChoice(tp.fileName,currentMap);
-            			    tp.fileName="";
-            			    tp.fileLoad=false;
-            			    System.out.println(currentMap.getMapContent());
+                        ArrayList<String> menuContent = ui.getMenuText().getTextContent();
+            			menuTier = tp.processing(inputString,menuTier,menuContent);
+            			tp.menuDialogue(menuTier,ui);
+            			if(tp.getFileName().length()!=0) {
+            			    currentMap = tp.fileChoice(tp.getFileName(),currentMap);
+            			    tp.setFileName("");
+            			    tp.setFileLoad(false);
                         }
-            			if (tp.fileSaving == true) {
+            			if (tp.setFileSaving(true)) {
             			    if(!inputString.equals("save")){
             			        currentMap.setFileName(inputString+".txt");
-            			        tp.fileSaving = false;
+            			        tp.setFileSaving(false);
                             }
             				tp.fileSave(currentMap,ui);
-            				//tp.fileSaving = false;
             			}
             		}
             		else {
@@ -105,7 +107,7 @@ public class Main extends ApplicationAdapter {
                 		typing = false;
                 	}
                 	else {
-                		currentMap.tileAdd(screenX,screenY,tp.tileName);
+                		currentMap.tileAdd(screenX,screenY,tp.getTileName());
                 	}
                 }
                 else if(screenY<ui.getScrollbar().getMaxHeight() && (!typing)) {
@@ -157,16 +159,11 @@ public class Main extends ApplicationAdapter {
 
 
     public void render(){
-
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
         int column = 0;
         int row =0;
         batch.begin();
-        batch.setProjectionMatrix(camera.combined);
-        camera.update();
-        //System.out.println(currentMap.getMapContent());
         for (ArrayList<String> a:currentMap.getMapContent()) {
             for (String s:a) {
             	if(s=="") {
@@ -174,14 +171,12 @@ public class Main extends ApplicationAdapter {
             	else {
                 texture = new Texture(s+".png");
                 batch.draw(texture,(column*32)+currentMap.getOriginX(),-currentMap.getOriginY()-(row*32)-32);
-                //System.out.println(column*32 +currentMap.getOriginX());
             	}
                 column++;
             }
             row++;
             column=0;
         }
-        //camera.update();
         batch.end();
         ui.render();
     }

@@ -69,7 +69,6 @@ public class Map {
             }
         }
         try{
-            System.out.println((newX-originX)/32 -1);
             mapContent.get(index).get((newX-originX)/32);
             mapContent.get(index).set((newX-originX)/32, tileName);
         }
