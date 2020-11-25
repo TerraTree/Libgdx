@@ -8,7 +8,7 @@ public class startScreen extends ScreenAdapter {
 
     Main game;
     ShapeRenderer sr;
-    Character character;
+    Party charParty;
 
     public startScreen(Main game) {
         this.game = game;
@@ -17,6 +17,7 @@ public class startScreen extends ScreenAdapter {
     @Override
     public void show() {
     	sr = new ShapeRenderer();
+    	charParty = new Party();
     	loadFile();
         Gdx.input.setInputProcessor(new InputAdapter() {
             public boolean keyDown ( int keycode){
@@ -55,7 +56,7 @@ public class startScreen extends ScreenAdapter {
     }
     
     public void loadFile() {
-    	
+    	charParty.setChar1(char1);
     }
     
     public void render(float delta){
