@@ -23,7 +23,6 @@ public class startScreen extends ScreenAdapter {
             public boolean keyDown ( int keycode){
                 if (keycode == Input.Keys.ENTER){
                     game.setScreen(new mainScreen(game));
-                    System.out.println("hi");
                 }
                 return true;
             }
@@ -56,7 +55,7 @@ public class startScreen extends ScreenAdapter {
     }
     
     public void loadFile() {
-    	charParty.setChar1(char1);
+    	charParty.setChar1(new Character(1,1,1,1,1));
     }
     
     public void render(float delta){

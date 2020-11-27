@@ -1,7 +1,2 @@
-10 water
-10 grass
-2 stone
+1 !
 
-1 grass
-5 water
-6 grass

@@ -1,6 +1,5 @@
 package com.RPGproject.game;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 
@@ -16,7 +15,7 @@ public class battleScreen extends ScreenAdapter {
     	ui = new UserInterface();
     }
 
-    public void render(){
+    public void render(float delta){
     	ui.render();
     }
     public void hide(){

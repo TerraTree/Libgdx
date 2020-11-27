@@ -23,8 +23,7 @@ public class mainScreen extends ScreenAdapter {
     	Gdx.input.setInputProcessor(new InputAdapter() {
             public boolean keyDown ( int keycode){
                 if (keycode == Input.Keys.ENTER){
-                    game.setScreen(new mainScreen(game));
-                    System.out.println("hi");
+                    game.setScreen(new battleScreen(game));
                 }
                 return true;
             }
