@@ -13,9 +13,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 public class mainScreen extends ScreenAdapter {
     Main game;
     UserInterface ui;
+    Party mainParty;
+    Party enemyParty;
 
-    public mainScreen(Main game){
+    public mainScreen(Main game,Party mainParty){
         this.game = game;
+        this.mainParty = mainParty;
     }
     @Override
     public void show() {
@@ -23,9 +26,10 @@ public class mainScreen extends ScreenAdapter {
     	Gdx.input.setInputProcessor(new InputAdapter() {
             public boolean keyDown ( int keycode){
                 if (keycode == Input.Keys.ENTER){
-                    game.setScreen(new mainScreen(game));
+                    game.setScreen(new battleScreen(game,mainParty,enemyParty));
                     System.out.println("hi");
                 }
+                
                 return true;
             }
     	});

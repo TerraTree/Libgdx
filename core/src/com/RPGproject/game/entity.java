@@ -2,6 +2,7 @@ package com.RPGproject.game;
 
 public class entity {
     private String name;
+    private String icon;
     private int maxHealth;
     private int currentHealth; //health, pretty self explanatory
     private int defense; //reduces damage taken
@@ -10,7 +11,8 @@ public class entity {
     private int agility; //increases health + speed of attacks
     private int wisdom; //increases amount of magic available
     private int intelligence;//increases damage of magic attacks.
-
+    private int exp;
+    
 
     public int getMaxHealth() {
         return maxHealth;
@@ -76,6 +78,13 @@ public class entity {
         this.intelligence = intelligence;
     }
 
+    public int getExp() {
+    	return exp;
+    }
+    public void setExp(int exp) {
+    	this.exp = exp;
+    }
+    
     public entity() {
     }
 }
