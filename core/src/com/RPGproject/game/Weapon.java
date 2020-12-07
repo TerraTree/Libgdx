@@ -1,6 +1,7 @@
 package com.RPGproject.game;
 
-public class Weapon {
+public class Weapon extends entity{
+
     private int attack;
     private int speed;
     private boolean magic;

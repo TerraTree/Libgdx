@@ -2,29 +2,41 @@ package com.RPGproject.game;
 
 public class entity {
     private String name;
-    private int health; //health, pretty self explanatory
-    private int armour; //reduces damage taken
+
+    private String icon;
+    private int maxHealth;
+    private int currentHealth; //health, pretty self explanatory
+    private int defense; //reduces damage taken
     private int strength; //increases damage of attacks
     private int dexterity; //increases armour
     private int agility; //increases health + speed of attacks
     private int wisdom; //increases amount of magic available
     private int intelligence;//increases damage of magic attacks.
+    private int exp;
+    
 
-
-    public int getHealth() {
-        return health;
+    public int getMaxHealth() {
+        return maxHealth;
     }
 
-    public void setHealth(int health) {
-        this.health = health;
+    public void setMaxHealth(int offset) {
+    	this.maxHealth=this.agility+offset;
+    }
+    
+    public int getCurrentHealth() {
+        return currentHealth;
     }
 
-    public int getArmour() {
-        return armour;
+    public void setCurrentHealth(int currentHealth) {
+        this.currentHealth = currentHealth;
     }
 
-    public void setArmour(int armour) {
-        this.armour = armour;
+    public int getDefense() {
+        return defense;
+    }
+
+    public void setDefense(int defense) {
+        this.defense = defense;
     }
 
     public int getStrength() {
@@ -65,6 +77,13 @@ public class entity {
 
     public void setIntelligence(int intelligence) {
         this.intelligence = intelligence;
+    }
+
+    public int getExp() {
+    	return exp;
+    }
+    public void setExp(int exp) {
+    	this.exp = exp;
     }
 
     public entity() {

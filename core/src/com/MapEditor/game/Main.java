@@ -164,8 +164,6 @@ public class Main extends ApplicationAdapter {
         int column = 0;
         int row =0;
         batch.begin();
-        batch.setProjectionMatrix(camera.combined);
-        camera.update();
         for (ArrayList<String> a:currentMap.getMapContent()) {
             for (String s:a) {
             	if(s=="") {

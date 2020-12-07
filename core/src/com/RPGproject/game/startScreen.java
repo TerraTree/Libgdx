@@ -1,25 +1,30 @@
 package com.RPGproject.game;
 
 import com.badlogic.gdx.*;
-
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 public class startScreen extends ScreenAdapter {
 
     Main game;
+    ShapeRenderer sr;
+    Party charParty;
 
     public startScreen(Main game) {
         this.game = game;
     }
 
+    @Override
     public void show() {
-
-
+    	sr = new ShapeRenderer();
+    	charParty = new Party();
+    	loadFile();
         Gdx.input.setInputProcessor(new InputAdapter() {
             public boolean keyDown ( int keycode){
-                if (Gdx.input.isKeyPressed(Input.Keys.ENTER)){
-                    game.setScreen(new mainScreen(game));
+                if (keycode == Input.Keys.ENTER){
+                    game.setScreen(new mainScreen(game,charParty));
+                    System.out.println("hi");
                 }
-                return false;
+                return true;
             }
 
             public boolean keyUp ( int keycode){
@@ -49,7 +54,11 @@ public class startScreen extends ScreenAdapter {
         });
     }
 
-    public void render(){
+    public void loadFile() {
+    	charParty.setChar1(new Character(1,1,1,1,1));
+    }
+    
+    public void render(float delta){
     }
 
     public void hide(){
