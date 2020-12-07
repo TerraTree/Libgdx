@@ -3,7 +3,6 @@ package com.RPGproject.game;
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
-
 public class startScreen extends ScreenAdapter {
 
     Main game;
@@ -54,13 +53,12 @@ public class startScreen extends ScreenAdapter {
 
         });
     }
-    
+
     public void loadFile() {
     	charParty.setChar1(new Character(1,1,1,1,1));
     }
     
     public void render(float delta){
-
     }
 
     public void hide(){

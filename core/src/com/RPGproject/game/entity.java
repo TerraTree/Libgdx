@@ -2,6 +2,7 @@ package com.RPGproject.game;
 
 public class entity {
     private String name;
+
     private String icon;
     private int maxHealth;
     private int currentHealth; //health, pretty self explanatory
@@ -84,7 +85,7 @@ public class entity {
     public void setExp(int exp) {
     	this.exp = exp;
     }
-    
+
     public entity() {
     }
 }

@@ -92,6 +92,7 @@ public class battleScreen extends ScreenAdapter {
     		column=1;
     	}
     	selector.render(sr);
+
     }
     public void hide(){
         Gdx.input.setInputProcessor(null);
