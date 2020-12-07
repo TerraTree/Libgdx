@@ -75,23 +75,26 @@ public class Selector {
 	}
 
 	public void render(ShapeRenderer sr) {
-		if (counter<30) {
-		sr.setColor(Color.RED);
-		int totalX = x+xOffset;
-		int totalY = y+yOffset;
-		sr.begin(ShapeRenderer.ShapeType.Filled);
-		sr.rect(totalX-5,totalY,5,height);
-		sr.rect(totalX+width,totalY,5,height);
-		sr.rect(totalX,totalY-5,width,5);
-		sr.rect(totalX,totalY+height,width,5);
-		sr.end();
-		counter++;
-		}
-		else if(counter>50) {
-			counter=0;
-		}
-		else {
-			counter++;
+		if(active) {
+			if (counter<30) {
+					sr.setColor(Color.RED);
+					int totalX = x+xOffset;
+					int totalY = y+yOffset;
+					sr.begin(ShapeRenderer.ShapeType.Filled);
+					sr.rect(totalX-5,totalY,5,height);
+					sr.rect(totalX+width,totalY,5,height);
+					sr.rect(totalX,totalY-5,width,5);
+					sr.rect(totalX,totalY+height,width,5);
+					sr.end();
+					counter++;
+			}
+			
+			else if(counter>50) {
+				counter=0;
+			}
+			else {
+				counter++;
+			}
 		}
 	}
 }

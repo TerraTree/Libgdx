@@ -20,6 +20,8 @@ public class battleScreen extends ScreenAdapter {
 	ArrayList<enemy> enemyGrid;
 	ShapeRenderer sr;
 	Selector selector;
+	int flag;
+	Character selectChar;
 	
 
     public battleScreen(Main game,Party mainParty,Party enemyParty){
@@ -29,6 +31,7 @@ public class battleScreen extends ScreenAdapter {
     }
 
     public void show(){
+    	flag = 0;
     	ui = new UserInterface();
     	playerGrid = new ArrayList<ArrayList<Character>>();
     	for (int i=0;i<3;i++) {
@@ -36,12 +39,13 @@ public class battleScreen extends ScreenAdapter {
     		playerGrid.get(i).add(null);
     		playerGrid.get(i).add(null);
     	}
+    	selectChar=mainParty.getChar1();
     	enemyGrid = new ArrayList<enemy>();
     	sr = new ShapeRenderer();
     	selector = new Selector(100,300,100,100);
     	Gdx.input.setInputProcessor(new InputAdapter() {
             public boolean keyDown ( int keycode){
-            	if(selector.active == true) {
+            	if(flag ==1 || flag==2) {
             		if(keycode==Input.Keys.LEFT) {
             			selector.xOffset=0;
             		}
@@ -51,12 +55,18 @@ public class battleScreen extends ScreenAdapter {
             		else if(keycode==Input.Keys.UP && selector.yOffset<0) {
             			selector.yOffset+=100;
             		}
-            		else if(keycode==Input.Keys.DOWN && selector.yOffset>-300) {
+            		else if(keycode==Input.Keys.DOWN && selector.yOffset>-200) {
             			selector.yOffset-=100;
             		}
             		if(keycode==Input.Keys.ENTER) {
             			playerGrid.get(playerGrid.size()-1-selector.yOffset/-100).set(selector.xOffset/100, mainParty.getChar1());
-            			System.out.println(playerGrid.get(selector.yOffset/-100));
+            			flag++;
+            			if(flag==1) {
+            				selectChar = mainParty.getChar2();
+            			}
+            			else if (flag==2) {
+            				selector.active=false;
+            			}
             		}
             	}
                 
@@ -67,7 +77,7 @@ public class battleScreen extends ScreenAdapter {
 
     public void render(float delta){
         Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);    
     	ui.render();
     	int column = 1;
     	int row = 1;
@@ -90,6 +100,13 @@ public class battleScreen extends ScreenAdapter {
     		}
     		row++;
     		column=1;
+    	}
+    	switch(flag){
+    		case 0:
+    			
+    			break;
+    		case 2:
+    			break;
     	}
     	selector.render(sr);
 

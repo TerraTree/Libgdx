@@ -20,10 +20,7 @@ public class Character extends entity{
     public void setLevel(int level) {
     	this.level = level;
     }
-    
-
-    
-    
+  
     public Character(int str,int dex,int agi,int wis, int intel) {
     	setStrength(str);
     	this.setDexterity(dex);
