@@ -1,5 +1,0 @@
-2 stone
-2 grass
-
-9 grass
-10 water
