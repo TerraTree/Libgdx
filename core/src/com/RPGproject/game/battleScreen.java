@@ -17,12 +17,12 @@ public class battleScreen extends ScreenAdapter {
 	Party mainParty;
 	Party enemyParty;
 	ArrayList<ArrayList<Character>> playerGrid;
-	ArrayList<enemy> enemyGrid;
+	ArrayList<ArrayList<enemy>> enemyGrid;
 	ShapeRenderer sr;
 	Selector selector;
 	int flag;
 	Character selectChar;
-	
+	textProcessor tp;
 
     public battleScreen(Main game,Party mainParty,Party enemyParty){
     	this.game = game;
@@ -31,6 +31,7 @@ public class battleScreen extends ScreenAdapter {
     }
 
     public void show(){
+    	enemy enem1 = new enemy(1,1,1,1,1);
     	flag = 0;
     	ui = new UserInterface();
     	playerGrid = new ArrayList<ArrayList<Character>>();
@@ -40,12 +41,23 @@ public class battleScreen extends ScreenAdapter {
     		playerGrid.get(i).add(null);
     	}
     	selectChar=mainParty.getChar1();
-    	enemyGrid = new ArrayList<enemy>();
+    	enemyGrid = new ArrayList<ArrayList<enemy>>();
+    	for (int i=0;i<3;i++) {
+    		enemyGrid.add(new ArrayList<enemy>());
+    		enemyGrid.get(i).add(null);
+    		enemyGrid.get(i).add(null);
+    	}
+    	enemyGrid.get(0).set(1, enem1);
     	sr = new ShapeRenderer();
     	selector = new Selector(100,300,100,100);
+    	tp = new textProcessor();
+    	
     	Gdx.input.setInputProcessor(new InputAdapter() {
             public boolean keyDown ( int keycode){
-            	if(flag ==1 || flag==2) {
+				if(Gdx.input.isKeyPressed(Input.Keys.ESCAPE)){
+					Gdx.app.exit();
+				}
+            	if(flag == 0 || flag == 1) {
             		if(keycode==Input.Keys.LEFT) {
             			selector.xOffset=0;
             		}
@@ -68,8 +80,58 @@ public class battleScreen extends ScreenAdapter {
             				selector.active=false;
             			}
             		}
+            	}                
+                return true;
+            }
+            public boolean keyTyped(char character) {
+            	
+            	if(flag==2){
+					if (Gdx.input.isKeyPressed(Input.Keys.BACKSPACE) && ui.getInputText().getTextContent().get(0).length()>0){
+						ui.getInputText().removeChar();
+					}
+					else if (Gdx.input.isKeyPressed(Input.Keys.ENTER)){
+						System.out.println("output");
+						String inputString = ui.getMainText().input(ui.getInputText());
+						ArrayList<String> menuContent = ui.getMenuText().getTextContent();
+						tp.processing(inputString,menuContent);
+						tp.menuDialogue(ui);
+
+						
+						}
+					else {
+						ui.getInputText().addChar(character,ui.getFont());
+					}
             	}
+            	return true;
+            	
+            }
+            
+            public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+                ui.getScrollbar().setScrolling(false);
+                return true;
+            }
+            
+            public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+            	screenY=ui.getScreenHeight()-screenY;
+                if(screenX>ui.getScrollbar().getX() && screenX<ui.getScrollbar().getX()+ui.getScrollbar().getWidth()) {
+                    int yOffset = screenY-ui.getScrollbar().getY();
+                    if(yOffset>=0 && yOffset<=ui.getScrollbar().getHeight()){
+                        ui.getScrollbar().moveScroll(screenX, screenY-yOffset);
+                        ui.getScrollbar().setScrolling(true);
+                    }
+                    else{
+                        ui.getScrollbar().moveScroll(screenX, screenY+yOffset);
+                    }
+                }
                 
+                return true;
+            }
+            public boolean touchDragged(int screenX, int screenY, int pointer) {
+                screenY=ui.getScreenHeight()-screenY;
+                if(ui.getScrollbar().isScrolling()) {
+                    ui.getScrollbar().moveScroll(screenX, screenY-ui.getScrollbar().getYOffset());
+                    
+                }
                 return true;
             }
     	});
@@ -101,11 +163,34 @@ public class battleScreen extends ScreenAdapter {
     		row++;
     		column=1;
     	}
+    	column = 1;
+    	row=1;
+    	for(ArrayList<enemy> a:enemyGrid) {
+    		for(enemy e:a) {
+    			sr.begin(ShapeRenderer.ShapeType.Filled);
+    			if(e == null) {
+    				sr.setColor(Color.WHITE);
+    			}
+    			else {
+    				sr.setColor(Color.GRAY);
+    			}
+    			sr.rect(600+column*100,row*100,100,100);
+    			sr.end();
+    			sr.begin(ShapeRenderer.ShapeType.Line);
+    			sr.setColor(Color.BLUE);
+    			sr.rect(600+column*100,row*100,100,100);
+    			sr.end();
+    			column++;
+    		}
+    		row++;
+    		column=1;
+    	}
     	switch(flag){
     		case 0:
     			
     			break;
     		case 2:
+    			//health bars
     			break;
     	}
     	selector.render(sr);

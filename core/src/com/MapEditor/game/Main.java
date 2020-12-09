@@ -115,13 +115,13 @@ public class Main extends ApplicationAdapter {
                
                 }
                 else if(screenX>ui.getScrollbar().getX() && screenX<ui.getScrollbar().getX()+ui.getScrollbar().getWidth() && (typing)) {
-                    yOffset = screenY-ui.getScrollbar().getY();
-                    if(yOffset>=0 && yOffset<=ui.getScrollbar().getHeight()){
-                        ui.getScrollbar().moveScroll(screenX, screenY-yOffset);
+                    ui.getScrollbar().setYOffset(screenY-ui.getScrollbar().getY());
+                    if(ui.getScrollbar().getYOffset()>=0 && yOffset<=ui.getScrollbar().getHeight()){
+                        ui.getScrollbar().moveScroll(screenX, screenY-ui.getScrollbar().getYOffset());
                         mouseDown = true;
                     }
                     else{
-                        ui.getScrollbar().moveScroll(screenX, screenY+yOffset);
+                        ui.getScrollbar().moveScroll(screenX, screenY+ui.getScrollbar().getYOffset());
                     }
                 }
                 
@@ -138,7 +138,7 @@ public class Main extends ApplicationAdapter {
             public boolean touchDragged(int screenX, int screenY, int pointer) {
                 screenY=ui.getScreenHeight()-screenY;
                 if(mouseDown) {
-                    ui.getScrollbar().moveScroll(screenX, screenY-yOffset);
+                    ui.getScrollbar().moveScroll(screenX, screenY-ui.getScrollbar().getYOffset());
                 }
                 return true;
             }

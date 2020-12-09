@@ -10,6 +10,8 @@ public class Scrollbar {
     private int height;
     private int width;
     private int maxHeight;
+    private int yOffset;
+    private boolean scrolling;
 
     public Scrollbar(int x, int width, int maxHeight) {
         this.x = x;
@@ -59,6 +61,22 @@ public class Scrollbar {
         this.width = width;
     }
 
+	public int getYOffset() {
+		return yOffset;
+	}
+
+	public void setYOffset(int yOffset) {
+		this.yOffset = yOffset;
+	}
+    
+	public boolean isScrolling() {
+		return scrolling;
+	}
+
+	public void setScrolling(boolean scrolling) {
+		this.scrolling = scrolling;
+	}
+	
     public void Scrolling(double amount, int rows){
         int multipliedIncrease = (int) (amount*Math.round(this.getMaxHeight()/(double) rows));
         if(this.getY()+this.getHeight()+multipliedIncrease > this.getMaxHeight()){
@@ -93,4 +111,8 @@ public class Scrollbar {
             sr.rect(this.getX(), this.getY(), this.getWidth(), this.getHeight());
         }
     }
+
+
+
+
 }
