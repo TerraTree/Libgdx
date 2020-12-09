@@ -45,7 +45,10 @@ public class battleScreen extends ScreenAdapter {
     	selector = new Selector(100,300,100,100);
     	Gdx.input.setInputProcessor(new InputAdapter() {
             public boolean keyDown ( int keycode){
-            	if(flag ==1 || flag==2) {
+				if(Gdx.input.isKeyPressed(Input.Keys.ESCAPE)){
+					Gdx.app.exit();
+				}
+            	if(flag == 0 || flag == 1) {
             		if(keycode==Input.Keys.LEFT) {
             			selector.xOffset=0;
             		}
@@ -69,6 +72,33 @@ public class battleScreen extends ScreenAdapter {
             			}
             		}
             	}
+            	else if(flag==3){
+					if (Gdx.input.isKeyPressed(Input.Keys.BACKSPACE) && ui.getInputText().getTextContent().get(0).length()>0){
+						ui.getInputText().removeChar();
+
+					}
+					else if (Gdx.input.isKeyPressed(Input.Keys.ENTER)){
+						String inputString = ui.getMainText().input(ui.getInputText());
+						ArrayList<String> menuContent = ui.getMenuText().getTextContent();
+						menuTier = tp.processing(inputString,menuTier,menuContent);
+						tp.menuDialogue(menuTier,ui);
+						if(tp.getFileName().length()!=0) {
+							currentMap = tp.fileChoice(tp.getFileName(),currentMap);
+							tp.setFileName("");
+							tp.setFileLoad(false);
+						}
+						if (tp.setFileSaving(true)) {
+							if(!inputString.equals("save")){
+								currentMap.setFileName(inputString+".txt");
+								tp.setFileSaving(false);
+							}
+							tp.fileSave(currentMap,ui);
+						}
+					}
+					else {
+						ui.getInputText().addChar(character,ui.getFont());
+					}
+				}
                 
                 return true;
             }
@@ -106,6 +136,7 @@ public class battleScreen extends ScreenAdapter {
     			
     			break;
     		case 2:
+    			//health bars
     			break;
     	}
     	selector.render(sr);
