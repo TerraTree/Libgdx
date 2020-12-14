@@ -34,23 +34,24 @@ public class battleScreen extends ScreenAdapter {
     	enemy enem1 = new enemy(1,1,1,1,1);
     	flag = 0;
     	ui = new UserInterface();
-    	playerGrid = new ArrayList<ArrayList<Character>>();
+    	playerGrid = new ArrayList<ArrayList<Character>>(); //creates empty grid
     	for (int i=0;i<3;i++) {
     		playerGrid.add(new ArrayList<Character>());
     		playerGrid.get(i).add(null);
     		playerGrid.get(i).add(null);
     	}
     	selectChar=mainParty.getChar1();
-    	enemyGrid = new ArrayList<ArrayList<enemy>>();
+    	enemyGrid = new ArrayList<ArrayList<enemy>>(); //creates an empty grid
     	for (int i=0;i<3;i++) {
     		enemyGrid.add(new ArrayList<enemy>());
     		enemyGrid.get(i).add(null);
     		enemyGrid.get(i).add(null);
     	}
-    	enemyGrid.get(0).set(1, enem1);
+    	enemyGrid.get(1).set(1, enem1);
     	sr = new ShapeRenderer();
     	selector = new Selector(100,300,100,100);
     	tp = new textProcessor();
+    	
     	
     	Gdx.input.setInputProcessor(new InputAdapter() {
             public boolean keyDown ( int keycode){
@@ -71,7 +72,7 @@ public class battleScreen extends ScreenAdapter {
             			selector.yOffset-=100;
             		}
             		if(keycode==Input.Keys.ENTER) {
-            			playerGrid.get(playerGrid.size()-1-selector.yOffset/-100).set(selector.xOffset/100, mainParty.getChar1());
+            			playerGrid.get(playerGrid.size()-1-selector.yOffset/-100).set(selector.xOffset/100, mainParty.getChar1()); //set player character to grid
             			flag++;
             			if(flag==1) {
             				selectChar = mainParty.getChar2();
@@ -150,7 +151,10 @@ public class battleScreen extends ScreenAdapter {
     				sr.setColor(Color.WHITE);
     			}
     			else {
+    				sr.setColor(Color.RED);
+    				sr.rect(column*100,110+row*100,100,10);
     				sr.setColor(Color.GRAY);
+    				
     			}
     			sr.rect(column*100,row*100,100,100);
     			sr.end();
@@ -184,6 +188,19 @@ public class battleScreen extends ScreenAdapter {
     		}
     		row++;
     		column=1;
+    	}
+    	for(ArrayList<enemy> a:enemyGrid) {
+    		for (enemy e:a) {
+    			if (e!= null) {
+    				sr.begin(ShapeRenderer.ShapeType.Filled);
+    				sr.setColor(Color.RED);
+    				sr.rect(600+column*100,110+row*100,100,10);
+    				sr.setColor(Color.GREEN);
+    				System.out.println((int)(e.getCurrentHealth()*100)/e.getMaxHealth());
+    				sr.rect(600+column*100,110+row*100,(int)(e.getCurrentHealth()*100)/e.getMaxHealth(),10);
+    				sr.end();
+    			}
+    		}
     	}
     	switch(flag){
     		case 0:
