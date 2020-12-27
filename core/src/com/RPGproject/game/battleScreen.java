@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Vector2;
 
 public class battleScreen extends ScreenAdapter {
 	Main game;
@@ -69,7 +70,7 @@ public class battleScreen extends ScreenAdapter {
 				if(Gdx.input.isKeyPressed(Input.Keys.ESCAPE)){
 					Gdx.app.exit();
 				}
-            	if(flag == 0 || flag == 1) {
+            	if(selector.active) {
             		if(keycode==Input.Keys.LEFT) {
             			selector.xOffset=0;
             		}
@@ -83,14 +84,27 @@ public class battleScreen extends ScreenAdapter {
             			selector.yOffset-=100;
             		}
             		if(keycode==Input.Keys.ENTER) {
-            			playerGrid.get(-selector.yOffset/100).set(selector.xOffset/100, mainParty.getChar1()); //set player character to grid
-            			flag++;
-            			if(flag==1) {
-            				selectChar = mainParty.getChar2();
-            			}
-            			else if (flag==2) {
-            				selector.active=false;
-            			}
+            			if(ui.getMainText().getTextContent().get(ui.getMenuText().getTextContent().size()-1).equals("attack")){
+							if(enemyGrid.get(-selector.yOffset / 100).get(selector.xOffset / 100)!=null){
+								Vector2 enemyPos= new Vector2(-selector.yOffset / 100,selector.xOffset / 100);
+								Vector2 playerPos = new Vector2(0,0); //will be implemented elsewhere
+								int damage = 1; //damage based on weapon and character selected, not implemented yet
+								Attack charAttack = new Attack(enemyPos,playerPos,true,"sword",damage);
+								battleQueue.add(charAttack);
+							}
+							else{
+
+							}
+						}
+            			else {
+							playerGrid.get(-selector.yOffset / 100).set(selector.xOffset / 100, mainParty.getChar1()); //set player character to grid
+							flag++;
+							if (flag == 1) {
+								selectChar = mainParty.getChar2();
+							} else if (flag == 2) {
+								selector.active = false;
+							}
+						}
             		}
             	}
                 return true;
@@ -220,47 +234,47 @@ public class battleScreen extends ScreenAdapter {
     		row++;
     		column=1;
     	}
-    	column = 1;
-    	row=0;
-    	sr.begin(ShapeRenderer.ShapeType.Filled);
-    	for(ArrayList<enemy> a:enemyGrid) {
-    		for (enemy e:a) {
-    			if (e!= null) {
-    				sr.setColor(Color.RED);
-    				sr.rect(ui.getScreenWidth()-offsetX+2-column*100,offsetY+110-row*100,96,10);
-    				sr.setColor(Color.GREEN);
-    				System.out.println((int)(e.getCurrentHealth()*100)/e.getMaxHealth());
-    				sr.rect(ui.getScreenWidth()-offsetX+2-column*100,offsetY+110-row*100,(int)(e.getCurrentHealth()*96)/e.getMaxHealth(),10);
-    			}
-    			column++;
-    		}
-			row++;
-			column=1;
-    	}
-    	column=0;
-    	row = 0;
-    	for(ArrayList<Character> a:playerGrid) {
-    		for(Character c:a) {
-    			if(c != null) {
-    				sr.setColor(Color.RED);
-    				sr.rect(offsetX+2+column*100,offsetY+110-row*100,96,10);
-    				sr.setColor(Color.GREEN);
-    				System.out.println((int)(c.getCurrentHealth()));
-    				sr.rect(offsetX+2+column*100,offsetY+110-row*100,(int)(c.getCurrentHealth()*96)/c.getMaxHealth(),10);
-    			}
 
-    			column++;
-    		}
-    		row++;
-    		column=0;
-    	}
-    	sr.end();
     	switch(flag){
     		case 0:
     			
     			break;
-    		case 2:
-    			//health bars
+    		case 2: //display health bars
+				column = 1;
+				row=0;
+				sr.begin(ShapeRenderer.ShapeType.Filled);
+				for(ArrayList<enemy> a:enemyGrid) {
+					for (enemy e:a) {
+						if (e!= null) {
+							sr.setColor(Color.RED);
+							sr.rect(ui.getScreenWidth()-offsetX+2-column*100,offsetY+110-row*100,96,10);
+							sr.setColor(Color.GREEN);
+							System.out.println((int)(e.getCurrentHealth()*100)/e.getMaxHealth());
+							sr.rect(ui.getScreenWidth()-offsetX+2-column*100,offsetY+110-row*100,(int)(e.getCurrentHealth()*96)/e.getMaxHealth(),10);
+						}
+						column++;
+					}
+					row++;
+					column=1;
+				}
+				column=0;
+				row = 0;
+				for(ArrayList<Character> a:playerGrid) {
+					for(Character c:a) {
+						if(c != null) {
+							sr.setColor(Color.RED);
+							sr.rect(offsetX+2+column*100,offsetY+110-row*100,96,10);
+							sr.setColor(Color.GREEN);
+							System.out.println((int)(c.getCurrentHealth()));
+							sr.rect(offsetX+2+column*100,offsetY+110-row*100,(int)(c.getCurrentHealth()*96)/c.getMaxHealth(),10);
+						}
+
+						column++;
+					}
+					row++;
+					column=0;
+				}
+				sr.end();
     			break;
     	}
     	selector.render(sr,offsetX,offsetY);

@@ -6,6 +6,7 @@ public class Weapon extends entity{
     private int speed;
     private boolean magic;
     private String name;
+    private String type;
 
     public int getAttack() {
         return attack;
@@ -37,6 +38,14 @@ public class Weapon extends entity{
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public Weapon() {

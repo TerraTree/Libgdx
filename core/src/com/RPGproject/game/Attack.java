@@ -3,11 +3,11 @@ package com.RPGproject.game;
 import com.badlogic.gdx.math.Vector2;
 
 public class Attack {
-    Vector2 enemy;
-    Vector2 character;
-    boolean isPlayerAttacking;
-    String damageType;
-    int damage;
+    private Vector2 enemy;
+    private Vector2 character;
+    private boolean isPlayerAttacking;
+    private String damageType;
+    private int damage;
 
     public Attack(Vector2 enemy, Vector2 character, boolean isPlayerAttacking, String damageType, int damage) {
         this.enemy = enemy;
