@@ -13,6 +13,7 @@ public class enemy extends entity{
         this.setWisdom(wis);
         this.setIntelligence(intel);
         this.setMaxHealth(10);
+        this.setCurrentHealth(this.getMaxHealth());
         this.setDefense(2);
     }
 	

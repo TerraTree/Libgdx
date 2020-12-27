@@ -81,7 +81,7 @@ public class battleScreen extends ScreenAdapter {
             			selector.yOffset-=100;
             		}
             		if(keycode==Input.Keys.ENTER) {
-            			playerGrid.get(playerGrid.size()-1-selector.yOffset/-100).set(selector.xOffset/100, mainParty.getChar1()); //set player character to grid
+            			playerGrid.get(-selector.yOffset/100).set(selector.xOffset/100, mainParty.getChar1()); //set player character to grid
             			flag++;
             			if(flag==1) {
             				selectChar = mainParty.getChar2();
@@ -202,38 +202,39 @@ public class battleScreen extends ScreenAdapter {
     		row++;
     		column=1;
     	}
-    	
-    	row=1;
+    	column = 1;
+    	row=0;
     	sr.begin(ShapeRenderer.ShapeType.Filled);
     	for(ArrayList<enemy> a:enemyGrid) {
     		for (enemy e:a) {
     			if (e!= null) {
     				sr.setColor(Color.RED);
-    				sr.rect(600+column*100,110+row*100,96,10);
+    				sr.rect(ui.getScreenWidth()-offsetX+2-column*100,offsetY+110-row*100,96,10);
     				sr.setColor(Color.GREEN);
     				System.out.println((int)(e.getCurrentHealth()*100)/e.getMaxHealth());
-    				sr.rect(600+2+column*100,110+row*100,(int)(e.getCurrentHealth()*96)/e.getMaxHealth(),10);
+    				sr.rect(ui.getScreenWidth()-offsetX+2-column*100,offsetY+110-row*100,(int)(e.getCurrentHealth()*96)/e.getMaxHealth(),10);
     			}
     			column++;
     		}
 			row++;
 			column=1;
     	}
-    	row = 1;
+    	column=0;
+    	row = 0;
     	for(ArrayList<Character> a:playerGrid) {
     		for(Character c:a) {
     			if(c != null) {
     				sr.setColor(Color.RED);
-    				sr.rect(2+column*100,110+row*100,96,10);
+    				sr.rect(offsetX+2+column*100,offsetY+110-row*100,96,10);
     				sr.setColor(Color.GREEN);
-    				System.out.println((int)(c.getCurrentHealth()*100)/c.getMaxHealth());
-    				sr.rect(2+column*100,110+row*100,(int)(c.getCurrentHealth()*96)/c.getMaxHealth(),10);
+    				System.out.println((int)(c.getCurrentHealth()));
+    				sr.rect(offsetX+2+column*100,offsetY+110-row*100,(int)(c.getCurrentHealth()*96)/c.getMaxHealth(),10);
     			}
     			
     			column++;
     		}
     		row++;
-    		column=1;
+    		column=0;
     	}
     	sr.end();
     	switch(flag){

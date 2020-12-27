@@ -48,6 +48,7 @@ public class Character extends entity{
         this.setWisdom(wis);
         this.setIntelligence(intel);
         this.setMaxHealth(level*2);
+        this.setCurrentHealth(this.getMaxHealth());
         this.setDefense(this.armour.getDefense()+this.getDexterity()*2+this.getLevel());
         this.setTexture(texture);
     }
