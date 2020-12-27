@@ -112,6 +112,21 @@ public class battleScreen extends ScreenAdapter {
 						ui.getInputText().addChar(character,ui.getFont());
 					}
             	}
+				else if(flag==3){
+					if (Gdx.input.isKeyPressed(Input.Keys.BACKSPACE) && ui.getInputText().getTextContent().get(0).length()>0){
+						ui.getInputText().removeChar();
+
+					}
+					else if (Gdx.input.isKeyPressed(Input.Keys.ENTER)){
+						String inputString = ui.getMainText().input(ui.getInputText());
+						ArrayList<String> menuContent = ui.getMenuText().getTextContent();
+						tp.setMenuTier(tp.processing(inputString,menuContent));
+						tp.menuDialogue(ui);
+					}
+					else {
+						ui.getInputText().addChar(character,ui.getFont());
+					}
+				}
             	return true;
 
             }
@@ -133,33 +148,7 @@ public class battleScreen extends ScreenAdapter {
                         ui.getScrollbar().moveScroll(screenX, screenY+yOffset);
                     }
                 }
-            	else if(flag==3){
-					if (Gdx.input.isKeyPressed(Input.Keys.BACKSPACE) && ui.getInputText().getTextContent().get(0).length()>0){
-						ui.getInputText().removeChar();
 
-					}
-					else if (Gdx.input.isKeyPressed(Input.Keys.ENTER)){
-						String inputString = ui.getMainText().input(ui.getInputText());
-						ArrayList<String> menuContent = ui.getMenuText().getTextContent();
-						menuTier = tp.processing(inputString,menuTier,menuContent);
-						tp.menuDialogue(menuTier,ui);
-						if(tp.getFileName().length()!=0) {
-							currentMap = tp.fileChoice(tp.getFileName(),currentMap);
-							tp.setFileName("");
-							tp.setFileLoad(false);
-						}
-						if (tp.setFileSaving(true)) {
-							if(!inputString.equals("save")){
-								currentMap.setFileName(inputString+".txt");
-								tp.setFileSaving(false);
-							}
-							tp.fileSave(currentMap,ui);
-						}
-					}
-					else {
-						ui.getInputText().addChar(character,ui.getFont());
-					}
-				}
 
                 return true;
             }
