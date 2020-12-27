@@ -9,6 +9,8 @@ import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 public class battleScreen extends ScreenAdapter {
@@ -21,8 +23,11 @@ public class battleScreen extends ScreenAdapter {
 	ShapeRenderer sr;
 	Selector selector;
 	int flag;
+	int offsetX;
+	int offsetY;
 	Character selectChar;
 	textProcessor tp;
+	SpriteBatch batch;
 
     public battleScreen(Main game,Party mainParty,Party enemyParty){
     	this.game = game;
@@ -31,7 +36,11 @@ public class battleScreen extends ScreenAdapter {
     }
 
     public void show(){
+		offsetX = Gdx.graphics.getWidth()/6;
+		offsetY = Gdx.graphics.getHeight()/2 + 150;
     	enemy enem1 = new enemy(1,1,1,1,1);
+    	Texture texture = new Texture("evil.png");
+    	enem1.setTexture(texture);
     	flag = 0;
     	ui = new UserInterface();
     	playerGrid = new ArrayList<ArrayList<Character>>(); //creates empty grid
@@ -49,9 +58,9 @@ public class battleScreen extends ScreenAdapter {
     	}
     	enemyGrid.get(1).set(1, enem1);
     	sr = new ShapeRenderer();
-    	selector = new Selector(100,300,100,100);
+    	selector = new Selector(offsetX,offsetY,100,100); //sets position and size of selector
     	tp = new textProcessor();
-    	
+    	batch = new SpriteBatch();
     	
     	Gdx.input.setInputProcessor(new InputAdapter() {
             public boolean keyDown ( int keycode){
@@ -142,66 +151,91 @@ public class battleScreen extends ScreenAdapter {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);    
     	ui.render();
-    	int column = 1;
-    	int row = 1;
+    	int column = 0;
+    	int row = 0;
+
     	for(ArrayList<Character> a:playerGrid) {
     		for(Character c:a) {
     			sr.begin(ShapeRenderer.ShapeType.Filled);
     			if(c == null) {
     				sr.setColor(Color.WHITE);
+        			sr.rect(offsetX+ column*100,offsetY-row*100,100,100);
+        			sr.end();
+        			sr.begin(ShapeRenderer.ShapeType.Line);
+        			sr.setColor(Color.BLUE);
+        			sr.rect(offsetX+column*100,offsetY-row*100,100,100);
+        			
     			}
     			else {
-    				sr.setColor(Color.RED);
-    				sr.rect(column*100,110+row*100,100,10);
-    				sr.setColor(Color.GRAY);
-    				
+    				batch.begin();
+    				batch.draw(c.getTexture(),offsetX+column*100,offsetY-row*100,100,100);
+    				batch.end();
     			}
-    			sr.rect(column*100,row*100,100,100);
-    			sr.end();
-    			sr.begin(ShapeRenderer.ShapeType.Line);
-    			sr.setColor(Color.BLUE);
-    			sr.rect(column*100,row*100,100,100);
     			sr.end();
     			column++;
     		}
     		row++;
-    		column=1;
+    		column=0;
     	}
-    	column = 1;
-    	row=1;
+    	row=0;
+    	column=1;
     	for(ArrayList<enemy> a:enemyGrid) {
     		for(enemy e:a) {
     			sr.begin(ShapeRenderer.ShapeType.Filled);
     			if(e == null) {
     				sr.setColor(Color.WHITE);
+        			sr.rect(ui.getScreenWidth()-offsetX-column*100,offsetY-row*100,100,100);
+        			sr.end();
+        			sr.begin(ShapeRenderer.ShapeType.Line);
+        			sr.setColor(Color.BLUE);
+        			sr.rect(ui.getScreenWidth()-offsetX-column*100,offsetY-row*100,100,100);
+        			
     			}
     			else {
-    				sr.setColor(Color.GRAY);
+    				batch.begin();
+    				batch.draw(e.getTexture(),ui.getScreenWidth()-offsetX-column*100,offsetY-row*100,100,100);
+    				batch.end();
     			}
-    			sr.rect(600+column*100,row*100,100,100);
-    			sr.end();
-    			sr.begin(ShapeRenderer.ShapeType.Line);
-    			sr.setColor(Color.BLUE);
-    			sr.rect(600+column*100,row*100,100,100);
     			sr.end();
     			column++;
     		}
     		row++;
     		column=1;
     	}
+    	
+    	row=1;
+    	sr.begin(ShapeRenderer.ShapeType.Filled);
     	for(ArrayList<enemy> a:enemyGrid) {
     		for (enemy e:a) {
     			if (e!= null) {
-    				sr.begin(ShapeRenderer.ShapeType.Filled);
     				sr.setColor(Color.RED);
-    				sr.rect(600+column*100,110+row*100,100,10);
+    				sr.rect(600+column*100,110+row*100,96,10);
     				sr.setColor(Color.GREEN);
     				System.out.println((int)(e.getCurrentHealth()*100)/e.getMaxHealth());
-    				sr.rect(600+column*100,110+row*100,(int)(e.getCurrentHealth()*100)/e.getMaxHealth(),10);
-    				sr.end();
+    				sr.rect(600+2+column*100,110+row*100,(int)(e.getCurrentHealth()*96)/e.getMaxHealth(),10);
     			}
+    			column++;
     		}
+			row++;
+			column=1;
     	}
+    	row = 1;
+    	for(ArrayList<Character> a:playerGrid) {
+    		for(Character c:a) {
+    			if(c != null) {
+    				sr.setColor(Color.RED);
+    				sr.rect(2+column*100,110+row*100,96,10);
+    				sr.setColor(Color.GREEN);
+    				System.out.println((int)(c.getCurrentHealth()*100)/c.getMaxHealth());
+    				sr.rect(2+column*100,110+row*100,(int)(c.getCurrentHealth()*96)/c.getMaxHealth(),10);
+    			}
+    			
+    			column++;
+    		}
+    		row++;
+    		column=1;
+    	}
+    	sr.end();
     	switch(flag){
     		case 0:
     			
@@ -210,7 +244,7 @@ public class battleScreen extends ScreenAdapter {
     			//health bars
     			break;
     	}
-    	selector.render(sr);
+    	selector.render(sr,offsetX,offsetY);
 
     }
     public void hide(){

@@ -1,6 +1,7 @@
 package com.RPGproject.game;
 
 import com.badlogic.gdx.*;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 public class startScreen extends ScreenAdapter {
@@ -55,7 +56,8 @@ public class startScreen extends ScreenAdapter {
     }
 
     public void loadFile() {
-    	charParty.setChar1(new Character(1,1,1,1,1));
+    	Texture texture = new Texture("smile.png");
+    	charParty.setChar1(new Character(1,1,1,1,1,texture));
     }
     
     public void render(float delta){

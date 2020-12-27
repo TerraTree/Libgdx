@@ -74,7 +74,7 @@ public class Selector {
 		this.x = x;
 	}
 
-	public void render(ShapeRenderer sr) {
+	public void render(ShapeRenderer sr,int screenXOffset,int screenYOffset) {
 		if(active) {
 			if (counter<30) {
 					sr.setColor(Color.RED);

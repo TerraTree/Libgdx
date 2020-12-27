@@ -1,9 +1,12 @@
 package com.RPGproject.game;
 
+import com.badlogic.gdx.graphics.Texture;
+
 public class entity {
     private String name;
 
     private String icon;
+    private Texture texture;
     private int maxHealth;
     private int currentHealth; //health, pretty self explanatory
     private int defense; //reduces damage taken
@@ -88,4 +91,20 @@ public class entity {
 
     public entity() {
     }
+
+	public String getIcon() {
+		return icon;
+	}
+
+	public void setIcon(String icon) {
+		this.icon = icon;
+	}
+
+	public Texture getTexture() {
+		return texture;
+	}
+
+	public void setTexture(Texture texture) {
+		this.texture = texture;
+	}
 }

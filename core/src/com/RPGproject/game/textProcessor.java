@@ -35,7 +35,7 @@ public class textProcessor {
                 data = myReader.nextLine();
             }
             ui.setMenuText();
-            data = myReader.nextLine();
+            //data = myReader.nextLine();
             while(myReader.hasNextLine() && !data.equals("")){
                 ui.getMenuText().input(entry+": "+data);
                 entry++;

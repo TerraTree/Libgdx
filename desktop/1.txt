@@ -1,0 +1,25 @@
+2 space
+1 grass
+
+1 !
+
+2 space
+1 grass
+
+2 space
+1 grass
+
+3 space
+1 grass
+
+10 space
+
+3 space
+1 grass
+6 space
+
+10 space
+
+1 grass
+9 space
+
