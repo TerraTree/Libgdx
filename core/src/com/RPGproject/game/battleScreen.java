@@ -61,7 +61,7 @@ public class battleScreen extends ScreenAdapter {
     	selector = new Selector(offsetX,offsetY,100,100); //sets position and size of selector
     	tp = new textProcessor();
     	batch = new SpriteBatch();
-    	
+
     	Gdx.input.setInputProcessor(new InputAdapter() {
             public boolean keyDown ( int keycode){
 				if(Gdx.input.isKeyPressed(Input.Keys.ESCAPE)){
@@ -90,11 +90,11 @@ public class battleScreen extends ScreenAdapter {
             				selector.active=false;
             			}
             		}
-            	}                
+            	}
                 return true;
             }
             public boolean keyTyped(char character) {
-            	
+
             	if(flag==2){
 					if (Gdx.input.isKeyPressed(Input.Keys.BACKSPACE) && ui.getInputText().getTextContent().get(0).length()>0){
 						ui.getInputText().removeChar();
@@ -106,21 +106,21 @@ public class battleScreen extends ScreenAdapter {
 						tp.processing(inputString,menuContent);
 						tp.menuDialogue(ui);
 
-						
+
 						}
 					else {
 						ui.getInputText().addChar(character,ui.getFont());
 					}
             	}
             	return true;
-            	
+
             }
-            
+
             public boolean touchUp(int screenX, int screenY, int pointer, int button) {
                 ui.getScrollbar().setScrolling(false);
                 return true;
             }
-            
+
             public boolean touchDown(int screenX, int screenY, int pointer, int button) {
             	screenY=ui.getScreenHeight()-screenY;
                 if(screenX>ui.getScrollbar().getX() && screenX<ui.getScrollbar().getX()+ui.getScrollbar().getWidth()) {
@@ -133,14 +133,41 @@ public class battleScreen extends ScreenAdapter {
                         ui.getScrollbar().moveScroll(screenX, screenY+yOffset);
                     }
                 }
-                
+            	else if(flag==3){
+					if (Gdx.input.isKeyPressed(Input.Keys.BACKSPACE) && ui.getInputText().getTextContent().get(0).length()>0){
+						ui.getInputText().removeChar();
+
+					}
+					else if (Gdx.input.isKeyPressed(Input.Keys.ENTER)){
+						String inputString = ui.getMainText().input(ui.getInputText());
+						ArrayList<String> menuContent = ui.getMenuText().getTextContent();
+						menuTier = tp.processing(inputString,menuTier,menuContent);
+						tp.menuDialogue(menuTier,ui);
+						if(tp.getFileName().length()!=0) {
+							currentMap = tp.fileChoice(tp.getFileName(),currentMap);
+							tp.setFileName("");
+							tp.setFileLoad(false);
+						}
+						if (tp.setFileSaving(true)) {
+							if(!inputString.equals("save")){
+								currentMap.setFileName(inputString+".txt");
+								tp.setFileSaving(false);
+							}
+							tp.fileSave(currentMap,ui);
+						}
+					}
+					else {
+						ui.getInputText().addChar(character,ui.getFont());
+					}
+				}
+
                 return true;
             }
             public boolean touchDragged(int screenX, int screenY, int pointer) {
                 screenY=ui.getScreenHeight()-screenY;
                 if(ui.getScrollbar().isScrolling()) {
                     ui.getScrollbar().moveScroll(screenX, screenY-ui.getScrollbar().getYOffset());
-                    
+
                 }
                 return true;
             }
@@ -164,7 +191,7 @@ public class battleScreen extends ScreenAdapter {
         			sr.begin(ShapeRenderer.ShapeType.Line);
         			sr.setColor(Color.BLUE);
         			sr.rect(offsetX+column*100,offsetY-row*100,100,100);
-        			
+
     			}
     			else {
     				batch.begin();
@@ -189,7 +216,7 @@ public class battleScreen extends ScreenAdapter {
         			sr.begin(ShapeRenderer.ShapeType.Line);
         			sr.setColor(Color.BLUE);
         			sr.rect(ui.getScreenWidth()-offsetX-column*100,offsetY-row*100,100,100);
-        			
+
     			}
     			else {
     				batch.begin();
@@ -230,7 +257,7 @@ public class battleScreen extends ScreenAdapter {
     				System.out.println((int)(c.getCurrentHealth()));
     				sr.rect(offsetX+2+column*100,offsetY+110-row*100,(int)(c.getCurrentHealth()*96)/c.getMaxHealth(),10);
     			}
-    			
+
     			column++;
     		}
     		row++;

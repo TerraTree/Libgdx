@@ -1,7 +1,5 @@
 package com.RPGproject.game;
 
-import com.badlogic.gdx.graphics.Texture;
-
 public class Character extends entity{
     private Weapon weapon;
     private Armour armour;
@@ -51,5 +49,32 @@ public class Character extends entity{
         this.setCurrentHealth(this.getMaxHealth());
         this.setDefense(this.armour.getDefense()+this.getDexterity()*2+this.getLevel());
         this.setTexture(texture);
+
+    public int getExp() {
+        return exp;
+    }
+    public void setExp(int exp) {
+        this.exp = exp;
+    }
+
+    public Armour getArmour() {
+        return armour;
+    }
+
+    public void setArmour(Armour armour) {
+        this.armour = armour;
+    }
+
+    public Character(int str, int dex, int agi, int wis, int intel) {
+
+        this.armour = new Armour();
+        this.armour.setDefense(0);
+        this.setStrength(str);
+        this.setDexterity(dex);
+        this.setAgility(agi);
+        this.setWisdom(wis);
+        this.setIntelligence(intel);
+        this.setMaxHealth(level*2);
+        this.setDefense(this.armour.getDefense()+this.getDexterity()*2+this.getLevel());
     }
 }
