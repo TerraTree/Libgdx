@@ -1,6 +1,7 @@
 package com.RPGproject.game;
 
 import java.util.ArrayList;
+import java.util.Queue;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -28,6 +29,7 @@ public class battleScreen extends ScreenAdapter {
 	Character selectChar;
 	textProcessor tp;
 	SpriteBatch batch;
+	Queue<Attack> battleQueue;
 
     public battleScreen(Main game,Party mainParty,Party enemyParty){
     	this.game = game;
