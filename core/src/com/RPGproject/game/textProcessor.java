@@ -54,7 +54,7 @@ public class textProcessor {
             //Lists the commands that can be typed in the console.
         }
         else if(text.equals("attack")){
-
+            return -1;
         }
         else {
             try {

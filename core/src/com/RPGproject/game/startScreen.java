@@ -57,7 +57,8 @@ public class startScreen extends ScreenAdapter {
 
     public void loadFile() {
     	Texture texture = new Texture("smile.png");
-    	charParty.setChar1(new Character(1,1,1,1,1,texture));
+    	charParty.setChar1(new Character(1,1,5,1,1,texture));
+        charParty.setChar2(new Character(2,2,3,2,2,texture));
     }
     
     public void render(float delta){
