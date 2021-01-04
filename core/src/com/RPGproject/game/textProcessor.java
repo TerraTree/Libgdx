@@ -53,6 +53,9 @@ public class textProcessor {
         if (text.equals("help")){
             //Lists the commands that can be typed in the console.
         }
+        else if(text.equals("attack")){
+
+        }
         else {
             try {
                 int intText = java.lang.Character.getNumericValue(text.charAt(0));
