@@ -44,5 +44,10 @@ public class Character extends entity{
         this.setCurrentHealth(this.getMaxHealth());
         this.setDefense(this.armour.getDefense() + this.getDexterity() * 2 + this.getLevel());
         this.setTexture(texture);
+        this.level=1;
+    }
+
+    public void turn (){
+
     }
 }

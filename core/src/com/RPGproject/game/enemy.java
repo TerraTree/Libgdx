@@ -15,9 +15,12 @@ public class enemy extends entity{
         this.setMaxHealth(10);
         this.setCurrentHealth(this.getMaxHealth());
         this.setDefense(2);
+        aiStrategy=1;
     }
 	
-	
+	public void turn (){
+
+    }
 	
 	
 }
