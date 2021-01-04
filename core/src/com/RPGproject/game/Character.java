@@ -6,7 +6,6 @@ public class Character extends entity{
     private Weapon weapon;
     private Armour armour;
     private int level;
-    private int exp;
 
     public Weapon getWeapon() {
         return weapon;
@@ -19,15 +18,9 @@ public class Character extends entity{
     public int getLevel() {
         return level;
     }
+
     public void setLevel(int level) {
         this.level = level;
-    }
-
-    public int getExp() {
-        return exp;
-    }
-    public void setExp(int exp) {
-        this.exp = exp;
     }
 
     public Armour getArmour() {
