@@ -163,15 +163,17 @@ public class battleScreen extends ScreenAdapter {
 							if(enemyGrid.get(-selector.yOffset / 100).get(selector.xOffset / 100)!=null && selector.active==true){
 								Vector2 enemyPos= new Vector2(-selector.yOffset / 100,selector.xOffset / 100);
 								Vector2 playerPos = new Vector2(0,0);
+								Character currentChar = (Character) turnOrder.get(turnCount);
 								int index=0;
 								for (ArrayList<Character> c:playerGrid) {
-									System.out.println("index:"+c.indexOf(turnOrder.get(turnCount)));
-									if(c.indexOf(turnOrder.get(turnCount))!=-1){
-										playerPos.set(index,c.indexOf(turnOrder.get(turnCount)));
+									System.out.println("index:"+c.indexOf(currentChar));
+									if(c.indexOf(currentChar)!=-1){
+										playerPos.set(index,c.indexOf(currentChar));
 									}
 									index++;
 								}
-								int damage = 1; //damage based on weapon and character selected, not implemented yet
+
+								int damage = currentChar.getDexterity()+10; //damage based on weapon and character selected, not implemented yet
 								Attack charAttack = new Attack(enemyPos,playerPos,true,"sword",damage);
 								System.out.println("battleQueue added");
 								battleQueue.add(charAttack);

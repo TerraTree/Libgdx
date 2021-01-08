@@ -11,12 +11,12 @@ public class entity {
     private int currentHealth; //health, pretty self explanatory
     private int defense; //reduces damage taken
     private int strength; //increases damage of attacks
-    private int dexterity; //increases armour
-    private int agility; //increases health + speed of attacks
+    private int dexterity; //increases armour, hit chance
+    private int agility; //increases health + order during battle
     private int wisdom; //increases amount of magic available
     private int intelligence;//increases damage of magic attacks.
     private int exp;
-    
+
 
     public int getMaxHealth() {
         return maxHealth;
