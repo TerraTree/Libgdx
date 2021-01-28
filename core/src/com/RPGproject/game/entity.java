@@ -1,12 +1,14 @@
 package com.RPGproject.game;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class entity {
     private String name;
 
     private String icon;
-    private Texture texture;
+    private Sprite sprite;
     private int maxHealth;
     private int currentHealth; //health, pretty self explanatory
     private int defense; //reduces damage taken
@@ -16,7 +18,17 @@ public class entity {
     private int wisdom; //increases amount of magic available
     private int intelligence;//increases damage of magic attacks.
     private int exp;
+    private boolean active;
 
+    private String weakness;
+
+    public String getWeakness() {
+        return weakness;
+    }
+
+    public void setWeakness(String weakness) {
+        this.weakness = weakness;
+    }
 
     public int getMaxHealth() {
         return maxHealth;
@@ -89,6 +101,14 @@ public class entity {
     	this.exp = exp;
     }
 
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
     public entity() {
     }
 
@@ -100,11 +120,11 @@ public class entity {
 		this.icon = icon;
 	}
 
-	public Texture getTexture() {
-		return texture;
+	public Sprite getSprite() {
+		return sprite;
 	}
 
-	public void setTexture(Texture texture) {
-		this.texture = texture;
+	public void setSprite(Sprite sprite) {
+		this.sprite = sprite;
 	}
 }

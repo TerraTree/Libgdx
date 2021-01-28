@@ -1,11 +1,14 @@
 package com.RPGproject.game;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class Character extends entity{
     private Weapon weapon;
     private Armour armour;
     private int level;
+    private String weakness;
 
     public Weapon getWeapon() {
         return weapon;
@@ -43,8 +46,9 @@ public class Character extends entity{
         this.setMaxHealth(level * 2);
         this.setCurrentHealth(this.getMaxHealth());
         this.setDefense(this.armour.getDefense() + this.getDexterity() * 2 + this.getLevel());
-        this.setTexture(texture);
+        this.setSprite(new Sprite(texture));
         this.level=1;
+        this.setActive(true);
     }
 
     public void turn (){

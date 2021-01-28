@@ -1,25 +1,52 @@
 package com.RPGproject.game;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.Vector2;
+
+import java.util.ArrayList;
+
 public class enemy extends entity{
 	
 	int aiStrategy;
 	int state;
-	
-	public enemy(int str, int dex, int agi, int wis, int intel) {
+    Character targetChar;
+
+    public enemy(int str, int dex, int agi, int wis, int intel) {
 
         this.setStrength(str);
         this.setDexterity(dex);
         this.setAgility(agi);
         this.setWisdom(wis);
         this.setIntelligence(intel);
-        this.setMaxHealth(10);
+        this.setMaxHealth(100);
         this.setCurrentHealth(this.getMaxHealth());
         this.setDefense(2);
+        this.setActive(true);
+        this.setSprite(new Sprite(new Texture("evil.png")));
         aiStrategy=1;
     }
 	
-	public void turn (){
-
+	public Attack turn(Vector2 position, ArrayList<ArrayList<Character>> playerGrid){
+        int i = 0;
+        int j = 0;
+        Vector2 playerPos = new Vector2();
+        for (ArrayList<Character> p:playerGrid) {
+            for(Character c: p){
+                if (c!=null){
+                    targetChar = c;
+                    if(c.getCurrentHealth()!=0) {
+                        playerPos = new Vector2(i, j);
+                    }
+                }
+                i++;
+            }
+            j++;
+            i = 0;
+        }
+        int damage=this.getStrength();
+        Attack enemAction = new Attack(this,position,targetChar,playerPos,false,"bashers",damage);
+        return enemAction;
     }
 	
 	

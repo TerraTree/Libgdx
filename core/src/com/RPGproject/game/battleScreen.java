@@ -10,9 +10,12 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
+
 
 public class battleScreen extends ScreenAdapter {
 	Main game;
@@ -28,11 +31,14 @@ public class battleScreen extends ScreenAdapter {
 	int offsetY;
 	int turnCount;
 	boolean typing;
+	boolean attacking;
 	Character selectChar;
 	textProcessor tp;
 	SpriteBatch batch;
     public Queue<Attack> battleQueue;
     ArrayList<entity> turnOrder;
+    TextureRegion spriteGrid;
+    Sprite sprite;
 
     public battleScreen(Main game,Party mainParty,Party enemyParty){
     	this.game = game;
@@ -41,24 +47,34 @@ public class battleScreen extends ScreenAdapter {
     }
 
     public void turnChecker(){
+		System.out.println("Index "+ turnCount);
 		if(turnOrder.size()!=0) {
 			try {
-//				Character cha = (Character) turnOrder.get(turnCount);
-//				cha.turn();
-//				turnCount++;
+                Vector2 enemPos = new Vector2();
 				enemy enem = (enemy) turnOrder.get(turnCount);
-				enem.turn();
+				int index=0;
+                for (ArrayList<enemy> e:enemyGrid) {
+                    if(e.indexOf(enem)!=-1){
+                        enemPos.set(index,e.indexOf(enem));
+                    }
+                    index++;
+                }
+				Attack enemAttack = enem.turn(enemPos,playerGrid);
+                battleQueue.add(enemAttack);
 				turnCount++;
 				turnChecker();
 			} catch (Exception e) {
-//				enemy enem = (enemy) turnOrder.get(turnCount);
-//				enem.turn();
-//				turnCount++;
-//				turnChecker();
+				if (turnOrder.size()!=turnCount){
+					if(!turnOrder.get(turnCount).isActive()) {
+						turnCount++;
+						turnChecker();
+					}
+				}
 			}
-			System.out.println(turnCount);
+			//System.out.println(turnCount);
 			if(turnCount==turnOrder.size()){
 				System.out.println("time to attack");
+				battleQueue.peek().attacking(battleQueue,playerGrid,enemyGrid);
 				turnCount=0;
 				turnChecker();
 			}
@@ -102,6 +118,9 @@ public class battleScreen extends ScreenAdapter {
 
 
     public void show(){
+    	sprite = new Sprite();
+    	attacking=false;
+        //spriteGrid = new TextureRegion();
 
         //INITIALISATION
         typing=false;
@@ -110,7 +129,7 @@ public class battleScreen extends ScreenAdapter {
 		turnCount=0;
     	enemy enem1 = new enemy(1,1,2,4,1);
     	Texture texture = new Texture("evil.png");
-    	enem1.setTexture(texture);
+    	//enem1.setTexture(texture);
     	flag = 0;
     	ui = new UserInterface();
 
@@ -129,7 +148,7 @@ public class battleScreen extends ScreenAdapter {
     	}
     	enemyGrid.get(1).set(1, enem1);
         enemy enem2 = new enemy(1,1,9,4,1);
-        enem2.setTexture(texture);
+        //enem2.setTexture(texture);
         enemyGrid.get(0).set(0, enem2);
 
     	sr = new ShapeRenderer();
@@ -159,31 +178,36 @@ public class battleScreen extends ScreenAdapter {
                 }
 
             		if(keycode==Input.Keys.ENTER ) {
-            			if(ui.getMainText().getTextContent().get(ui.getMainText().getTextContent().size()-1).equals("attack")){
-							if(enemyGrid.get(-selector.yOffset / 100).get(selector.xOffset / 100)!=null && selector.active==true){
+            			if(attacking){
+            			    System.out.println(selector.yOffset);
+            			    enemy currentEnemy = enemyGrid.get(-selector.yOffset / 100).get(selector.xOffset / 100);
+							if(currentEnemy!=null && selector.active==true){
 								Vector2 enemyPos= new Vector2(-selector.yOffset / 100,selector.xOffset / 100);
 								Vector2 playerPos = new Vector2(0,0);
 								Character currentChar = (Character) turnOrder.get(turnCount);
 								int index=0;
 								for (ArrayList<Character> c:playerGrid) {
-									System.out.println("index:"+c.indexOf(currentChar));
 									if(c.indexOf(currentChar)!=-1){
 										playerPos.set(index,c.indexOf(currentChar));
 									}
 									index++;
 								}
+								System.out.println("playerPos attacked:"+playerPos.x+", "+playerPos.y);
 
-								int damage = currentChar.getDexterity()+10; //damage based on weapon and character selected, not implemented yet
-								Attack charAttack = new Attack(enemyPos,playerPos,true,"sword",damage);
+								int damage = 20; //currentChar.getDexterity()+10; //damage based on weapon and character selected, not implemented yet
+								Attack charAttack = new Attack(currentEnemy,enemyPos,currentChar,playerPos,true,"sword",damage);
 								System.out.println("battleQueue added");
 								battleQueue.add(charAttack);
 								turnCount++;
 								typing=true;
 								selector.active=false;
+								attacking=false;
 								turnChecker();
 							}
 						}
-            			else {
+            			else if(flag<=2) {
+							selectChar.getSprite().setX(offsetX+selector.xOffset);
+            				selectChar.getSprite().setY(offsetY+selector.yOffset);
 							playerGrid.get(-selector.yOffset / 100).set(selector.xOffset / 100, selectChar); //set player character to grid
 							flag++;
 							if (flag == 1) {
@@ -230,6 +254,7 @@ public class battleScreen extends ScreenAdapter {
 						    flag++;
 						    typing=false;
                             selector.active=true;
+                            attacking=true;
                             selector.setX(ui.getScreenWidth()-offsetX-200);
 
                         }
@@ -281,8 +306,8 @@ public class battleScreen extends ScreenAdapter {
     	ui.render();
     	int column = 0;
     	int row = 0;
-
     	for(ArrayList<Character> a:playerGrid) {
+
     		for(Character c:a) {
     			sr.begin(ShapeRenderer.ShapeType.Filled);
     			if(c == null) {
@@ -295,9 +320,12 @@ public class battleScreen extends ScreenAdapter {
 
     			}
     			else {
-    				batch.begin();
-    				batch.draw(c.getTexture(),offsetX+column*100,offsetY-row*100,100,100);
-    				batch.end();
+					batch.begin();
+    				if(c.getCurrentHealth()==0){
+						c.getSprite().setRotation(90);
+					}
+					c.getSprite().draw(batch);
+					batch.end();
     			}
     			sr.end();
     			column++;
@@ -320,8 +348,9 @@ public class battleScreen extends ScreenAdapter {
 
     			}
     			else {
-    				batch.begin();
-    				batch.draw(e.getTexture(),ui.getScreenWidth()-offsetX-300+column*100,offsetY-row*100,100,100);
+    				//e.getSprite().draw(batch);
+					batch.begin();
+    				batch.draw(e.getSprite().getTexture(),ui.getScreenWidth()-offsetX-300+column*100,offsetY-row*100,100,100);
     				batch.end();
     			}
     			sr.end();
@@ -330,7 +359,7 @@ public class battleScreen extends ScreenAdapter {
     		row++;
     		column=1;
     	}
-    		if(flag==0){
+    	if(flag==0){
 
             }
     		if(flag>=2) { //display health bars
@@ -339,7 +368,7 @@ public class battleScreen extends ScreenAdapter {
                 sr.begin(ShapeRenderer.ShapeType.Filled);
                 for (ArrayList<enemy> a : enemyGrid) {
                     for (enemy e : a) {
-                        if (e != null) {
+                        if (e!=null) {
                             sr.setColor(Color.RED);
                             sr.rect(ui.getScreenWidth() - offsetX + 2 - column * 100, offsetY + 110 - row * 100, 96, 10);
                             sr.setColor(Color.GREEN);
