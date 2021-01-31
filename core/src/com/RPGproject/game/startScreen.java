@@ -1,7 +1,11 @@
 package com.RPGproject.game;
 
 import com.badlogic.gdx.*;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 public class startScreen extends ScreenAdapter {
@@ -9,6 +13,10 @@ public class startScreen extends ScreenAdapter {
     Main game;
     ShapeRenderer sr;
     Party charParty;
+    int flag;
+    boolean hover;
+    private SpriteBatch batch;
+    BitmapFont font;
 
     public startScreen(Main game) {
         this.game = game;
@@ -16,6 +24,11 @@ public class startScreen extends ScreenAdapter {
 
     @Override
     public void show() {
+        hover=false;
+        flag=0;
+        font=new BitmapFont();
+        font.getData().setScale(4);
+        batch = new SpriteBatch();
     	sr = new ShapeRenderer();
     	charParty = new Party();
     	loadFile();
@@ -23,7 +36,6 @@ public class startScreen extends ScreenAdapter {
             public boolean keyDown ( int keycode){
                 if (keycode == Input.Keys.ENTER){
                     game.setScreen(new mainScreen(game,charParty));
-                    System.out.println("hi");
                 }
                 return true;
             }
@@ -37,6 +49,10 @@ public class startScreen extends ScreenAdapter {
             }
 
             public boolean touchDown ( int x, int y, int pointer, int button){
+                if(hover)
+                    if(flag==0){
+                        flag=1;
+                    }
                 return false;
             }
 
@@ -48,10 +64,19 @@ public class startScreen extends ScreenAdapter {
                 return false;
             }
 
-            public boolean mouseMoved ( int x, int y){
+            public boolean mouseMoved ( int x, int y) {
+                y = Gdx.graphics.getHeight() - y;
+                if (flag == 0) {
+                    if (x >= Gdx.graphics.getWidth() / 2 - 200 && x <= Gdx.graphics.getWidth() / 2 + 200 && y >= 400 && y <= 500) {
+                        sr.setColor(Color.GRAY);
+                        hover=true;
+                    } else {
+                        sr.setColor(Color.WHITE);
+                        hover=false;
+                    }
+                }
                 return false;
             }
-
         });
     }
 
@@ -66,6 +91,26 @@ public class startScreen extends ScreenAdapter {
     }
     
     public void render(float delta){
+        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        if(flag==0){
+            sr.begin(ShapeRenderer.ShapeType.Filled);
+            //sr.setColor(Color.WHITE);
+            sr.rect(Gdx.graphics.getWidth()/2 -200,400,400,100);
+            sr.end();
+            batch.begin();
+            font.setColor(Color.WHITE);
+            font.draw(batch,"Controls:",200,900);
+            font.draw(batch,"- W A S D  for moving around the world and selecting in menus",200,820);
+            font.draw(batch,"- Esc  for exiting the game",200,740);
+            font.draw(batch,"- Mouse when creating characters/levelling up and scrollbars",200,660);
+            font.setColor(Color.BLACK);
+            font.draw(batch,"Menu",Gdx.graphics.getWidth()/2 -80,480);
+            batch.end();
+        }
+        else if(flag==1){
+
+        }
     }
 
     public void hide(){
