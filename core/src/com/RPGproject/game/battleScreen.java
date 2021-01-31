@@ -32,6 +32,7 @@ public class battleScreen extends ScreenAdapter {
 	int turnCount;
 	boolean typing;
 	boolean attacking;
+	boolean items;
 	Character selectChar;
 	textProcessor tp;
 	SpriteBatch batch;
@@ -81,6 +82,15 @@ public class battleScreen extends ScreenAdapter {
 		}
 	}
 
+	public void endTurn(){
+		turnCount++;
+		typing=true;
+		selector.active=false;
+		items=false;
+		attacking=false;
+		turnChecker();
+	}
+
     public ArrayList<entity> mergeSort(ArrayList<entity> turnOrder){
     	int mid = turnOrder.size()/2;
     	ArrayList<entity> arr1 = new ArrayList<>();
@@ -120,6 +130,7 @@ public class battleScreen extends ScreenAdapter {
     public void show(){
     	sprite = new Sprite();
     	attacking=false;
+    	items=false; //using items against enemies
         //spriteGrid = new TextureRegion();
 
         //INITIALISATION
@@ -152,10 +163,10 @@ public class battleScreen extends ScreenAdapter {
         enemyGrid.get(0).set(0, enem2);
 
     	sr = new ShapeRenderer();
-    	selector = new Selector(offsetX,offsetY,100,100); //sets position and size of selector
+    	selector = new Selector(offsetX,offsetY,100,100,1); //sets position and size of selector
     	tp = new textProcessor();
     	batch = new SpriteBatch();
-        ui.getMainText().input("hi"); //temp, ensures text in main text
+        ui.getMainText().input("Choose tiles for characters"); //temp, ensures text in main text
         battleQueue = new LinkedList<>(); //init queue
         turnOrder = new ArrayList<>();
 
@@ -176,10 +187,43 @@ public class battleScreen extends ScreenAdapter {
                         selector.yOffset -= 100;
                     }
                 }
+				if(ui.getMenuText().getTextPointer().active) {
+					Selector textPointer = ui.getMenuText().getTextPointer();
+					if (keycode == Input.Keys.UP && textPointer.yOffset > 0) {
+						textPointer.yOffset -= 1;
+						textPointer.sprite.setY(textPointer.getY()-textPointer.yOffset*30);
 
+					} else if (keycode == Input.Keys.DOWN && textPointer.yOffset < ui.getMenuText().getTextContent().size()-1) {
+						textPointer.yOffset += 1;
+						textPointer.sprite.setY(textPointer.getY()-textPointer.yOffset*30);
+						System.out.println(textPointer.sprite.getY());
+					}
+				}
             		if(keycode==Input.Keys.ENTER ) {
-            			if(attacking){
-            			    System.out.println(selector.yOffset);
+            			if(ui.getMenuText().getTextPointer().active){
+            				ui.getMenuText().getTextPointer().active=false;
+							String string = ui.getMenuText().getTextContent().get(ui.getMenuText().getTextPointer().yOffset);
+							int intOfItems = Integer.parseInt(string.substring(0,string.indexOf("x")));
+							intOfItems--;
+							String item = string.substring(string.indexOf("x") + 2);
+							string = intOfItems + "x " + item;
+							if(intOfItems>0) {
+								mainParty.getItems().set(ui.getMenuText().getTextPointer().yOffset, string);
+							}
+							else{
+								mainParty.getItems().remove(ui.getMenuText().getTextPointer().yOffset);
+							}
+							ui.getMenuText().clear();
+							if(item.equals("Potion")){
+								items=true;
+								selector.active=true;
+								selector.setX(Gdx.graphics.getWidth()/6);
+							}
+							else{
+								endTurn();
+							}
+						}
+            			else if(attacking){
             			    enemy currentEnemy = enemyGrid.get(-selector.yOffset / 100).get(selector.xOffset / 100);
 							if(currentEnemy!=null && selector.active==true){
 								Vector2 enemyPos= new Vector2(-selector.yOffset / 100,selector.xOffset / 100);
@@ -192,18 +236,16 @@ public class battleScreen extends ScreenAdapter {
 									}
 									index++;
 								}
-								System.out.println("playerPos attacked:"+playerPos.x+", "+playerPos.y);
-
 								int damage = 20; //currentChar.getDexterity()+10; //damage based on weapon and character selected, not implemented yet
 								Attack charAttack = new Attack(currentEnemy,enemyPos,currentChar,playerPos,true,"sword",damage);
-								System.out.println("battleQueue added");
 								battleQueue.add(charAttack);
-								turnCount++;
-								typing=true;
-								selector.active=false;
-								attacking=false;
-								turnChecker();
+								endTurn();
 							}
+						}
+            			else if(items){
+							Character currentChar = playerGrid.get(-selector.yOffset / 100).get(selector.xOffset / 100);
+							currentChar.setCurrentHealth(Math.min(currentChar.getCurrentHealth()+50,currentChar.getMaxHealth()));
+							endTurn();
 						}
             			else if(flag<=2) {
 							selectChar.getSprite().setX(offsetX+selector.xOffset);
@@ -258,7 +300,25 @@ public class battleScreen extends ScreenAdapter {
                             selector.setX(ui.getScreenWidth()-offsetX-200);
 
                         }
-						tp.menuDialogue(ui);
+						else if(a==-2){
+						    typing = false;
+						    ui.getMenuText().getTextPointer().active=true;
+						    //ui.getMenuText().setTextContent();
+                            for (int i = ui.getMenuText().getTextContent().size(); i > 0; i--) {
+                                System.out.println("removed");
+                                ui.getMenuText().getTextContent().remove(i-1);
+                                System.out.println("size: "+ui.getMenuText().getTextContent().size());
+                            }
+                            System.out.println("menuSize: "+ui.getMenuText().getTextContent().size());
+                            //ui.getMenuText().input("yooooo");
+						    System.out.println("menuText");
+                            for (String item:mainParty.getItems()) {
+                                ui.getMenuText().getTextContent().add(item);
+                                System.out.println(ui.getMenuText().getTextContent().size());
+                                System.out.println(ui.getMenuText().getTextContent().get(0));
+                            }
+                        }
+						//tp.menuDialogue(ui);
 						}
 					else {
 						ui.getInputText().addChar(character,ui.getFont());
@@ -370,9 +430,9 @@ public class battleScreen extends ScreenAdapter {
                     for (enemy e : a) {
                         if (e!=null) {
                             sr.setColor(Color.RED);
-                            sr.rect(ui.getScreenWidth() - offsetX + 2 - column * 100, offsetY + 110 - row * 100, 96, 10);
+                            sr.rect(ui.getScreenWidth() - offsetX-300 + 2 + column * 100, offsetY + 110 - row * 100, 96, 10);
                             sr.setColor(Color.GREEN);
-                            sr.rect(ui.getScreenWidth() - offsetX + 2 - column * 100, offsetY + 110 - row * 100, (int) (e.getCurrentHealth() * 96) / e.getMaxHealth(), 10);
+                            sr.rect(ui.getScreenWidth() - offsetX-300 + 2 + column * 100, offsetY + 110 - row * 100, (int) (e.getCurrentHealth() * 96) / e.getMaxHealth(), 10);
                         }
                         column++;
                     }
@@ -396,7 +456,7 @@ public class battleScreen extends ScreenAdapter {
                 }
                 sr.end();
             }
-    	selector.render(sr);
+    	selector.render(sr,batch);
 
     }
     public void hide(){

@@ -56,27 +56,30 @@ public class textProcessor {
         else if(text.equals("attack")){
             return -1;
         }
+        else if(text.equals("items")){
+            return -2;
+        }
         else {
             try {
-                int intText = java.lang.Character.getNumericValue(text.charAt(0));
-                System.out.println(intText);
-                String action = menuContent.get(intText-1).substring(menuContent.get(intText-1).indexOf(":")+2);
-                System.out.println(action);
-                if(action.equals("back")){
-                    System.out.println("true");
-                    int mod = menuTier%10;
-                    String menuComp = Integer.toString(menuTier);
-                    setMenuTier((menuTier-1-10*mod)/10);
-                    if (menuTier<1){
-                        menuTier=1;
-                    }
-                    System.out.println("menu: " + menuTier);
-                }
+                //int intText = java.lang.Character.getNumericValue(text.charAt(0));
+                //System.out.println(intText);
+                //String action = menuContent.get(intText-1).substring(menuContent.get(intText-1).indexOf(":")+2);
+                //System.out.println(action);
+//                if(action.equals("back")){
+//                    //System.out.println("true");
+//                    int mod = menuTier%10;
+//                    String menuComp = Integer.toString(menuTier);
+//                    setMenuTier((menuTier-1-10*mod)/10);
+//                    if (menuTier<1){
+//                        menuTier=1;
+//                    }
+//                    //System.out.println("menu: " + menuTier);
+//                }
             } catch (Exception e) {
 
             }
         }
-        return menuTier;
+        return 0;
     }
 
 

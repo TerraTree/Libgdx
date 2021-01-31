@@ -9,7 +9,7 @@ public class Party {
 	private ArrayList<String> items;
 	
 	public Party() {
-		
+		items = new ArrayList<String>();
 	}
 	
 	public int getMoney() {

@@ -120,10 +120,10 @@ public class UserInterface {
         this.getSr().end();
         int counter=1-(this.inputText.getTextContent().size());
         int countOffset = 0;
-        this.menuText.drawText(batch, font, counter, countOffset);
-        counter = this.inputText.drawText(this.getBatch(),this.getFont(),counter,countOffset);
+        this.menuText.drawText(batch, sr,font, counter, countOffset);
+        counter = this.inputText.drawText(batch,sr,font,counter,countOffset);
         countOffset = this.inputText.getTextContent().size()-1;
-        this.mainText.drawText(batch,font,counter-1,countOffset);
+        this.mainText.drawText(batch,sr,font,counter-1,countOffset);
         
     }
 }

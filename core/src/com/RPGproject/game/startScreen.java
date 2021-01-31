@@ -56,9 +56,13 @@ public class startScreen extends ScreenAdapter {
     }
 
     public void loadFile() {
+        //temp setup to make game work.
     	Texture texture = new Texture("smile.png");
     	charParty.setChar1(new Character(1,1,5,1,1,texture));
         charParty.setChar2(new Character(2,2,3,2,2,texture));
+        charParty.getItems().add("3x Potion");
+        charParty.getItems().add("3x Big Potion");
+        charParty.getItems().add("3x Trash aka Locky");
     }
     
     public void render(float delta){

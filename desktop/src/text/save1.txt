@@ -1,0 +1,12 @@
+//CHAR INFO//
+CHAR1
+
+
+CHAR2
+
+
+//LOCATION DATA//
+
+
+//INVENTORY//
+3x potion

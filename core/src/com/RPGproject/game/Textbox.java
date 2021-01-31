@@ -1,9 +1,12 @@
 package com.RPGproject.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import java.util.ArrayList;
 
@@ -13,6 +16,7 @@ public class Textbox {
     private int x;
     private int percent;
     private float fontSize;
+    private Selector textPointer;
     private ArrayList<String> textContent = new ArrayList<>();
 
     public int getPercent() {
@@ -36,7 +40,8 @@ public class Textbox {
     }
 
     public void setTextContent() {
-        this.textContent = new ArrayList<>();
+        clear();
+        //this.textContent = new ArrayList<>();
         if (this.textContent.size()==0){
             textContent.add("");
             this.setPercent(1);
@@ -59,12 +64,28 @@ public class Textbox {
     public void setX(int x) {
     	this.x=x;
     }
-    
-    public Textbox(int rows, int y,int x, float fontSize) {
+
+    public Selector getTextPointer() {
+        return textPointer;
+    }
+
+    public void setTextPointer(Selector textPointer) {
+        this.textPointer = textPointer;
+    }
+
+    public Textbox(int rows, int y, int x, float fontSize) {
         this.rows = rows;
         this.y = y;
         this.x=x;
         this.fontSize = fontSize;
+        Texture texture = new Texture("textPointer.png");
+        this.textPointer = new Selector(this.getX(),this.getY()-28,0,0,2);
+    }
+
+    public void clear(){
+        for (int i = this.textContent.size(); i > 0; i--) {
+            this.textContent.remove(i-1);
+        }
     }
 
     public void addChar(char character, BitmapFont font){
@@ -92,6 +113,7 @@ public class Textbox {
         String inputtedText = "";
         for (String t:inputText.getTextContent()) {
             inputtedText+=t;
+            System.out.println(inputtedText);
             this.getTextContent().add(t);
         }
         inputText.setTextContent();
@@ -102,7 +124,7 @@ public class Textbox {
         this.getTextContent().add(string);
     }
 
-    public int drawText(SpriteBatch batch, BitmapFont font,int counter,int countOffset){
+    public int drawText(SpriteBatch batch, ShapeRenderer sr, BitmapFont font, int counter, int countOffset){
         this.checkText();
         batch.begin();
         int startInt = Math.max(0,countOffset+this.getPercent()-this.getRows());
@@ -115,6 +137,9 @@ public class Textbox {
                 font.draw(batch, this.getTextContent().get(i), this.getX(), this.getY() - counter * 15 * fontSize);
             }
             counter++;
+        }
+        if(textPointer.active){
+            textPointer.render(sr,batch);
         }
         batch.end();
         return counter;
