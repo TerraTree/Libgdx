@@ -22,6 +22,14 @@ public class entity {
 
     private String weakness;
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public String getWeakness() {
         return weakness;
     }

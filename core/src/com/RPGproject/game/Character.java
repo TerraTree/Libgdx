@@ -34,7 +34,7 @@ public class Character extends entity{
         this.armour = armour;
     }
 
-    public Character(int str, int dex, int agi, int wis, int intel, Texture texture) {
+    public Character(int str, int dex, int agi, int wis, int intel,int level, Texture texture) {
 
         this.armour = new Armour();
         this.armour.setDefense(0);
@@ -48,6 +48,21 @@ public class Character extends entity{
         this.setDefense(this.armour.getDefense() + this.getDexterity() * 2 + this.getLevel());
         this.setSprite(new Sprite(texture));
         this.level=1;
+        this.setActive(true);
+    }
+    public Character(int str, int dex, int agi, int wis, int intel,int level,int exp,int currentHp,int maxHp, Texture texture) {
+
+        this.armour = new Armour();
+        this.armour.setDefense(0);
+        this.setStrength(str);
+        this.setDexterity(dex);
+        this.setAgility(agi);
+        this.setWisdom(wis);
+        this.setIntelligence(intel);
+        this.setMaxHealth(this.getMaxHealth());
+        this.setCurrentHealth(this.getCurrentHealth());
+        this.setDefense(this.armour.getDefense() + this.getDexterity() * 2 + this.getLevel());
+        this.setSprite(new Sprite(texture));
         this.setActive(true);
     }
 

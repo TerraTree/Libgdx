@@ -48,6 +48,7 @@ public class battleScreen extends ScreenAdapter {
     }
 
     public void turnChecker(){
+
 		System.out.println("Index "+ turnCount);
 		if(turnOrder.size()!=0) {
 			try {
@@ -65,12 +66,19 @@ public class battleScreen extends ScreenAdapter {
 				turnCount++;
 				turnChecker();
 			} catch (Exception e) {
+
 				if (turnOrder.size()!=turnCount){
 					if(!turnOrder.get(turnCount).isActive()) {
 						turnCount++;
 						turnChecker();
 					}
+					else{
+                        ui.getMainText().input(turnOrder.get(turnCount).getName()+"'s turn");
+                    }
 				}
+				else{
+				    System.out.println("name output");
+                }
 			}
 			//System.out.println(turnCount);
 			if(turnCount==turnOrder.size()){
