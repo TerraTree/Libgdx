@@ -59,10 +59,12 @@ public class Character extends entity{
         this.setAgility(agi);
         this.setWisdom(wis);
         this.setIntelligence(intel);
-        this.setMaxHealth(this.getMaxHealth());
-        this.setCurrentHealth(this.getCurrentHealth());
+        this.setMaxHealth(maxHp);
+        this.setCurrentHealth(currentHp);
         this.setDefense(this.armour.getDefense() + this.getDexterity() * 2 + this.getLevel());
         this.setSprite(new Sprite(texture));
+        this.level = level;
+        this.setExp(exp);
         this.setActive(true);
     }
 

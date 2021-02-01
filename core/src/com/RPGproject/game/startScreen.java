@@ -140,7 +140,6 @@ public class startScreen extends ScreenAdapter {
             File file = new File(textFile);
             System.out.println(file.length());
             Scanner scanner = new Scanner(file);
-            //temp setup to make game work.
             System.out.println(textFile);
             int fileFlag=0;
             while(scanner.hasNextLine()){
@@ -166,14 +165,11 @@ public class startScreen extends ScreenAdapter {
                 if(fileFlag==6){
                     charParty.getItems().add(text);
                 }
-                //text.indexOf("/");
                 if(text.indexOf("/")==0){
                     fileFlag++;
                 }
             }
             game.setScreen(new mainScreen(game,charParty));
-            //String text = scanner.nextLine();
-            //System.out.println("text: "+text);
 
             //charParty.setChar1(new Character(1, 1, 5, 1, 1, texture));
             //charParty.setChar2(new Character(2, 2, 3, 2, 2, texture));
