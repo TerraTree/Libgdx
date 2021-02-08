@@ -43,9 +43,9 @@ public class Character extends entity{
         this.setAgility(agi);
         this.setWisdom(wis);
         this.setIntelligence(intel);
-        this.setMaxHealth(level * 2);
-        this.setCurrentHealth(this.getMaxHealth());
-        this.setDefense(this.armour.getDefense() + this.getDexterity() * 2 + this.getLevel());
+        //this.setMaxHealth(level * 2);
+        //this.setCurrentHealth(this.getMaxHealth());
+        //this.setDefense(this.armour.getDefense() + this.getDexterity() * 2 + this.getLevel());
         this.setSprite(new Sprite(texture));
         this.level=1;
         this.setActive(true);
@@ -66,6 +66,13 @@ public class Character extends entity{
         this.level = level;
         this.setExp(exp);
         this.setActive(true);
+    }
+
+    public void updateStats(){
+        this.setMaxHealth(level*2+getAgility()*3+10);
+        this.setCurrentHealth(this.getMaxHealth());
+        this.setDefense(this.armour.getDefense() + this.getDexterity() * 2 + this.getLevel());
+
     }
 
     public void turn (){
