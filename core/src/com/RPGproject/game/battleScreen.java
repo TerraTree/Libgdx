@@ -85,6 +85,17 @@ public class battleScreen extends ScreenAdapter {
 				System.out.println("time to attack");
 				battleQueue.peek().attacking(battleQueue,playerGrid,enemyGrid);
 				turnCount=0;
+				int counter=0;
+                for (ArrayList<enemy> e: enemyGrid) {
+                    for(enemy enem: e){
+                        if (enem!=null){
+                            counter++;
+                        }
+                    }
+                }
+                if(counter==0){
+                    game.setScreen(new mainScreen(game,mainParty));
+                }
 				turnChecker();
 			}
 		}

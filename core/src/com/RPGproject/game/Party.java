@@ -1,5 +1,7 @@
 package com.RPGproject.game;
 
+import com.badlogic.gdx.graphics.g2d.Sprite;
+
 import java.util.ArrayList;
 
 public class Party {
@@ -10,6 +12,7 @@ public class Party {
 	private int xCoord;
 	private int yCoord;
 	private String mapName;
+	private Sprite sprite;
 
 	public Party() {
 		items = new ArrayList<>();
@@ -62,5 +65,13 @@ public class Party {
 
 	public void setMapName(String mapName) {
 		this.mapName = mapName;
+	}
+
+	public Sprite getSprite() {
+		return sprite;
+	}
+
+	public void setSprite(Sprite sprite) {
+		this.sprite = sprite;
 	}
 }

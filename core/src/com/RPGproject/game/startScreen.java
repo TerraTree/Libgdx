@@ -179,8 +179,9 @@ public class startScreen extends ScreenAdapter {
                                 }
                                 else{
                                     charParty.setMapName("startArea");
-                                    charParty.setxCoord(0);
-                                    charParty.setyCoord(0);
+                                    charParty.setxCoord(200);
+                                    charParty.setyCoord(200);
+                                    charParty.setSprite(new Sprite(charParty.getChar1().getSprite()));
                                     game.setScreen(new mainScreen(game, charParty));
                                 }
                             }

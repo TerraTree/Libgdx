@@ -34,7 +34,7 @@ public class mainScreen extends ScreenAdapter {
             System.out.println(map.getMapContent().get(y).get(x));
             if(map.getMapContent().get(y).get(x).equals("grass")){
                 double encounter = Math.random();
-                if(encounter<= 0.3){
+                if(encounter<= 0.1){
                     game.setScreen(new battleScreen(game,mainParty,enemyParty));
                 }
             }
@@ -49,12 +49,10 @@ public class mainScreen extends ScreenAdapter {
         batch=new SpriteBatch();
     	ui = new UserInterface();
     	map=tp.fileChoice(mainParty.getMapName(),map);
-        mainParty.getChar1().getSprite().setScale(0.3f);
-    	mainParty.getChar1().getSprite().setX(Gdx.graphics.getWidth()/2 - mainParty.getChar1().getSprite().getWidth()/2);
-        mainParty.getChar1().getSprite().setY(Gdx.graphics.getHeight()/2 + mainParty.getChar1().getSprite().getHeight()/2);
+        mainParty.getSprite().setScale(0.3f);
+    	mainParty.getSprite().setX(Gdx.graphics.getWidth()/2 - mainParty.getSprite().getWidth()/2);
+        mainParty.getSprite().setY(Gdx.graphics.getHeight()/2 + mainParty.getSprite().getHeight()/2);
     	//map=new Map(mainParty.getMapName());
-        mainParty.setyCoord(200);
-        mainParty.setxCoord(200);
         map.setOriginX(Gdx.graphics.getWidth()/2 - mainParty.getxCoord());
         map.setOriginY(Gdx.graphics.getHeight()/2 + mainParty.getyCoord());
         System.out.println(map.getOriginX());
@@ -91,7 +89,7 @@ public class mainScreen extends ScreenAdapter {
     	ui.render();
         map.render(batch);
         batch.begin();
-        mainParty.getChar1().getSprite().draw(batch);
+        mainParty.getSprite().draw(batch);
         batch.end();
     }
     public void hide(){
