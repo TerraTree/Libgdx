@@ -20,7 +20,7 @@ public class Main extends ApplicationAdapter {
     boolean typing;
     String fileName;
     textProcessor tp;
-    Texture texture;
+    //Texture texture;
     SpriteBatch batch;
     String currentTile;
     Camera camera;
@@ -161,23 +161,7 @@ public class Main extends ApplicationAdapter {
     public void render(){
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        int column = 0;
-        int row =0;
-        batch.begin();
-        for (ArrayList<String> a:currentMap.getMapContent()) {
-            for (String s:a) {
-            	if(s=="") {
-            	}
-            	else {
-                texture = new Texture(s+".png");
-                batch.draw(texture,(column*32)+currentMap.getOriginX(),-currentMap.getOriginY()-(row*32)-32);
-            	}
-                column++;
-            }
-            row++;
-            column=0;
-        }
-        batch.end();
+        currentMap.render(batch);
         ui.render();
     }
 

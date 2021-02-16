@@ -1,6 +1,8 @@
 package com.MapEditor.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import java.util.ArrayList;
 
@@ -91,6 +93,31 @@ public class Map {
             }
             mapContent.get(index).set(xIndex, tileName);
         }
+    }
+    public void render(SpriteBatch batch){
+        Texture texture;
+        int column = 0;
+        int row = 0;
+
+        for (ArrayList<String> a:this.getMapContent()) {
+            for (String s:a) {
+                if(s=="") {
+                }
+                else {
+                    batch.begin();
+                    texture= new Texture(s+".png");
+                    //System.out.println(s+".png");
+                    //batch.draw(texture,100,100);
+                    batch.draw(texture,this.getOriginX()+column*32,64+this.getOriginY()-row*32);
+                    //batch.draw(texture,(column*32)+this.getOriginX(),-this.getOriginY()-(row*32)-32);
+                    batch.end();
+                }
+                column++;
+            }
+            row++;
+            column=0;
+        }
+
     }
 
 }
