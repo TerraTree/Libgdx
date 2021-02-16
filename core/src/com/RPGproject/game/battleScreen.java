@@ -21,7 +21,7 @@ public class battleScreen extends ScreenAdapter {
 	Main game;
 	UserInterface ui;
 	Party mainParty;
-	Party enemyParty;
+	ArrayList<enemy> enemyParty;
 	ArrayList<ArrayList<Character>> playerGrid;
 	ArrayList<ArrayList<enemy>> enemyGrid;
 	ShapeRenderer sr;
@@ -41,7 +41,7 @@ public class battleScreen extends ScreenAdapter {
     TextureRegion spriteGrid;
     Sprite sprite;
 
-    public battleScreen(Main game,Party mainParty,Party enemyParty){
+    public battleScreen(Main game,Party mainParty,ArrayList<enemy> enemyParty){
     	this.game = game;
     	this.mainParty=mainParty;
     	this.enemyParty=enemyParty;
@@ -157,9 +157,6 @@ public class battleScreen extends ScreenAdapter {
 		offsetX = Gdx.graphics.getWidth()/6;
 		offsetY = Gdx.graphics.getHeight()/2 + 150;
 		turnCount=0;
-    	enemy enem1 = new enemy(1,1,2,4,1);
-    	Texture texture = new Texture("evil.png");
-    	//enem1.setTexture(texture);
     	flag = 0;
     	ui = new UserInterface();
 
@@ -176,10 +173,8 @@ public class battleScreen extends ScreenAdapter {
     		enemyGrid.get(i).add(null);
     		enemyGrid.get(i).add(null);
     	}
-    	enemyGrid.get(1).set(1, enem1);
-        enemy enem2 = new enemy(1,1,9,4,1);
-        //enem2.setTexture(texture);
-        enemyGrid.get(0).set(0, enem2);
+    	enemyGrid.get(1).set(1, enemyParty.get(0));
+        enemyGrid.get(0).set(0, enemyParty.get(1));
 
     	sr = new ShapeRenderer();
     	selector = new Selector(offsetX,offsetY,100,100,1); //sets position and size of selector

@@ -12,18 +12,18 @@ public class enemy extends entity{
 	int state;
     Character targetChar;
 
-    public enemy(int str, int dex, int agi, int wis, int intel) {
+    public enemy(int str, int dex, int agi, int wis, int intel,int health,int defense,int level,int exp) {
 
         this.setStrength(str);
         this.setDexterity(dex);
         this.setAgility(agi);
         this.setWisdom(wis);
         this.setIntelligence(intel);
-        this.setMaxHealth(100);
+        this.setMaxHealth(health);
+        this.setDefense(defense);
+        this.setExp(exp);
         this.setCurrentHealth(this.getMaxHealth());
-        this.setDefense(2);
         this.setActive(true);
-        this.setSprite(new Sprite(new Texture("evil.png")));
         aiStrategy=1;
     }
 	

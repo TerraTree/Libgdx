@@ -1,0 +1,14 @@
+/load stats
+Strength:2
+Dexterity:2
+Agility:2
+Wisdom:1
+Intelligence:1
+MaxHealth:8
+Defense:2
+Level:1
+EXP:20
+/Enemy Info
+name:Slime
+sprite:slime.png
+aiStategy:0
