@@ -2,7 +2,6 @@ package com.RPGproject.game;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class Character extends entity{
     private Weapon weapon;

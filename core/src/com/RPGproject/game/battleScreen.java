@@ -74,11 +74,12 @@ public class battleScreen extends ScreenAdapter {
 					}
 					else{
                         ui.getMainText().input(turnOrder.get(turnCount).getName()+"'s turn");
+                        ui.getMenuText().clear();
+                        for (String action: turnOrder.get(turnCount).getActions()) {
+                            ui.getMenuText().input(action);
+                        }
                     }
 				}
-				else{
-				    System.out.println("name output");
-                }
 			}
 			//System.out.println(turnCount);
 			if(turnCount==turnOrder.size()){

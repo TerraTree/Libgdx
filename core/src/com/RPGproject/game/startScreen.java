@@ -170,6 +170,10 @@ public class startScreen extends ScreenAdapter {
                             }
                             else if(x>=Gdx.graphics.getWidth()-400 && x<=Gdx.graphics.getWidth()-100 && y>=100 && y<=200){
                                 currentChar.updateStats();
+                                currentChar.setActions(new ArrayList<String>());
+                                currentChar.getActions().add("attack");
+                                currentChar.getActions().add("items");
+                                currentChar.getActions().add("run");
                                 if(flag==2){
                                     flag++;
                                     charParty.setChar2(new Character(1, 1, 1, 1, 1, 1, new Texture("smile.png")));
@@ -248,6 +252,8 @@ public class startScreen extends ScreenAdapter {
                                 charParty.setChar2(character);
                             }
                             statList.removeAll(statList);
+                            System.out.println("yo");
+                            System.out.println(character.getActions());
                         } else {
                             statList.add(Integer.parseInt(text.substring(text.indexOf(":") + 1)));
                             System.out.println(statList);

@@ -4,6 +4,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
+import java.util.ArrayList;
+
 public class entity {
     private String name;
 
@@ -19,6 +21,15 @@ public class entity {
     private int intelligence;//increases damage of magic attacks.
     private int exp;
     private boolean active;
+    private ArrayList<String> actions;
+
+    public ArrayList<String> getActions() {
+        return actions;
+    }
+
+    public void setActions(ArrayList<String> actions) {
+        this.actions = actions;
+    }
 
     private String weakness;
 
