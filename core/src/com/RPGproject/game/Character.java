@@ -3,11 +3,15 @@ package com.RPGproject.game;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
+import java.util.ArrayList;
+
 public class Character extends entity{
     private Weapon weapon;
     private Armour armour;
     private int level;
+    private CharClass charClass;
     private String weakness;
+    private ArrayList<String> spellList;
 
     public Weapon getWeapon() {
         return weapon;
@@ -48,6 +52,10 @@ public class Character extends entity{
         this.setSprite(new Sprite(texture));
         this.level=1;
         this.setActive(true);
+        this.charClass= new CharClass("fighter","strength","dexterity",new ArrayList<String>());
+        this.charClass.getActions().add("attack");
+        this.charClass.getActions().add("items");
+        this.charClass.getActions().add("run");
     }
     public Character(int str, int dex, int agi, int wis, int intel,int level,int exp,int currentHp,int maxHp, Texture texture) {
 
