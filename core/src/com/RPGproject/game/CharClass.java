@@ -69,6 +69,7 @@ public class CharClass {
                 }
                 stat = secondaryStat;
             }
+            character.updateStats();
         }
         //character
         //this.se

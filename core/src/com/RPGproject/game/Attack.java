@@ -45,6 +45,16 @@ public class Attack {
         if(isPlayerAttacking){
             enemy= (enemy) damage(character,enemy,battleQueue);
             if(enemy.getCurrentHealth()<=0){
+                for (ArrayList<Character> ar: playerGrid) {
+                    for(Character c:ar){
+                        if(c!=null){
+                            if(c.getCurrentHealth()>0) {
+                                c.setExp(c.getExp()+enemy.getExp());
+                                c.getCharClass().levelUp(c);
+                            }
+                        }
+                    }
+                }
                 enemyGrid.get((int) enemyPos.x).set((int) enemyPos.y,null);
             }
             else{

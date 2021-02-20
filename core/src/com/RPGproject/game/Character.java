@@ -13,6 +13,14 @@ public class Character extends entity{
     private String weakness;
     private ArrayList<String> spellList;
 
+    public CharClass getCharClass() {
+        return charClass;
+    }
+
+    public void setCharClass(CharClass charClass) {
+        this.charClass = charClass;
+    }
+
     public Weapon getWeapon() {
         return weapon;
     }
@@ -73,6 +81,10 @@ public class Character extends entity{
         this.level = level;
         this.setExp(exp);
         this.setActive(true);
+        this.charClass= new CharClass("fighter","strength","dexterity",new ArrayList<String>());
+        this.charClass.getActions().add("attack");
+        this.charClass.getActions().add("items");
+        this.charClass.getActions().add("run");
     }
 
     public void updateStats(){
