@@ -170,6 +170,7 @@ public class startScreen extends ScreenAdapter {
                             }
                             else if(x>=Gdx.graphics.getWidth()-400 && x<=Gdx.graphics.getWidth()-100 && y>=100 && y<=200){
                                 currentChar.updateStats();
+                                currentChar.setCurrentHealth(currentChar.getMaxHealth());
                                 currentChar.setActions(new ArrayList<String>());
                                 currentChar.getActions().add("attack");
                                 currentChar.getActions().add("items");

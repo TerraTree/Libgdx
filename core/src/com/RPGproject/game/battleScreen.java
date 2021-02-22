@@ -49,8 +49,7 @@ public class battleScreen extends ScreenAdapter {
 
     public void turnChecker(){
 
-		System.out.println("Index "+ turnCount);
-		if(turnOrder.size()!=0) {
+		if(turnOrder.size()!=0 || (turnCount==0 && battleQueue.size()>0)) {
 			try {
                 Vector2 enemPos = new Vector2();
 				enemy enem = (enemy) turnOrder.get(turnCount);
@@ -81,10 +80,9 @@ public class battleScreen extends ScreenAdapter {
                     }
 				}
 			}
-			//System.out.println(turnCount);
-			if(turnCount==turnOrder.size()){
-				System.out.println("time to attack");
-				battleQueue.peek().attacking(battleQueue,playerGrid,enemyGrid);
+			if(turnCount==turnOrder.size() || (turnCount==0 && battleQueue.size()>0)){
+                System.out.println(battleQueue.size());
+                battleQueue.peek().attacking(battleQueue,playerGrid,enemyGrid);
 				turnCount=0;
 				int counter=0;
                 for (ArrayList<enemy> e: enemyGrid) {
@@ -94,7 +92,12 @@ public class battleScreen extends ScreenAdapter {
                         }
                     }
                 }
-                if(counter==0){
+                System.out.println("past peek "+battleQueue.size());
+                if(battleQueue.size()>0){
+                    battleQueue.poll();
+                    flag=-1;
+                }
+                else if(counter==0){
                     game.setScreen(new mainScreen(game,mainParty));
                 }
 				turnChecker();
@@ -262,7 +265,7 @@ public class battleScreen extends ScreenAdapter {
 							currentChar.setCurrentHealth(Math.min(currentChar.getCurrentHealth()+50,currentChar.getMaxHealth()));
 							endTurn();
 						}
-            			else if(flag<=2) {
+            			else if(flag >=0 && flag<=2) {
 							selectChar.getSprite().setX(offsetX+selector.xOffset);
             				selectChar.getSprite().setY(offsetY+selector.yOffset);
 							playerGrid.get(-selector.yOffset / 100).set(selector.xOffset / 100, selectChar); //set player character to grid
@@ -292,6 +295,15 @@ public class battleScreen extends ScreenAdapter {
 								turnChecker();
                                 typing=true;
                             }
+						}
+            			else if(flag==-1){
+            				flag--;
+						}
+            			else if(flag==-2){
+            				if(battleQueue.size()>0){
+            					turnChecker();
+							}
+            				flag=2;
 						}
             		}
                 return true;
@@ -399,6 +411,7 @@ public class battleScreen extends ScreenAdapter {
     				if(c.getCurrentHealth()==0){
 						c.getSprite().setRotation(90);
 					}
+    				System.out.println("sprite: "+ c.getSprite().getTexture().toString());
 					c.getSprite().draw(batch);
 					batch.end();
     			}
@@ -412,8 +425,9 @@ public class battleScreen extends ScreenAdapter {
     	column=1;
     	for(ArrayList<enemy> a:enemyGrid) {
     		for(enemy e:a) {
-    			sr.begin(ShapeRenderer.ShapeType.Filled);
+//    			sr.begin(ShapeRenderer.ShapeType.Filled);
     			if(e == null) {
+    			    sr.begin(ShapeRenderer.ShapeType.Filled);
     				sr.setColor(Color.WHITE);
         			sr.rect(ui.getScreenWidth()-offsetX-300+column*100,offsetY-row*100,100,100);
         			sr.end();
@@ -434,6 +448,16 @@ public class battleScreen extends ScreenAdapter {
     		row++;
     		column=1;
     	}
+    	if(flag==-1){
+    	    //Character currentChar = playerGrid.get();
+    	    Character currentChar = mainParty.getChar1();
+    	    currentChar.renderLevelUp(sr,batch);
+        }
+    	if(flag==-2){
+    	    Character currentChar = mainParty.getChar2();
+    	    currentChar.renderLevelUp(sr,batch);
+        }
+
     	if(flag==0){
 
             }
@@ -445,9 +469,9 @@ public class battleScreen extends ScreenAdapter {
                     for (enemy e : a) {
                         if (e!=null) {
                             sr.setColor(Color.RED);
-                            sr.rect(ui.getScreenWidth() - offsetX-300 + 2 + column * 100, offsetY + 110 - row * 100, 96, 10);
+                            sr.rect(ui.getScreenWidth() - offsetX-300 + 2 + column * 100, offsetY + 110 - row * 100, 96, 20);
                             sr.setColor(Color.GREEN);
-                            sr.rect(ui.getScreenWidth() - offsetX-300 + 2 + column * 100, offsetY + 110 - row * 100, (int) (e.getCurrentHealth() * 96) / e.getMaxHealth(), 10);
+                            sr.rect(ui.getScreenWidth() - offsetX-300 + 2 + column * 100, offsetY + 110 - row * 100, (int) (e.getCurrentHealth() * 96) / e.getMaxHealth(), 20);
                         }
                         column++;
                     }
@@ -460,9 +484,9 @@ public class battleScreen extends ScreenAdapter {
                     for (Character c : a) {
                         if (c != null) {
                             sr.setColor(Color.RED);
-                            sr.rect(offsetX + 2 + column * 100, offsetY + 110 - row * 100, 96, 10);
+                            sr.rect(offsetX + 2 + column * 100, offsetY + 110 - row * 100, 96, 20);
                             sr.setColor(Color.GREEN);
-                            sr.rect(offsetX + 2 + column * 100, offsetY + 110 - row * 100, (int) (c.getCurrentHealth() * 96) / c.getMaxHealth(), 10);
+                            sr.rect(offsetX + 2 + column * 100, offsetY + 110 - row * 100, (int) (c.getCurrentHealth() * 96) / c.getMaxHealth(), 20);
                         }
                         column++;
                     }

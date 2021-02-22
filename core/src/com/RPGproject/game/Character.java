@@ -1,7 +1,12 @@
 package com.RPGproject.game;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import java.util.ArrayList;
 
@@ -12,6 +17,7 @@ public class Character extends entity{
     private CharClass charClass;
     private String weakness;
     private ArrayList<String> spellList;
+    private BitmapFont font;
 
     public CharClass getCharClass() {
         return charClass;
@@ -89,9 +95,33 @@ public class Character extends entity{
 
     public void updateStats(){
         this.setMaxHealth(level*2+getAgility()*3+10);
-        this.setCurrentHealth(this.getMaxHealth());
+        //this.setCurrentHealth(this.getMaxHealth());
         this.setDefense(this.armour.getDefense() + this.getDexterity() * 2 + this.getLevel());
 
+    }
+
+    public void renderLevelUp(ShapeRenderer sr, SpriteBatch batch){
+        font = new BitmapFont();
+        font.getData().setScale(2);
+        sr.begin(ShapeRenderer.ShapeType.Filled);
+        sr.setColor(Color.WHITE);
+        sr.rect(100,50,Gdx.graphics.getWidth()-200,Gdx.graphics.getHeight()-100);
+        sr.setColor(Color.GRAY);
+        for(int i=0;i<6;i++){
+            sr.rect(Gdx.graphics.getWidth()/2 -700,900-i*150,500,100);
+        }
+        sr.rect(Gdx.graphics.getWidth()-500,100,300,100);
+        sr.end();
+        batch.begin();
+        font.setColor(Color.BLACK);
+        font.draw(batch,this.getName()+" is now level "+this.getLevel(),Gdx.graphics.getWidth()/2 -700,950);
+        font.draw(batch,"Strength: "+this.getStrength(),Gdx.graphics.getWidth()/2 -700,800);
+        font.draw(batch,"Dexterity: "+this.getDexterity(),Gdx.graphics.getWidth()/2 -700,650);
+        font.draw(batch,"Agility: "+this.getAgility(),Gdx.graphics.getWidth()/2 -700,500);
+        font.draw(batch,"Wisdom: "+this.getWisdom(),Gdx.graphics.getWidth()/2 -700,350);
+        font.draw(batch,"Intelligence: "+this.getIntelligence(),Gdx.graphics.getWidth()/2 -700,200);
+        font.draw(batch,"Enter to continue",Gdx.graphics.getWidth()-500,150);
+        batch.end();
     }
 
     public void turn (){

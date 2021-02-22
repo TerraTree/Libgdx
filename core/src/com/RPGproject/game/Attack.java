@@ -41,7 +41,7 @@ public class Attack {
     }
 
     public void attacking(Queue<Attack> battleQueue,ArrayList<ArrayList<Character>> playerGrid, ArrayList<ArrayList<enemy>> enemyGrid){
-        System.out.println("attacking");
+        boolean interruption = false;
         if(isPlayerAttacking){
             enemy= (enemy) damage(character,enemy,battleQueue);
             if(enemy.getCurrentHealth()<=0){
@@ -50,7 +50,8 @@ public class Attack {
                         if(c!=null){
                             if(c.getCurrentHealth()>0) {
                                 c.setExp(c.getExp()+enemy.getExp());
-                                c.getCharClass().levelUp(c);
+                                System.out.println("exp time for "+c.getName() + ": " +c.getExp());
+                                interruption = c.getCharClass().levelUp(c);
                             }
                         }
                     }
@@ -63,14 +64,14 @@ public class Attack {
         }
         else{
             character = (Character) damage(enemy,character,battleQueue);
-            System.out.println("X: "+characterPos.x + " Y: "+characterPos.y);
-            System.out.println(playerGrid.size());
-            //System.out.println(playerGrid.get((int) characterPos.y).get((int) characterPos.x));
             playerGrid.get((int) characterPos.y).get((int) characterPos.x).setCurrentHealth(character.getCurrentHealth());
 
         }
+        if(interruption==false){
         battleQueue.poll();
-        if(battleQueue.size()>0) {
+        }
+        if(battleQueue.size()>0 && interruption == false) {
+
             battleQueue.peek().attacking(battleQueue, playerGrid, enemyGrid);
         }
     }
