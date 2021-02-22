@@ -20,6 +20,14 @@ public class CharClass {
         this.actions = actions;
     }
 
+    public ArrayList<Integer> getLevelUpChange() {
+        return levelUpChange;
+    }
+
+    public void setLevelUpChange(ArrayList<Integer> levelUpChange) {
+        this.levelUpChange = levelUpChange;
+    }
+
     public String getClassName() {
         return className;
     }
@@ -54,6 +62,7 @@ public class CharClass {
 
     public boolean levelUp(Character character){
         boolean levelUp = false;
+        //System.out.println(20+Math.pow(2,character.getLevel()-1));
         if(character.getExp()>20+Math.pow(2,character.getLevel()-1)){
             levelUp=true;
             levelUpChange=new ArrayList<>(7);

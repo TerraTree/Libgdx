@@ -42,37 +42,40 @@ public class Attack {
 
     public void attacking(Queue<Attack> battleQueue,ArrayList<ArrayList<Character>> playerGrid, ArrayList<ArrayList<enemy>> enemyGrid){
         boolean interruption = false;
-        if(isPlayerAttacking){
-            enemy= (enemy) damage(character,enemy,battleQueue);
-            if(enemy.getCurrentHealth()<=0){
-                for (ArrayList<Character> ar: playerGrid) {
-                    for(Character c:ar){
-                        if(c!=null){
-                            if(c.getCurrentHealth()>0) {
-                                c.setExp(c.getExp()+enemy.getExp());
-                                System.out.println("exp time for "+c.getName() + ": " +c.getExp());
-                                interruption = c.getCharClass().levelUp(c);
+        Vector2 checkEnemyExist = battleQueue.peek().getEnemyPos();
+        if(enemyGrid.get((int) checkEnemyExist.x).get((int) checkEnemyExist.y)==null){
+            battleQueue.poll();
+            battleQueue.peek().attacking(battleQueue, playerGrid, enemyGrid);
+        }
+        else {
+            if (isPlayerAttacking) {
+                enemy = (enemy) damage(character, enemy, battleQueue);
+                if (enemy.getCurrentHealth() <= 0) {
+                    for (ArrayList<Character> ar : playerGrid) {
+                        for (Character c : ar) {
+                            if (c != null) {
+                                if (c.getCurrentHealth() > 0) {
+                                    c.setExp(c.getExp() + enemy.getExp());
+                                    System.out.println("exp time for " + c.getName() + ": " + c.getExp());
+                                    interruption = c.getCharClass().levelUp(c);
+                                    System.out.println(interruption);
+                                }
                             }
                         }
                     }
+                    enemyGrid.get((int) enemyPos.x).set((int) enemyPos.y, null);
                 }
-                enemyGrid.get((int) enemyPos.x).set((int) enemyPos.y,null);
+            } else {
+                if(character.getCurrentHealth()>0) {
+                    character = (Character) damage(enemy, character, battleQueue);
+                }
             }
-            else{
-                enemyGrid.get((int) enemyPos.x).get((int) enemyPos.y).setCurrentHealth(enemy.getCurrentHealth());
+            if (interruption == false) {
+                battleQueue.poll();
             }
-        }
-        else{
-            character = (Character) damage(enemy,character,battleQueue);
-            playerGrid.get((int) characterPos.y).get((int) characterPos.x).setCurrentHealth(character.getCurrentHealth());
-
-        }
-        if(interruption==false){
-        battleQueue.poll();
-        }
-        if(battleQueue.size()>0 && interruption == false) {
-
-            battleQueue.peek().attacking(battleQueue, playerGrid, enemyGrid);
+            if (battleQueue.size() > 0 && interruption == false) {
+                battleQueue.peek().attacking(battleQueue, playerGrid, enemyGrid);
+            }
         }
     }
 

@@ -10,6 +10,7 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -26,6 +27,7 @@ public class battleScreen extends ScreenAdapter {
 	ArrayList<ArrayList<enemy>> enemyGrid;
 	ShapeRenderer sr;
 	Selector selector;
+	BitmapFont font;
 	int flag;
 	int offsetX;
 	int offsetY;
@@ -48,7 +50,17 @@ public class battleScreen extends ScreenAdapter {
     }
 
     public void turnChecker(){
-
+		int counter=0;
+		for (ArrayList<enemy> e: enemyGrid) {
+			for(enemy enem: e){
+				if (enem!=null){
+					counter++;
+				}
+			}
+		}
+		if(counter==0){
+			game.setScreen(new mainScreen(game,mainParty));
+		}
 		if(turnOrder.size()!=0 || (turnCount==0 && battleQueue.size()>0)) {
 			try {
                 Vector2 enemPos = new Vector2();
@@ -84,23 +96,19 @@ public class battleScreen extends ScreenAdapter {
                 System.out.println(battleQueue.size());
                 battleQueue.peek().attacking(battleQueue,playerGrid,enemyGrid);
 				turnCount=0;
-				int counter=0;
-                for (ArrayList<enemy> e: enemyGrid) {
-                    for(enemy enem: e){
-                        if (enem!=null){
-                            counter++;
-                        }
-                    }
-                }
+
                 System.out.println("past peek "+battleQueue.size());
-                if(battleQueue.size()>0){
-                    battleQueue.poll();
-                    flag=-1;
-                }
-                else if(counter==0){
-                    game.setScreen(new mainScreen(game,mainParty));
-                }
-				turnChecker();
+                if(mainParty.getChar1().getCharClass().getLevelUpChange().size()>0){
+                	flag=-1;
+                	battleQueue.poll();
+				}
+                else if(mainParty.getChar2().getCharClass().getLevelUpChange().size()>0){
+                	flag=-2;
+                	battleQueue.poll();
+				}
+                else{
+                	turnChecker();
+				}
 			}
 		}
 	}
@@ -151,6 +159,7 @@ public class battleScreen extends ScreenAdapter {
 
 
     public void show(){
+        font = new BitmapFont();
     	sprite = new Sprite();
     	attacking=false;
     	items=false; //using items against enemies
@@ -250,11 +259,11 @@ public class battleScreen extends ScreenAdapter {
 								int index=0;
 								for (ArrayList<Character> c:playerGrid) {
 									if(c.indexOf(currentChar)!=-1){
-										playerPos.set(index,c.indexOf(currentChar));
+										playerPos.set(c.indexOf(currentChar),index);
 									}
 									index++;
 								}
-								int damage = 20; //currentChar.getDexterity()+10; //damage based on weapon and character selected, not implemented yet
+								int damage = 4; //currentChar.getDexterity()+10; //damage based on weapon and character selected, not implemented yet
 								Attack charAttack = new Attack(currentEnemy,enemyPos,currentChar,playerPos,true,"sword",damage);
 								battleQueue.add(charAttack);
 								endTurn();
@@ -297,13 +306,19 @@ public class battleScreen extends ScreenAdapter {
                             }
 						}
             			else if(flag==-1){
-            				flag--;
+            				mainParty.getChar1().getCharClass().setLevelUpChange(new ArrayList<Integer>());
+            				if(mainParty.getChar2().getCharClass().getLevelUpChange().size()>0) {
+								flag--;
+							}
+            				else{
+								turnChecker();
+            					flag=3;
+							}
 						}
             			else if(flag==-2){
-            				if(battleQueue.size()>0){
-            					turnChecker();
-							}
-            				flag=2;
+							mainParty.getChar2().getCharClass().setLevelUpChange(new ArrayList<Integer>());
+            				turnChecker();
+            				flag=3;
 						}
             		}
                 return true;
@@ -411,7 +426,6 @@ public class battleScreen extends ScreenAdapter {
     				if(c.getCurrentHealth()==0){
 						c.getSprite().setRotation(90);
 					}
-    				System.out.println("sprite: "+ c.getSprite().getTexture().toString());
 					c.getSprite().draw(batch);
 					batch.end();
     			}
