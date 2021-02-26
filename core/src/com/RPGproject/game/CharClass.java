@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class CharClass {
     private String className;
@@ -18,6 +19,7 @@ public class CharClass {
         this.primaryStat = primaryStat;
         this.secondaryStat = secondaryStat;
         this.actions = actions;
+        this.levelUpChange = new ArrayList<>();
     }
 
     public ArrayList<Integer> getLevelUpChange() {
@@ -72,7 +74,23 @@ public class CharClass {
             System.out.println("size "+levelUpChange.size());
             character.setLevel(character.getLevel()+1);
             String stat = primaryStat;
-            for (int i = 0; i < 2; i++) {
+            for (int i = 0; i < 3; i++) {
+                if(i==1){
+                    stat = secondaryStat;
+                    System.out.println("stat: "+stat);
+                }
+                else if(i==2){
+                    String oldData[] = {"strength","dexterity","agility","wisdom","intelligence"};
+                    ArrayList<String> data = new ArrayList<>();
+                    data.addAll(Arrays.asList(oldData));
+                    data.remove(data.indexOf(primaryStat));
+                    data.remove(data.indexOf(secondaryStat));
+
+                    stat = data.get(ThreadLocalRandom.current().nextInt(3));
+                    System.out.println(stat);
+                    System.out.println(data);
+                }
+
                 int j = Math.max(1,2-i); //change of the stat, minimum 1 for secondary and random stat
                 if(stat.equals("strength")){
                     character.setStrength(character.getStrength()+j);
@@ -94,17 +112,8 @@ public class CharClass {
                     character.setIntelligence(character.getIntelligence()+j);
                     levelUpChange.set(4,j);
                 }
-                if(i==1){
-                stat = secondaryStat;
-                }
-                if(i==2){
-                    String oldData[] = {"strength","dexterity","agility","wisdom","intelligence"};
-                    ArrayList<String> data = new ArrayList<>();
-                    data.addAll(Arrays.asList(oldData));
-                    data.remove(data.indexOf(primaryStat));
-                    data.remove(data.indexOf(secondaryStat));
-                    stat = data.get((int) Math.random()*3);
-                }
+
+
             }
             int oldHp = character.getMaxHealth();
             int oldDefense = character.getDefense();
