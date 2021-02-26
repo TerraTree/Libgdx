@@ -1,5 +1,6 @@
 package com.RPGproject.game;
 
+import java.awt.*;
 import java.util.*;
 
 import com.badlogic.gdx.Game;
@@ -277,7 +278,8 @@ public class battleScreen extends ScreenAdapter {
             			else if(flag >=0 && flag<=2) {
 							selectChar.getSprite().setX(offsetX+selector.xOffset);
             				selectChar.getSprite().setY(offsetY+selector.yOffset);
-							playerGrid.get(-selector.yOffset / 100).set(selector.xOffset / 100, selectChar); //set player character to grid
+            				selectChar.setBattlePos(new Point(-selector.yOffset /100,selector.xOffset/100));
+							playerGrid.get(selectChar.getBattlePos().x).set(selectChar.getBattlePos().y, selectChar); //set player character to grid
 							flag++;
 							if (flag == 1) {
 								selectChar = mainParty.getChar2();
@@ -298,9 +300,7 @@ public class battleScreen extends ScreenAdapter {
                                         }
                                     }
                                 }
-                                System.out.println(turnOrder.size());
                                 turnOrder=mergeSort(turnOrder);
-                                System.out.println(turnOrder);
 								turnChecker();
                                 typing=true;
                             }
@@ -332,33 +332,44 @@ public class battleScreen extends ScreenAdapter {
 					else if (Gdx.input.isKeyPressed(Input.Keys.ENTER)){
 						String inputString = ui.getMainText().input(ui.getInputText());
 						ArrayList<String> menuContent = ui.getMenuText().getTextContent();
-						int a = tp.processing(inputString,menuContent);
-						if(a==-1){ //temporary placement
+						int a = tp.processing(inputString,((Character) turnOrder.get(turnCount)).getCharClass().getActions());
+						if(a==1){ //temporary placement
 						    System.out.println("typing stopped");
 						    flag++;
 						    typing=false;
                             selector.active=true;
                             attacking=true;
                             selector.setX(ui.getScreenWidth()-offsetX-200);
-
                         }
-						else if(a==-2){
-						    typing = false;
-						    ui.getMenuText().getTextPointer().active=true;
-						    //ui.getMenuText().setTextContent();
-                            for (int i = ui.getMenuText().getTextContent().size(); i > 0; i--) {
-                                System.out.println("removed");
-                                ui.getMenuText().getTextContent().remove(i-1);
-                                System.out.println("size: "+ui.getMenuText().getTextContent().size());
-                            }
-                            System.out.println("menuSize: "+ui.getMenuText().getTextContent().size());
-                            //ui.getMenuText().input("yooooo");
-						    System.out.println("menuText");
-                            for (String item:mainParty.getItems()) {
-                                ui.getMenuText().getTextContent().add(item);
-                                System.out.println(ui.getMenuText().getTextContent().size());
-                                System.out.println(ui.getMenuText().getTextContent().get(0));
-                            }
+						else if(a==2){
+
+						    if(mainParty.getItems().size()>0) {
+								typing = false;
+								ui.getMenuText().getTextPointer().active = true;
+								//ui.getMenuText().setTextContent();
+								for (int i = ui.getMenuText().getTextContent().size(); i > 0; i--) {
+									ui.getMenuText().getTextContent().remove(i - 1);
+									System.out.println("size: " + ui.getMenuText().getTextContent().size());
+								}
+								System.out.println("menuSize: " + ui.getMenuText().getTextContent().size());
+								//ui.getMenuText().input("yooooo");
+								System.out.println("menuText");
+								for (String item : mainParty.getItems()) {
+									ui.getMenuText().getTextContent().add(item);
+									System.out.println(ui.getMenuText().getTextContent().size());
+									System.out.println(ui.getMenuText().getTextContent().get(0));
+								}
+							}
+						    else {
+						    	ui.getMainText().input("no items to choose");
+							}
+                        }
+						else if(a==3){
+                            playerGrid.get(((Character) turnOrder.get(turnCount)).getBattlePos().x).set(((Character) turnOrder.get(turnCount)).getBattlePos().y,null);
+						    turnOrder.get(turnCount);
+						    turnOrder.remove(turnCount);
+						    turnCount--;
+						    endTurn();
                         }
 						//tp.menuDialogue(ui);
 						}

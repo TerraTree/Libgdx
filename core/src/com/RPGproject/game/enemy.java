@@ -11,6 +11,7 @@ public class enemy extends entity{
 	int aiStrategy;
 	int state;
     Character targetChar;
+    private Vector2 battlePos;
 
     public enemy(int str, int dex, int agi, int wis, int intel,int health,int defense,int level,int exp) {
 

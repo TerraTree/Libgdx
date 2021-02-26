@@ -7,7 +7,9 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Vector2;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 public class Character extends entity{
@@ -18,6 +20,15 @@ public class Character extends entity{
     private String weakness;
     private ArrayList<String> spellList;
     private BitmapFont font;
+    private Point battlePos;
+
+    public Point getBattlePos() {
+        return battlePos;
+    }
+
+    public void setBattlePos(Point battlePos) {
+        this.battlePos = battlePos;
+    }
 
     public CharClass getCharClass() {
         return charClass;

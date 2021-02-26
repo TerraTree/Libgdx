@@ -88,36 +88,30 @@ public class textProcessor {
         return currentMap;
     }
 
-    public int processing(String text,ArrayList<String> menuContent){
+    public int processing(String text,ArrayList<String> actions){
         text=text.toLowerCase();
         if (text.equals("help")){
             //Lists the commands that can be typed in the console.
         }
-        else if(text.equals("attack")){
-            return -1;
-        }
-        else if(text.equals("items")){
-            return -2;
-        }
-        else {
-            try {
-                //int intText = java.lang.Character.getNumericValue(text.charAt(0));
-                //System.out.println(intText);
-                //String action = menuContent.get(intText-1).substring(menuContent.get(intText-1).indexOf(":")+2);
-                //System.out.println(action);
-//                if(action.equals("back")){
-//                    //System.out.println("true");
-//                    int mod = menuTier%10;
-//                    String menuComp = Integer.toString(menuTier);
-//                    setMenuTier((menuTier-1-10*mod)/10);
-//                    if (menuTier<1){
-//                        menuTier=1;
-//                    }
-//                    //System.out.println("menu: " + menuTier);
-//                }
-            } catch (Exception e) {
-
+        String chosenAction="";
+        for (String action:actions) { //checks if that specific action is usable by that character
+            if(text.equals(action)){
+                chosenAction = action;
             }
+        }
+        if(chosenAction==""){
+        }
+        else if(chosenAction=="attack"){
+                return 1;
+        }
+        else if(chosenAction=="items"){
+            return 2;
+        }
+        else if(chosenAction=="run"){
+            return 3;
+        }
+        else if(chosenAction=="magic"){
+            return 4;
         }
         return 0;
     }
