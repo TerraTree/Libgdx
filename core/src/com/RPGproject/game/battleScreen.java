@@ -107,6 +107,11 @@ public class battleScreen extends ScreenAdapter {
                 	flag=-2;
                 	battleQueue.poll();
 				}
+                else if(playerGrid.get(mainParty.getChar1().getBattlePos().x).get(mainParty.getChar1().getBattlePos().y)==null){
+                    if(playerGrid.get(mainParty.getChar2().getBattlePos().x).get(mainParty.getChar2().getBattlePos().y)==null){
+                        game.setScreen(new mainScreen(game,mainParty));
+                    }
+                }
                 else{
                 	turnChecker();
 				}

@@ -66,8 +66,10 @@ public class Attack {
                     enemyGrid.get((int) enemyPos.x).set((int) enemyPos.y, null);
                 }
             } else {
-                if(character.getCurrentHealth()>0) {
-                    character = (Character) damage(enemy, character, battleQueue);
+                if(character != null) {
+                    if (character.getCurrentHealth() > 0) {
+                        character = (Character) damage(enemy, character, battleQueue);
+                    }
                 }
             }
             if (interruption == false) {
