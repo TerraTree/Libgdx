@@ -64,7 +64,6 @@ public class CharClass {
 
     public boolean levelUp(Character character){
         boolean levelUp = false;
-        //System.out.println(20+Math.pow(2,character.getLevel()-1));
         if(character.getExp()>20+Math.pow(2,character.getLevel()-1)){
             levelUp=true;
             levelUpChange=new ArrayList<>(7);
@@ -120,6 +119,7 @@ public class CharClass {
             character.updateStats();
             levelUpChange.set(5,character.getMaxHealth()-oldHp);
             levelUpChange.set(6,character.getDefense()-oldDefense);
+            character.setCurrentHealth(character.getCurrentHealth()+levelUpChange.get(5));
         }
         //character
         //this.se

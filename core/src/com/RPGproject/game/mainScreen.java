@@ -23,6 +23,7 @@ public class mainScreen extends ScreenAdapter {
     Map map;
     SpriteBatch batch;
     textProcessor tp;
+    boolean typing;
 
     public mainScreen(Main game,Party mainParty){
         this.game = game;
@@ -107,6 +108,7 @@ public class mainScreen extends ScreenAdapter {
         tp = new textProcessor();
         batch=new SpriteBatch();
     	ui = new UserInterface();
+    	typing = false;
     	map=tp.fileChoice(mainParty.getMapName(),map);
     	enemyParty=new ArrayList<>();
         mainParty.getSprite().setScale(0.3f);
@@ -117,25 +119,41 @@ public class mainScreen extends ScreenAdapter {
         map.setOriginY(Gdx.graphics.getHeight()/2 + mainParty.getyCoord());
     	Gdx.input.setInputProcessor(new InputAdapter() {
             public boolean keyDown ( int keycode){
-                if (keycode == Input.Keys.ENTER){
-                    game.setScreen(new battleScreen(game,mainParty,enemyParty));
+                if(keycode==Input.Keys.ESCAPE) {
+                    Gdx.app.exit();
                 }
                 return true;
             }
             public boolean keyTyped (char character){
-                if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-                    updatePlayerPos(new Vector2(0,-5));
+                if(typing==false) {
+                    if (Gdx.input.isKeyPressed(Input.Keys.W)) {
+                        updatePlayerPos(new Vector2(0, -5));
+                    } else if (Gdx.input.isKeyPressed(Input.Keys.A)) {
+                        updatePlayerPos(new Vector2(5, 0));
+                    } else if (Gdx.input.isKeyPressed(Input.Keys.S)) {
+                        updatePlayerPos(new Vector2(0, 5));
+                    } else if (Gdx.input.isKeyPressed(Input.Keys.D)) {
+                        updatePlayerPos(new Vector2(-5, 0));
+                    }
+                    else if(Gdx.input.isKeyPressed(Input.Keys.T)){
+                        typing=true;
+                    }
+                    System.out.println(mainParty.getyCoord());
                 }
-                else if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-                    updatePlayerPos(new Vector2(5,0));
+                else if(typing){
+                    if (Gdx.input.isKeyPressed(Input.Keys.BACKSPACE) && ui.getInputText().getTextContent().get(0).length()>0){
+                        ui.getInputText().removeChar();
+                    }
+                    else if (Gdx.input.isKeyPressed(Input.Keys.ENTER)) {
+                        String inputString = ui.getMainText().input(ui.getInputText());
+                        if(inputString.equals("characters")){
+                            game.setScreen(new alternateUI(game,mainParty,2));
+                        }
+                    }
+                    else {
+                        ui.getInputText().addChar(character,ui.getFont());
+                    }
                 }
-                else if (Gdx.input.isKeyPressed(Input.Keys.S)) {
-                    updatePlayerPos(new Vector2(0,5));
-                }
-                else if (Gdx.input.isKeyPressed(Input.Keys.D)) {
-                    updatePlayerPos(new Vector2(-5,0));
-                }
-                System.out.println(mainParty.getyCoord());
                 return true;
             }
     	});

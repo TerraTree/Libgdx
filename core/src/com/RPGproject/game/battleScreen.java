@@ -336,7 +336,6 @@ public class battleScreen extends ScreenAdapter {
 					}
 					else if (Gdx.input.isKeyPressed(Input.Keys.ENTER)){
 						String inputString = ui.getMainText().input(ui.getInputText());
-						ArrayList<String> menuContent = ui.getMenuText().getTextContent();
 						int a = tp.processing(inputString,((Character) turnOrder.get(turnCount)).getCharClass().getActions());
 						if(a==1){ //temporary placement
 						    System.out.println("typing stopped");
