@@ -121,9 +121,6 @@ public class CharClass {
             levelUpChange.set(6,character.getDefense()-oldDefense);
             character.setCurrentHealth(character.getCurrentHealth()+levelUpChange.get(5));
         }
-        //character
-        //this.se
-        //this.secondaryStat++;
         return levelUp;
     }
 }

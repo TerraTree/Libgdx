@@ -9,7 +9,9 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class alternateUI extends ScreenAdapter {
     Main game;
@@ -22,11 +24,38 @@ public class alternateUI extends ScreenAdapter {
     BitmapFont font;
     Character currentChar;
 
-    public alternateUI(Main game, Party mainParty,int uiType,ArrayList<String> textList){
+    public alternateUI(Main game, Party mainParty,int uiType,int fileID,String fileContents){
         this.game = game;
         this.charParty=mainParty;
         this.uiType=uiType;
-        this.textContent = textList;
+        try {
+            String item;
+            boolean reading = false;
+            File file = new File(fileContents + ".txt");
+            Scanner scanner = new Scanner(file);
+            while(scanner.hasNextLine()){
+                item=scanner.nextLine();
+                if(reading==false) {
+                    if (item.indexOf("id") == 0) {
+                        if ((Integer.getInteger(item.substring(item.length() - 1))) == fileID) {
+                            reading = true;
+                        }
+                    }
+                }
+                else{
+                    if(item.equals("")){
+                        reading=false;
+                    }
+                    else {
+                        textContent.add(item);
+                    }
+                }
+            }
+        }
+        catch(Exception e){
+            System.out.println("file not read, loading temp shop instead");
+        }
+        //turn fileName into textContent
     }
 
     public alternateUI(Main game, Party mainParty,int uiType){
@@ -100,7 +129,9 @@ public class alternateUI extends ScreenAdapter {
         if(uiType==1){
             for (int i = 0; i < textContent.size()-1; i+=2) {
                 font.draw(batch,textContent.get(i),50,Gdx.graphics.getHeight()-200-50*i);
-                font.draw(batch,textContent.get(i),Gdx.graphics.getWidth()/2 + 50,Gdx.graphics.getHeight()-200-50*i);
+                if(i+1<=textContent.size()-1) {
+                    font.draw(batch,textContent.get(i + 1),Gdx.graphics.getWidth() / 2 + 50,Gdx.graphics.getHeight()-200- 50*i);
+                }
             }
         }
         else if(uiType==2){

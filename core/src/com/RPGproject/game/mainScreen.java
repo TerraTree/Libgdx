@@ -146,8 +146,16 @@ public class mainScreen extends ScreenAdapter {
                     }
                     else if (Gdx.input.isKeyPressed(Input.Keys.ENTER)) {
                         String inputString = ui.getMainText().input(ui.getInputText());
-                        if(inputString.equals("characters")){
+                        if(inputString.equals("shop")){//temp location for shop, will not be accessible by command
+                            int shopID=1;
+
+                            game.setScreen(new alternateUI(game,mainParty,1,shopID,"shopContents"));
+                        }
+                        else if(inputString.equals("characters")){//view character stats
                             game.setScreen(new alternateUI(game,mainParty,2));
+                        }
+                        else if(inputString.equals("equipment")){//change equipment on characters
+                            game.setScreen(new alternateUI(game,mainParty,3));
                         }
                     }
                     else {
