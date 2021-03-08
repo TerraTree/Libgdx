@@ -8,7 +8,7 @@ public class Party {
 	private int money;
 	private Character char1;
 	private Character char2;
-	private ArrayList<String> items;
+	private ArrayList<Item> items;
 	private int xCoord;
 	private int yCoord;
 	private String mapName;
@@ -36,10 +36,10 @@ public class Party {
 	public void setChar2(Character char2) {
 		this.char2 = char2;
 	}
-	public ArrayList<String> getItems() {
+	public ArrayList<Item> getItems() {
 		return items;
 	}
-	public void setItems(ArrayList<String> items) {
+	public void setItems(ArrayList<Item> items) {
 		this.items = items;
 	}
 

@@ -261,7 +261,7 @@ public class startScreen extends ScreenAdapter {
                         }
                     }
                     if (fileFlag == 6) {
-                        charParty.getItems().add(text);
+                        //charParty.getItems().add(text);
                     }
                     if (text.indexOf("/") == 0) {
                         fileFlag++;

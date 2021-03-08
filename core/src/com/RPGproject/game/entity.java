@@ -11,8 +11,8 @@ public class entity {
 
     private String icon;
     private Sprite sprite;
-    private int maxHealth;
-    private int currentHealth; //health, pretty self explanatory
+    private int maxHealth; //max health, can't be healed over that amount
+    private int currentHealth; //current health, pretty self explanatory
     private int defense; //reduces damage taken
     private int strength; //increases damage of attacks
     private int dexterity; //increases armour, hit chance
@@ -22,6 +22,7 @@ public class entity {
     private int exp;
     private boolean active;
     private ArrayList<String> actions;
+    private ArrayList<Consumable> statusEffects;
 
     public ArrayList<String> getActions() {
         return actions;
@@ -146,4 +147,12 @@ public class entity {
 	public void setSprite(Sprite sprite) {
 		this.sprite = sprite;
 	}
+
+    public ArrayList<Consumable> getStatusEffects() {
+        return statusEffects;
+    }
+
+    public void setStatusEffects(ArrayList<Consumable> statusEffects) {
+        this.statusEffects = statusEffects;
+    }
 }

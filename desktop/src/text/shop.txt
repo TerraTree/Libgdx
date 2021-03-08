@@ -1,0 +1,53 @@
+//shop contents
+statOrder=[defense,attack,health,strength,dexterity,agility,wisdom,intelligence]
+id=1
+Potion: 10
+{consumable
+0
+player
+[0,0,20]}
+Big Potion: 200 
+{consumable
+0
+player
+[0,0,40]}
+Iron Chestplate: 500 
+{equipment
+chestplate
+[6]}
+Iron Helmet: 400
+{equipment
+helmet
+[4]}
+Iron Leggings: 400 {
+equipment
+leggings
+[4]}
+Bronze Chestplate: 1000
+{equipment
+chestplate
+[13]}
+Bronze Helmet: 800 
+{equipment
+helmet
+[7]}
+Bronze Leggings: 800 
+{equipment
+leggings
+[8]}
+Magic Hat: 1200 
+{equipment
+helmet
+[2,0,2,0,0,1,3,3]}
+Magic Tunic: 900 
+{equipment
+chestplate
+[3,0,3,0,0,1,4,5]}
+Magic Trousers: 1000 
+{equipment
+chestplate
+[3,0,0,0,0,0,2,2]}
+longsword: 400 
+{weapon
+sword
+[0,6]}

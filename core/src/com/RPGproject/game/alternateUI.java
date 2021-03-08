@@ -17,43 +17,85 @@ public class alternateUI extends ScreenAdapter {
     Main game;
     Party charParty;
     int uiType;
-    ArrayList<String> textContent;
+    ArrayList<Item> itemContent;
+    ArrayList<Item> active;
     ArrayList<String> buttons;
     ShapeRenderer sr;
     SpriteBatch batch;
     BitmapFont font;
     Character currentChar;
+    int buying;
 
     public alternateUI(Main game, Party mainParty,int uiType,int fileID,String fileContents){
         this.game = game;
         this.charParty=mainParty;
         this.uiType=uiType;
-        try {
-            String item;
-            boolean reading = false;
-            File file = new File(fileContents + ".txt");
-            Scanner scanner = new Scanner(file);
-            while(scanner.hasNextLine()){
-                item=scanner.nextLine();
-                if(reading==false) {
-                    if (item.indexOf("id") == 0) {
-                        if ((Integer.getInteger(item.substring(item.length() - 1))) == fileID) {
-                            reading = true;
+        if(uiType==1) {
+            itemContent=new ArrayList<>();
+            try {
+                String item;
+                boolean reading = false;
+                File file = new File(fileContents + ".txt");
+                Scanner scanner = new Scanner(file);
+                while (scanner.hasNextLine()) {
+                    item = scanner.nextLine();
+                    if(reading==true) {
+                        String target="";
+                        int duration=0;
+                        String equipmentPosition="";
+                        String itemName = item.substring(0, item.indexOf(":") - 1);
+                        item = item.substring(item.indexOf(":") + 1);
+                        int cost = Integer.parseInt(item.substring(0, item.indexOf(" ")));
+                        item = scanner.nextLine();
+                        String itemType = item.substring(item.indexOf("{"));
+                        item = scanner.nextLine();
+                        if (itemType == "consumable") {
+                            duration = Integer.parseInt(item);
+                            item=scanner.nextLine();
+                            target = item;
+                        } else if (itemType == "equipment") {
+                            equipmentPosition = item;
+                        }
+                        item = scanner.nextLine();
+                        String value = "";
+                        ArrayList<Integer> stats = new ArrayList<>();
+                        for (int i = 0; i < item.length()-2; i++) {
+                            String chr = String.valueOf(item.charAt(i));
+                            if (!chr.equals("[")) {
+                                if (chr.equals(",")) {
+                                    stats.add(Integer.parseInt(value));
+                                    value = "";
+                                }
+                            } else {
+                                value += chr;
+                            }
+                        }
+                        if(itemType=="consumable"){
+                            itemContent.add(new Consumable(itemName,stats,target,duration,cost));
+                        }
+                        else if(itemType=="equipment"){
+                            itemContent.add(new Equipment(equipmentPosition,itemType,itemName,stats,cost));
+                        }
+
+                    }
+                    if (reading == false) {
+                        if (item.indexOf("id") == 0) {
+                            if ((Integer.getInteger(item.substring(item.length() - 1))) == fileID) {
+                                reading = true;
+                            }
                         }
                     }
                 }
-                else{
-                    if(item.equals("")){
-                        reading=false;
-                    }
-                    else {
-                        textContent.add(item);
-                    }
-                }
+            } catch (Exception e) {
+                System.out.println("file not read, loading temp shop instead");
+                ArrayList<Integer> stat = new ArrayList<>();
+                stat.add(0);
+                stat.add(0);
+                stat.add(20);
+                itemContent.add(new Consumable("Potion",stat,"player",0,10));
+
             }
-        }
-        catch(Exception e){
-            System.out.println("file not read, loading temp shop instead");
+            buying=0;
         }
         //turn fileName into textContent
     }
@@ -94,6 +136,30 @@ public class alternateUI extends ScreenAdapter {
                     index=(screenX-10)/((Gdx.graphics.getWidth()-20)/3);
                     System.out.println(index);
                 }
+                if(uiType==1){
+                    if(index == 0){
+                        buying=1;
+                    }
+                    else if(index==1){
+                        buying=2;
+                    }
+                    else if(index == 2){
+                        game.setScreen(new mainScreen(game,charParty));
+                    }
+                    int x=0;
+                    for (int i = 0; i < active.size()-1; i++) {
+                        if(screenY>=Gdx.graphics.getHeight() - 300 - 50 * i && screenY<=Gdx.graphics.getHeight()-200-(50*i)){
+                            if((screenX>=50 && screenX<=650 && i%2==0)||(screenX>=Gdx.graphics.getWidth()/2 +50 && screenX<=Gdx.graphics.getWidth()/2 +650)){
+                                if(buying==1){
+                                    charParty.getItems()
+                                }
+                            }
+                            else if(screenX>=Gdx.graphics.getWidth()/2 +50 && screenX<=Gdx.graphics.getWidth()/2 +650){
+
+                            }
+                        }
+                    }
+                }
                 if(uiType==2) {
                     if (index == 0) {
                         currentChar=charParty.getChar1();
@@ -127,10 +193,29 @@ public class alternateUI extends ScreenAdapter {
         }
 
         if(uiType==1){
-            for (int i = 0; i < textContent.size()-1; i+=2) {
-                font.draw(batch,textContent.get(i),50,Gdx.graphics.getHeight()-200-50*i);
-                if(i+1<=textContent.size()-1) {
-                    font.draw(batch,textContent.get(i + 1),Gdx.graphics.getWidth() / 2 + 50,Gdx.graphics.getHeight()-200- 50*i);
+
+            // active=null;
+            if(buying==1) {
+                active = itemContent;
+            }
+            else if(buying==2){
+                active = charParty.getItems();
+            }
+            if(active!=null) {
+                System.out.println("running");
+                for (int i = 0; i < Math.max(active.size() -1, 2); i += 2) {
+                    if(active.size()!=0) {
+                        sr.begin(ShapeRenderer.ShapeType.Filled);
+                        sr.setColor(Color.WHITE);
+                        sr.rect(50, Gdx.graphics.getHeight() - 300 - 50 * i, 600, 100);
+                        sr.end();
+                        batch.begin();
+                        font.draw(batch, active.get(i).getName() + ": " + active.get(i).getCost() + "gp", 50, Gdx.graphics.getHeight() - 200 - 50 * i);
+                        if (i + 1 <= active.size() - 1) {
+                            font.draw(batch, active.get(i + 1).getName(), Gdx.graphics.getWidth() / 2 + 50, Gdx.graphics.getHeight() - 200 - 50 * i);
+                        }
+                        batch.end();
+                    }
                 }
             }
         }

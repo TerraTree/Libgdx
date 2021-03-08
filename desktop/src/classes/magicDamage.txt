@@ -1,0 +1,9 @@
+class:healer
+primary:Intelligence
+secondary:Wisdom
+abilities:
+attack
+magic
+items
+run
+magicAbilities:
