@@ -49,11 +49,11 @@ public class alternateUI extends ScreenAdapter {
                         item = scanner.nextLine();
                         String itemType = item.substring(item.indexOf("{"));
                         item = scanner.nextLine();
-                        if (itemType == "consumable") {
+                        if (itemType.equals("consumable")) {
                             duration = Integer.parseInt(item);
                             item=scanner.nextLine();
                             target = item;
-                        } else if (itemType == "equipment") {
+                        } else if (itemType.equals("equipment")) {
                             equipmentPosition = item;
                         }
                         item = scanner.nextLine();
@@ -71,7 +71,7 @@ public class alternateUI extends ScreenAdapter {
                             }
                         }
                         if(itemType=="consumable"){
-                            itemContent.add(new Consumable(itemName,stats,target,duration,cost));
+                            itemContent.add(new Consumable(itemName,itemType,stats,target,duration,cost));
                         }
                         else if(itemType=="equipment"){
                             itemContent.add(new Equipment(equipmentPosition,itemType,itemName,stats,cost));
@@ -92,7 +92,7 @@ public class alternateUI extends ScreenAdapter {
                 stat.add(0);
                 stat.add(0);
                 stat.add(20);
-                itemContent.add(new Consumable("Potion",stat,"player",0,10));
+                itemContent.add(new Consumable("Potion","consumable",stat,"player",0,10));
 
             }
             buying=0;
@@ -138,20 +138,38 @@ public class alternateUI extends ScreenAdapter {
                 }
                 if(uiType==1){
                     if(index == 0){
-                        buying=1;
+                        active = itemContent;
                     }
                     else if(index==1){
-                        buying=2;
+                        active = charParty.getItems();
                     }
                     else if(index == 2){
                         game.setScreen(new mainScreen(game,charParty));
                     }
                     int x=0;
-                    for (int i = 0; i < active.size()-1; i++) {
+                    System.out.println("size: "+active);
+                    for (int i = 0; i < active.size(); i++) {
                         if(screenY>=Gdx.graphics.getHeight() - 300 - 50 * i && screenY<=Gdx.graphics.getHeight()-200-(50*i)){
                             if((screenX>=50 && screenX<=650 && i%2==0)||(screenX>=Gdx.graphics.getWidth()/2 +50 && screenX<=Gdx.graphics.getWidth()/2 +650)){
-                                if(buying==1){
-                                    charParty.getItems()
+                                if(active==itemContent){
+                                    boolean buy = false;
+                                    for (Item j:charParty.getItems()) {
+                                        if(active.get(i)==j){
+                                            j.setQuantity(j.getQuantity()+1);
+                                            buy=true;
+                                            System.out.println(active.get(i).getQuantity());
+                                        }
+                                    }
+                                    if(buy==false){
+                                        charParty.getItems().add(active.get(i));
+                                    }
+                                }
+                                else if(active==charParty.getItems()){
+                                    active.get(i).setQuantity(active.get(i).getQuantity()-1);
+                                    if(active.get(i).getQuantity()==0){
+                                        active.remove(i);
+                                        break;
+                                    }
                                 }
                             }
                             else if(screenX>=Gdx.graphics.getWidth()/2 +50 && screenX<=Gdx.graphics.getWidth()/2 +650){
@@ -193,16 +211,7 @@ public class alternateUI extends ScreenAdapter {
         }
 
         if(uiType==1){
-
-            // active=null;
-            if(buying==1) {
-                active = itemContent;
-            }
-            else if(buying==2){
-                active = charParty.getItems();
-            }
             if(active!=null) {
-                System.out.println("running");
                 for (int i = 0; i < Math.max(active.size() -1, 2); i += 2) {
                     if(active.size()!=0) {
                         sr.begin(ShapeRenderer.ShapeType.Filled);
@@ -210,9 +219,22 @@ public class alternateUI extends ScreenAdapter {
                         sr.rect(50, Gdx.graphics.getHeight() - 300 - 50 * i, 600, 100);
                         sr.end();
                         batch.begin();
-                        font.draw(batch, active.get(i).getName() + ": " + active.get(i).getCost() + "gp", 50, Gdx.graphics.getHeight() - 200 - 50 * i);
+                        String str;
+                        if(active==charParty.getItems()){
+                            str = active.get(i).getQuantity()+"x "+active.get(i).getName() + ": " + active.get(i).getCost() + "gp";
+                        }
+                        else{
+                            str = active.get(i).getName() + ": " + active.get(i).getCost() + "gp";
+                        }
+                        font.draw(batch, str, 50, Gdx.graphics.getHeight() - 200 - 50 * i);
                         if (i + 1 <= active.size() - 1) {
-                            font.draw(batch, active.get(i + 1).getName(), Gdx.graphics.getWidth() / 2 + 50, Gdx.graphics.getHeight() - 200 - 50 * i);
+                            if(active==charParty.getItems()){
+                                str = active.get(i+1).getQuantity()+"x "+active.get(i+1).getName() + ": " + active.get(i+1).getCost() + "gp";
+                            }
+                            else{
+                                str = active.get(i+1).getName() + ": " + active.get(i+1).getCost() + "gp";
+                            }
+                            font.draw(batch, str, Gdx.graphics.getWidth() / 2 + 50, Gdx.graphics.getHeight() - 200 - 50 * i);
                         }
                         batch.end();
                     }

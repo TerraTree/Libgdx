@@ -55,13 +55,17 @@ public class Item {
     }
 
     public void changeStats(entity target, ArrayList<Integer> statChanges){
-        target.setDefense(target.getDefense()+statChanges.get(0));
-        //target.setDamage(target.getDefense()+statChanges.get(1));
-        target.setMaxHealth(target.getDefense()+statChanges.get(2));
-        target.setStrength(target.getDefense()+statChanges.get(3));
-        target.setDexterity(target.getDefense()+statChanges.get(4));
-        target.setAgility(target.getDefense()+statChanges.get(5));
-        target.setWisdom(target.getDefense()+statChanges.get(6));
-        target.setIntelligence(target.getDefense()+statChanges.get(7));
+        try {
+            target.setDefense(target.getDefense() + statChanges.get(0));
+            //target.setDamage(target.getDefense()+statChanges.get(1));
+            target.setCurrentHealth(Math.min(target.getCurrentHealth() + statChanges.get(2),target.getMaxHealth()));
+            target.setStrength(target.getStrength() + statChanges.get(3));
+            target.setDexterity(target.getDexterity() + statChanges.get(4));
+            target.setAgility(target.getAgility() + statChanges.get(5));
+            target.setWisdom(target.getWisdom() + statChanges.get(6));
+            target.setIntelligence(target.getIntelligence() + statChanges.get(7));
+        }
+        catch(Exception e){
+        }
     }
 }

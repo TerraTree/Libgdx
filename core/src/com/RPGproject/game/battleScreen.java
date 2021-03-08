@@ -255,31 +255,28 @@ public class battleScreen extends ScreenAdapter {
             		if(keycode==Input.Keys.ENTER ) {
             			if(ui.getMenuText().getTextPointer().active){
             				ui.getMenuText().getTextPointer().active=false;
-
-            				Item item = mainParty.getItems().get(ui.getMenuText().getTextPointer().yOffset);
+            				item = mainParty.getItems().get(ui.getMenuText().getTextPointer().yOffset);
+                            System.out.println(item.getQuantity());
             				item.setQuantity(item.getQuantity()-1);
             				if(item.getQuantity()==0){
             					mainParty.getItems().remove(ui.getMenuText().getTextPointer().yOffset);
 							}
 							ui.getMenuText().clear();
-            				if(item.getType()=="consumable"){
+
+            				if(item.getType().equals("consumable")){
             					Consumable usedItem= (Consumable) item;
             					items=true;
             					selector.active=true;
-            					if(usedItem.getTarget()=="enemy"){
+            					if(usedItem.getTarget().equals("enemy")){
 									selector.setX(ui.getScreenWidth()-offsetX-200);
 								}
-            					else if(usedItem.getTarget()=="player"){
+            					else if(usedItem.getTarget().equals("player")){
             						selector.setX(Gdx.graphics.getWidth()/6);
 								}
 							}
-							if(item.equals("Potion")){
-								items=true;
-								selector.active=true;
-								selector.setX(Gdx.graphics.getWidth()/6);
-							}
 							else{
 								endTurn();
+
 							}
 						}
             			else if(attacking){
@@ -304,7 +301,9 @@ public class battleScreen extends ScreenAdapter {
             			else if(items){
 							entity target=null;
 							Consumable usedItem = (Consumable) item;
-            				if(usedItem.getTarget()=="player") {
+							System.out.println(usedItem);
+							System.out.println(usedItem.getTarget());
+            				if(usedItem.getTarget().equals("player")) {
 								 target = playerGrid.get(-selector.yOffset / 100).get(selector.xOffset / 100);
 								//currentChar.setCurrentHealth(Math.min(currentChar.getCurrentHealth() + 50, currentChar.getMaxHealth()));
 							}

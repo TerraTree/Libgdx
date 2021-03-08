@@ -31,8 +31,9 @@ public class Consumable extends Item{
         this.duration = duration;
     }
 
-    public Consumable(String name, ArrayList<Integer> statChanges, String target, int duration,int cost){
+    public Consumable(String name,String type, ArrayList<Integer> statChanges, String target, int duration,int cost){
         this.setName(name);
+        this.setType(type);
         this.statChanges=statChanges;
         this.target = target;
         this.duration = duration;
