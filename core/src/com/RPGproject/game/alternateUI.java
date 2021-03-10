@@ -35,19 +35,24 @@ public class alternateUI extends ScreenAdapter {
             try {
                 String item;
                 boolean reading = false;
-                File file = new File(fileContents + ".txt");
+                File file = new File("text/"+fileContents + ".txt");
                 Scanner scanner = new Scanner(file);
+
                 while (scanner.hasNextLine()) {
                     item = scanner.nextLine();
-                    if(reading==true) {
+                    System.out.println("item:" + item);
+                    if(reading) {
                         String target="";
                         int duration=0;
                         String equipmentPosition="";
-                        String itemName = item.substring(0, item.indexOf(":") - 1);
-                        item = item.substring(item.indexOf(":") + 1);
-                        int cost = Integer.parseInt(item.substring(0, item.indexOf(" ")));
+                        String itemName = item.substring(0, item.indexOf(":"));
+                        item = item.substring(item.indexOf(":") + 2);
+                        System.out.println(item);
+                        int cost = Integer.parseInt(item);
+                        System.out.println(cost);
                         item = scanner.nextLine();
-                        String itemType = item.substring(item.indexOf("{"));
+                        String itemType = item.substring(item.indexOf("{")+1);
+
                         item = scanner.nextLine();
                         if (itemType.equals("consumable")) {
                             duration = Integer.parseInt(item);
@@ -59,34 +64,40 @@ public class alternateUI extends ScreenAdapter {
                         item = scanner.nextLine();
                         String value = "";
                         ArrayList<Integer> stats = new ArrayList<>();
-                        for (int i = 0; i < item.length()-2; i++) {
+                        System.out.println(item);
+                        for (int i = 0; i < Math.max(0,item.length()-1); i++) {
+                            System.out.println(i);
                             String chr = String.valueOf(item.charAt(i));
                             if (!chr.equals("[")) {
-                                if (chr.equals(",")) {
+                                if (chr.equals(",") || chr.equals("]")) {
                                     stats.add(Integer.parseInt(value));
                                     value = "";
                                 }
-                            } else {
-                                value += chr;
+                                else {
+                                    value += chr;
+                                }
                             }
                         }
-                        if(itemType=="consumable"){
+                        if(itemType.equals("consumable")){
                             itemContent.add(new Consumable(itemName,itemType,stats,target,duration,cost));
+                            System.out.println("yoooo");
                         }
-                        else if(itemType=="equipment"){
+                        else if(itemType.equals("equipment")){
                             itemContent.add(new Equipment(equipmentPosition,itemType,itemName,stats,cost));
                         }
 
                     }
-                    if (reading == false) {
+                    else if (!reading) {
                         if (item.indexOf("id") == 0) {
-                            if ((Integer.getInteger(item.substring(item.length() - 1))) == fileID) {
+                            if (Integer.parseInt(item.substring(item.length() - 1))==fileID) {
                                 reading = true;
                             }
                         }
                     }
                 }
+                System.out.println("size"+itemContent.size());
             } catch (Exception e) {
+                System.out.println(e);
                 System.out.println("file not read, loading temp shop instead");
                 ArrayList<Integer> stat = new ArrayList<>();
                 stat.add(0);
@@ -113,6 +124,7 @@ public class alternateUI extends ScreenAdapter {
         font=new BitmapFont();
         font.getData().setScale(4);
         font.setColor(Color.BLACK);
+
         if(uiType==1){ //shop ui
             buttons.add("Buy");
             buttons.add("Sell");
@@ -178,7 +190,7 @@ public class alternateUI extends ScreenAdapter {
                         }
                     }
                 }
-                if(uiType==2) {
+                if(uiType==2 || uiType==3) {
                     if (index == 0) {
                         currentChar=charParty.getChar1();
                     }
@@ -210,7 +222,7 @@ public class alternateUI extends ScreenAdapter {
             counter++;
         }
 
-        if(uiType==1){
+        if(uiType==1){ //renders shop ui
             if(active!=null) {
                 for (int i = 0; i < Math.max(active.size() -1, 2); i += 2) {
                     if(active.size()!=0) {
@@ -241,7 +253,7 @@ public class alternateUI extends ScreenAdapter {
                 }
             }
         }
-        else if(uiType==2){
+        else if(uiType==2){//renders character stat ui
             if(currentChar!=null){
                 font.getData().setScale(2);
                 font.setColor(Color.WHITE);
@@ -260,6 +272,9 @@ public class alternateUI extends ScreenAdapter {
 //
 //                }
             }
+        }
+        else if(uiType==3){//renders equipment ui
+
         }
     }
 }
