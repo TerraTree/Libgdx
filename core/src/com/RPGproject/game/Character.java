@@ -9,10 +9,11 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import java.awt.*;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class Character extends entity{
-    private ArrayList<Equipment> charEquip; //order is: main hand, off hand, helmet, chestplate,leggings
+    private ArrayList<Equipment> charEquip; //order is: weapon, off hand, helmet, chestplate,leggings
     private int level;
     private CharClass charClass;
     private String weakness;
@@ -20,6 +21,14 @@ public class Character extends entity{
     private BitmapFont font;
     private Point battlePos;
 
+    public ArrayList<Equipment> getCharEquip(){
+    	return charEquip;
+    }
+    
+    public void setCharEquip(ArrayList<Equipment> charEquip) {
+    	this.charEquip=charEquip;
+    }
+    
     public Point getBattlePos() {
         return battlePos;
     }
@@ -54,11 +63,16 @@ public class Character extends entity{
         this.setAgility(agi);
         this.setWisdom(wis);
         this.setIntelligence(intel);
-        //this.setMaxHealth(level * 2);
-        //this.setCurrentHealth(this.getMaxHealth());
+        this.setCharEquip(new ArrayList<Equipment>());
+        //int[] array = {0,2};
+		this.getCharEquip().add(new Equipment("Fists","weapon","Bare Hands",new ArrayList<Integer>(),0));
+		this.getCharEquip().add(new Equipment("off hand",null,"empty",new ArrayList<Integer>(),0));
+		this.getCharEquip().add(new Equipment("helmet","equipment","Cloth Cap",new ArrayList<Integer>(),5));
+		this.getCharEquip().add(new Equipment("chestplate","equipment","Cloth Shirt",new ArrayList<Integer>(),5));
+		this.getCharEquip().add(new Equipment("leggings","equipment","Cloth Trousers",new ArrayList<Integer>(),5));
         int equipDefense=0;
         for (Equipment e:charEquip) {
-            if(e!=null) {
+            if(e.getStats().size()!=0) {
                 equipDefense += e.getStats().get(0);
             }
         }
@@ -107,7 +121,7 @@ public class Character extends entity{
         int equipDefense=0;
         int equipHealth=0;
         for (Equipment e:charEquip) {
-            if(e!=null) {
+            if(e.getStats().size()!=0) {
                 equipDefense += e.getStats().get(0);
                 equipHealth+=e.getStats().get(2);
             }

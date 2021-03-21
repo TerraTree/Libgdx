@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -108,6 +109,9 @@ public class alternateUI extends ScreenAdapter {
             }
             buying=0;
         }
+        else if(uiType==3) {
+        	
+        }
         //turn fileName into textContent
     }
 
@@ -129,7 +133,7 @@ public class alternateUI extends ScreenAdapter {
             buttons.add("Buy");
             buttons.add("Sell");
         }
-        if(uiType==2){//viewCharacters
+        if(uiType==2 || uiType==3){//viewCharacters
             buttons.add(charParty.getChar1().getName());
             buttons.add(charParty.getChar2().getName());
         }
@@ -159,17 +163,19 @@ public class alternateUI extends ScreenAdapter {
                         game.setScreen(new mainScreen(game,charParty));
                     }
                     int x=0;
-                    System.out.println("size: "+active);
                     for (int i = 0; i < active.size(); i++) {
-                        if(screenY>=Gdx.graphics.getHeight() - 300 - 50 * i && screenY<=Gdx.graphics.getHeight()-200-(50*i)){
-                            if((screenX>=50 && screenX<=650 && i%2==0)||(screenX>=Gdx.graphics.getWidth()/2 +50 && screenX<=Gdx.graphics.getWidth()/2 +650)){
+                    	int height = i;
+                    	if(i%2==1) {
+                    		height = i-1;
+                    	}
+                        if(screenY>=Gdx.graphics.getHeight() - 300 - 60 * height && screenY<=Gdx.graphics.getHeight()-200-(60*height)){
+                            if((screenX>=50 && screenX<=650 && i%2==0)||(screenX>=Gdx.graphics.getWidth()/2 +50 && screenX<=Gdx.graphics.getWidth()/2 +650 && i%2==1)){
                                 if(active==itemContent){
                                     boolean buy = false;
                                     for (Item j:charParty.getItems()) {
-                                        if(active.get(i)==j){
+                                        if(active.get(i).getName().equals(j.getName())){
                                             j.setQuantity(j.getQuantity()+1);
                                             buy=true;
-                                            System.out.println(active.get(i).getQuantity());
                                         }
                                     }
                                     if(buy==false){
@@ -179,6 +185,7 @@ public class alternateUI extends ScreenAdapter {
                                 else if(active==charParty.getItems()){
                                     active.get(i).setQuantity(active.get(i).getQuantity()-1);
                                     if(active.get(i).getQuantity()==0){
+                                    	active.get(i).setQuantity(1);
                                         active.remove(i);
                                         break;
                                     }
@@ -203,6 +210,17 @@ public class alternateUI extends ScreenAdapter {
                 }
                 return false;
             }
+
+            @Override
+            public boolean mouseMoved(int screenX, int screenY) {
+                screenY=Gdx.graphics.getHeight()-screenY;
+                if(currentChar!=null) {
+                    for (int i = 0; i < currentChar.getCharEquip().size(); i++) {
+                        if(screenX>=50&&screenX<=650 && screenY){}
+                    }
+                }
+                return true;
+            }
         });
     }
 
@@ -224,11 +242,11 @@ public class alternateUI extends ScreenAdapter {
 
         if(uiType==1){ //renders shop ui
             if(active!=null) {
-                for (int i = 0; i < Math.max(active.size() -1, 2); i += 2) {
+                for (int i = 0; i < Math.max(active.size(), 2); i += 2) {
                     if(active.size()!=0) {
                         sr.begin(ShapeRenderer.ShapeType.Filled);
                         sr.setColor(Color.WHITE);
-                        sr.rect(50, Gdx.graphics.getHeight() - 300 - 50 * i, 600, 100);
+                        sr.rect(50, Gdx.graphics.getHeight() - 300 - 60 * i, 600, 100);
                         sr.end();
                         batch.begin();
                         String str;
@@ -238,7 +256,8 @@ public class alternateUI extends ScreenAdapter {
                         else{
                             str = active.get(i).getName() + ": " + active.get(i).getCost() + "gp";
                         }
-                        font.draw(batch, str, 50, Gdx.graphics.getHeight() - 200 - 50 * i);
+                        font.draw(batch, str, 50, Gdx.graphics.getHeight() - 200 - 60 * i);
+                        batch.end();
                         if (i + 1 <= active.size() - 1) {
                             if(active==charParty.getItems()){
                                 str = active.get(i+1).getQuantity()+"x "+active.get(i+1).getName() + ": " + active.get(i+1).getCost() + "gp";
@@ -246,9 +265,15 @@ public class alternateUI extends ScreenAdapter {
                             else{
                                 str = active.get(i+1).getName() + ": " + active.get(i+1).getCost() + "gp";
                             }
-                            font.draw(batch, str, Gdx.graphics.getWidth() / 2 + 50, Gdx.graphics.getHeight() - 200 - 50 * i);
+                            sr.begin(ShapeType.Filled);
+                            sr.setColor(Color.WHITE);
+                            sr.rect(Gdx.graphics.getWidth()/2+50, Gdx.graphics.getHeight() - 300 -60*i, 600, 100);
+                            sr.end();
+                            batch.begin();
+                            font.draw(batch, str, Gdx.graphics.getWidth() / 2 + 50, Gdx.graphics.getHeight() - 200 - 60 * i);
+                            batch.end();
                         }
-                        batch.end();
+                        
                     }
                 }
             }
@@ -274,7 +299,21 @@ public class alternateUI extends ScreenAdapter {
             }
         }
         else if(uiType==3){//renders equipment ui
-
+        	if(currentChar!=null) {
+        	int i=0;
+        	System.out.println(currentChar.getCharEquip());
+        	for(Equipment e:currentChar.getCharEquip()) {
+        		sr.begin(ShapeType.Filled);
+        		sr.rect(50, Gdx.graphics.getHeight() - 300 - 120*i, Gdx.graphics.getWidth()/2 -50, 100);
+        		sr.end();
+        		if(e!=null) {
+        		batch.begin();
+        		font.draw(batch, e.getEquipmentPosition()+": "+e.getName(), 50, Gdx.graphics.getHeight()-250 - 120*i);
+        		batch.end();
+        		}
+        		i++;
+        	}
+        }
         }
     }
 }

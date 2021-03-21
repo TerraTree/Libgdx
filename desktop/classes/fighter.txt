@@ -1,0 +1,7 @@
+class:fighter
+primary:strength
+secondary:dexterity
+abilities:
+attack
+items
+run
