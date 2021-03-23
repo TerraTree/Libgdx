@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Item {
 
     private String name;
-    private String type;
+    private String type; //type of item
     private int quantity;
     private boolean magic;
     private int cost;

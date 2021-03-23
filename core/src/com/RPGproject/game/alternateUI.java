@@ -25,7 +25,10 @@ public class alternateUI extends ScreenAdapter {
     SpriteBatch batch;
     BitmapFont font;
     Character currentChar;
+    Equipment activeEquip;
+    //ArrayList<Equipment> viewedEquipment;
     int buying;
+    int index;
 
     public alternateUI(Main game, Party mainParty,int uiType,int fileID,String fileContents){
         this.game = game;
@@ -122,13 +125,14 @@ public class alternateUI extends ScreenAdapter {
     }
 
     public void show(){
+        index=-1;
         buttons = new ArrayList<>();
         sr = new ShapeRenderer();
         batch = new SpriteBatch();
         font=new BitmapFont();
         font.getData().setScale(4);
         font.setColor(Color.BLACK);
-
+        active = new ArrayList<>();
         if(uiType==1){ //shop ui
             buttons.add("Buy");
             buttons.add("Sell");
@@ -197,15 +201,95 @@ public class alternateUI extends ScreenAdapter {
                         }
                     }
                 }
-                if(uiType==2 || uiType==3) {
+                else if(uiType==2 || uiType==3) {
                     if (index == 0) {
                         currentChar=charParty.getChar1();
+                        active=new ArrayList<>();
+                        for (Equipment e:currentChar.getCharEquip()) {
+                            active.add(e);
+                        }
                     }
                     else if(index == 1){
                         currentChar=charParty.getChar2();
+                        active=new ArrayList<>();
+                        for (Equipment e:currentChar.getCharEquip()) {
+                            active.add(e);
+                        }
                     }
                     else if(index == 2){
                         game.setScreen(new mainScreen(game,charParty));
+                    }
+                    if(uiType==3){
+                        screenY = Gdx.graphics.getHeight() - screenY;
+                        screenY = screenY - 180;
+                        if (screenX >= 50 && screenX <= 650) {
+                            System.out.println(screenY % 120);
+                            if (screenY % 120 >= 20) {
+                                System.out.println("yo2");
+                                index = screenY / 120;
+                                ArrayList<Item> swapEquip = new ArrayList<>();
+                                if(index<active.size() && index!=7) {
+                                    if(!active.equals(currentChar.getCharEquip())){
+                                        for (Equipment e:currentChar.getCharEquip()) {
+                                            if(e.getEquipmentPosition().equals(((Equipment) active.get(index)).getEquipmentPosition())){
+                                                Equipment newEquip = (Equipment) active.get(index);
+                                                newEquip.setQuantity(1);
+                                                int i = charParty.getItems().indexOf(active.get(index));
+                                                charParty.getItems().get(i).setQuantity(charParty.getItems().get(i).getQuantity()-1);
+                                                if(charParty.getItems().get(i).getQuantity()==0){
+                                                    charParty.getItems().remove(i);
+                                                }
+                                                charParty.getItems().add(e);
+                                                currentChar.getCharEquip().set(currentChar.getCharEquip().indexOf(e),newEquip);
+                                                active=new ArrayList<>();
+                                                for (Equipment e2:currentChar.getCharEquip()) {
+                                                    active.add(e2);
+                                                }
+                                            }
+                                        }
+
+                                    }
+                                    else {
+                                        for (Item i : charParty.getItems()) {
+                                            if (i.getType().equals(currentChar.getCharEquip().get(index).getType())) {
+                                                Equipment e = currentChar.getCharEquip().get(index);
+                                                if (((Equipment) i).getEquipmentPosition().equals(e.getEquipmentPosition())) {
+                                                    swapEquip.add(i);
+                                                }
+
+                                            }
+                                        }
+                                        active = swapEquip;
+                                    }
+                                }
+                                else if(index==active.size()){
+                                    if(active.equals(currentChar.getCharEquip())){
+                                        currentChar=null;
+                                    }
+                                    else{
+                                        active=new ArrayList<>();
+                                        for (Equipment e:currentChar.getCharEquip()) {
+                                            active.add(e);
+                                        }
+                                    }
+                                }
+                                else if(active.size()>6 && index==7){
+                                    if(screenX<= 50+ Gdx.graphics.getWidth()/4 - 10){
+                                    }
+                                    else if(screenX>50+Gdx.graphics.getWidth()/4 +10){
+                                        if(active.equals(currentChar.getCharEquip())){
+                                            currentChar=null;
+                                        }
+                                        else{
+                                            active=new ArrayList<>();
+                                            for (Equipment e:currentChar.getCharEquip()) {
+                                                active.add(e);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
                 return false;
@@ -213,10 +297,28 @@ public class alternateUI extends ScreenAdapter {
 
             @Override
             public boolean mouseMoved(int screenX, int screenY) {
-                screenY=Gdx.graphics.getHeight()-screenY;
-                if(currentChar!=null) {
-                    for (int i = 0; i < currentChar.getCharEquip().size(); i++) {
-                        if(screenX>=50&&screenX<=650 && screenY){}
+                if (uiType == 3) {
+                    screenY = screenY - 180;
+                    if (currentChar != null) {
+                        int index;
+                        for (int i = 0; i < active.size(); i++) {
+                            if (screenX >= 50 && screenX <= 650) {
+                                if (screenY % 120 >= 20) {
+                                    index = screenY / 120;
+                                    if(index>=active.size()){
+                                        activeEquip=null;
+                                    }
+                                    else if(index<active.size()){
+                                        activeEquip = (Equipment) active.get(index);
+                                    }
+                                    else{
+                                        activeEquip = null;
+                                    }
+                                } else {
+                                    activeEquip = null;
+                                }
+                            }
+                        }
                     }
                 }
                 return true;
@@ -301,18 +403,61 @@ public class alternateUI extends ScreenAdapter {
         else if(uiType==3){//renders equipment ui
         	if(currentChar!=null) {
         	int i=0;
-        	System.out.println(currentChar.getCharEquip());
-        	for(Equipment e:currentChar.getCharEquip()) {
-        		sr.begin(ShapeType.Filled);
-        		sr.rect(50, Gdx.graphics.getHeight() - 300 - 120*i, Gdx.graphics.getWidth()/2 -50, 100);
-        		sr.end();
-        		if(e!=null) {
-        		batch.begin();
-        		font.draw(batch, e.getEquipmentPosition()+": "+e.getName(), 50, Gdx.graphics.getHeight()-250 - 120*i);
-        		batch.end();
-        		}
+        	if(activeEquip!=null){
+        	    Equipment e =  activeEquip;
+        	    batch.begin();
+        	    font.setColor(Color.WHITE);
+        	    try {
+        	        int y=Gdx.graphics.getHeight()-160;
+                    font.draw(batch, e.getName(), Gdx.graphics.getWidth() / 2 + 100, y);
+                    font.draw(batch, e.getEquipmentPosition(), Gdx.graphics.getWidth() / 2 + 100, y-50);
+                    font.draw(batch, e.getType(), Gdx.graphics.getWidth() / 2 + 100, y-100);
+                    font.draw(batch, "Defense " + e.getStats().get(0), Gdx.graphics.getWidth() / 2 + 100, y-150);
+                    font.draw(batch, "Attack " + e.getStats().get(1), Gdx.graphics.getWidth() / 2 + 100, y-200);
+                    font.draw(batch, "Health " + e.getStats().get(2), Gdx.graphics.getWidth() / 2 + 100, y-250);
+                    font.draw(batch, "Strength " + e.getStats().get(3), Gdx.graphics.getWidth() / 2 + 100, y-300);
+                    font.draw(batch, "Dexterity " + e.getStats().get(4), Gdx.graphics.getWidth() / 2 + 100, y-350);
+                    font.draw(batch, "Agility " + e.getStats().get(5), Gdx.graphics.getWidth() / 2 + 100, y-400);
+                    font.draw(batch, "Wisdom " + e.getStats().get(6), Gdx.graphics.getWidth() / 2 + 100, y-450);
+                    font.draw(batch, "Intelligence " + e.getStats().get(7), Gdx.graphics.getWidth() / 2 + 100, y-500);
+                }
+        	    catch(Exception ex){
+                }
+                batch.end();
+            }
+        	font.setColor(Color.BLACK);
+        	for(Item item:active) {
+        	    Equipment e = (Equipment) item;
+                sr.begin(ShapeType.Filled);
+                if(i>=7){
+                    sr.rect(50,Gdx.graphics.getHeight()-300 - 120 * i,Gdx.graphics.getWidth()/4 - 10,100);
+                    sr.rect(70+Gdx.graphics.getWidth()/4,Gdx.graphics.getHeight()-300 - 120*i,Gdx.graphics.getWidth()/4 -10,100);
+                    sr.end();
+                    batch.begin();
+                    font.draw(batch,"More",50,Gdx.graphics.getHeight() - 250 - 120 * i);
+                    font.draw(batch,"Back",70+Gdx.graphics.getWidth()/4,Gdx.graphics.getHeight() - 250 - 120 * i);
+                    batch.end();
+                    break;
+                }
+                else {
+                    sr.rect(50, Gdx.graphics.getHeight() - 300 - 120 * i, Gdx.graphics.getWidth() / 2 - 50, 100);
+                    sr.end();
+                    if (e != null) {
+                        batch.begin();
+                        font.draw(batch, e.getEquipmentPosition() + ": " + e.getName(), 50, Gdx.graphics.getHeight() - 250 - 120 * i);
+                        batch.end();
+                    }
+                }
         		i++;
         	}
+        	if(i<=7){
+        	    sr.begin(ShapeType.Filled);
+        	    sr.rect(50, Gdx.graphics.getHeight() - 300 - 120 * i, Gdx.graphics.getWidth() / 2 - 50, 100);
+        	    sr.end();
+                batch.begin();
+                font.draw(batch, "Back", 50, Gdx.graphics.getHeight() - 250 - 120 * i);
+                batch.end();
+            }
         }
         }
     }
