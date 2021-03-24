@@ -7,3 +7,8 @@ magic
 items
 run
 magicAbilities:
+fire 1
+water 1
+thunder 2
+poison 3
+megaFire 5

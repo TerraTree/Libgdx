@@ -14,11 +14,16 @@ public class CharClass {
     private ArrayList<String> actions;
     private ArrayList<Integer> levelUpChange;
 
-    public CharClass(String className, String primaryStat, String secondaryStat,ArrayList<String> actions) {
+    public CharClass(String className) {
         this.className=className;
-        this.primaryStat = primaryStat;
-        this.secondaryStat = secondaryStat;
-        this.actions = actions;
+        if(this.className.equals("fighter")){
+            this.primaryStat="strength";
+            this.secondaryStat="dexterity";
+            this.actions = new ArrayList<>();
+            this.actions.add("attack");
+            this.actions.add("items");
+            this.actions.add("run");
+        }
         this.levelUpChange = new ArrayList<>();
     }
 

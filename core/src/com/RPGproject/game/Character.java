@@ -80,7 +80,7 @@ public class Character extends entity{
         this.setSprite(new Sprite(texture));
         this.level=1;
         this.setActive(true);
-        this.charClass= new CharClass("fighter","strength","dexterity",new ArrayList<String>());
+        this.charClass= new CharClass("fighter");
         this.charClass.getActions().add("attack");
         this.charClass.getActions().add("items");
         this.charClass.getActions().add("run");
@@ -109,7 +109,7 @@ public class Character extends entity{
         this.level = level;
         this.setExp(exp);
         this.setActive(true);
-        this.charClass= new CharClass("fighter","strength","dexterity",new ArrayList<String>());
+        this.charClass= new CharClass("fighter");
         this.charClass.getActions().add("attack");
         this.charClass.getActions().add("items");
         this.charClass.getActions().add("run");

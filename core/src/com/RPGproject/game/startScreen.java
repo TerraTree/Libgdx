@@ -232,17 +232,16 @@ public class startScreen extends ScreenAdapter {
     public void loadFile(String textFile) {
         try {
             ArrayList<Integer> statList = new ArrayList<>();
-            Character character;
+            Character character = null;
             Texture texture = new Texture("smile.png");
             File file = new File(textFile);
             if(file.length()!=0) {
-                System.out.println(file.length());
                 Scanner scanner = new Scanner(file);
-                System.out.println(textFile);
                 int fileFlag = 0;
+                String text;
                 while (scanner.hasNextLine()) {
-                    String text = scanner.nextLine();
-                    if (fileFlag == 1 || fileFlag == 3) {
+                    text = scanner.nextLine();
+                    if (fileFlag == 1 || fileFlag == 4) {
                         if (text.substring(0, text.indexOf(":")).equals("Name")) {
                             fileFlag++;
                             character = new Character(statList.get(2), statList.get(3), statList.get(4), statList.get(5), statList.get(6), statList.get(0), statList.get(1), statList.get(7), statList.get(8), texture);
@@ -253,14 +252,19 @@ public class startScreen extends ScreenAdapter {
                                 charParty.setChar2(character);
                             }
                             statList.removeAll(statList);
-                            System.out.println("yo");
-                            System.out.println(character.getActions());
+                            text=scanner.nextLine();
+                            String charClass=text;
+                            fileFlag++;
                         } else {
                             statList.add(Integer.parseInt(text.substring(text.indexOf(":") + 1)));
                             System.out.println(statList);
                         }
                     }
-                    if (fileFlag == 6) {
+                    else if (fileFlag == 3) {
+                        ArrayList<Item> itemContent = charParty.readEquipFile(scanner,-1);
+                        for (Item i:itemContent) {
+                            character.getCharEquip().add((Equipment) i);
+                        }
                         //charParty.getItems().add(text);
                     }
                     if (text.indexOf("/") == 0) {
