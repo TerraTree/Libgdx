@@ -1,3 +1,5 @@
+/visual information\
+
 /CHAR1\
 Level:1
 EXP:500

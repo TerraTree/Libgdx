@@ -49,6 +49,7 @@ public class Equipment extends Item{
         target.setDefense(target.getDefense()+stats.get(0));
         //target.setDamage(target.getDefense()+stats.get(1));
         target.setMaxHealth(target.getDefense()+stats.get(2));
+        target.setCurrentHealth(target.getCurrentHealth()+stats.get(2));
         target.setStrength(target.getDefense()+stats.get(3));
         target.setDexterity(target.getDefense()+stats.get(4));
         target.setAgility(target.getDefense()+stats.get(5));

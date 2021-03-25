@@ -229,7 +229,7 @@ public class startScreen extends ScreenAdapter {
         });
     }
 
-    public void loadFile(String textFile) {
+    public void loadFile(String textFile) { 
         try {
             ArrayList<Integer> statList = new ArrayList<>();
             Character character = null;

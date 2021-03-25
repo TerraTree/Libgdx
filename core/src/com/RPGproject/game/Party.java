@@ -83,6 +83,10 @@ public class Party {
 		this.sprite = sprite;
 	}
 
+	public void loadFile(){}
+
+	public void saveFile(){}
+
 	public ArrayList<Item> readEquipFile(Scanner scanner, int fileID) {
 		ArrayList<Item> itemContent = new ArrayList<>();
 		String item;

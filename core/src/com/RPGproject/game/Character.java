@@ -123,7 +123,9 @@ public class Character extends entity{
         for (Equipment e:charEquip) {
             if(e.getStats().size()!=0) {
                 equipDefense += e.getStats().get(0);
-                equipHealth+=e.getStats().get(2);
+                if(e.getStats().size()>2) {
+                	equipHealth+=e.getStats().get(2);
+                }
             }
         }
         this.setDefense(equipDefense + this.getDexterity() * 2 + this.getLevel());
