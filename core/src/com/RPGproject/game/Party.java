@@ -2,6 +2,7 @@ package com.RPGproject.game;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
+import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -17,6 +18,7 @@ public class Party {
 
 	public Party() {
 		items = new ArrayList<>();
+		money=0;
 	}
 
 	public int getMoney() {
@@ -85,7 +87,56 @@ public class Party {
 
 	public void loadFile(){}
 
-	public void saveFile(){}
+	public void saveFile(String fileName){
+		try {
+			FileWriter fileWrite = new FileWriter(fileName);
+			ArrayList<Character> characters = new ArrayList<>();
+			characters.add(char1);
+			characters.add(char2);
+			fileWrite.write("/visual information"+"\n");
+			for (Character c:characters) {
+				fileWrite.write(c.getName()+"\n");
+				fileWrite.write(c.getLevel()+"\n");
+				fileWrite.write(""+"\n");
+			}
+			fileWrite.write(money+"\n");
+			fileWrite.write(""+"\n");
+			int index=1;
+			for (Character c:characters) {
+				fileWrite.write("/CHAR"+index+"\n");
+				fileWrite.write("Level:"+c.getLevel()+"\n");
+				fileWrite.write("EXP:"+c.getExp()+"\n");
+				fileWrite.write("Strength:"+c.getStrength()+"\n");
+				fileWrite.write("Dexterity:"+c.getDexterity()+"\n");
+				fileWrite.write("Agility:"+c.getAgility()+"\n");
+				fileWrite.write("Wisdom:"+c.getWisdom()+"\n");
+				fileWrite.write("Intelligence:"+c.getIntelligence()+"\n");
+				fileWrite.write("CurrentHealth:"+c.getCurrentHealth()+"\n");
+				fileWrite.write("MaxHealth:"+c.getMaxHealth()+"\n");
+				fileWrite.write("Name:"+c.getName()+"\n");
+				fileWrite.write("Class:"+c.getCharClass().getClassName()+"\n");
+				fileWrite.write("Equipment:"+"\n");
+				for (Equipment e:c.getCharEquip()) {
+					e.save(fileWrite);
+				}
+				fileWrite.write(""+"\n");
+			}
+			fileWrite.write("/LOCATION DATA"+"\n");
+			fileWrite.write("Map:"+mapName+"\n");
+			fileWrite.write("X:"+xCoord+"\n");
+			fileWrite.write("Y:"+yCoord+"\n");
+			fileWrite.write(""+"\n");
+			fileWrite.write("/INVENTORY"+"\n");
+			for (Item i:items) {
+				i.save(fileWrite);
+
+			}
+			fileWrite.close();
+		}
+		catch(Exception e){
+
+		}
+	}
 
 	public ArrayList<Item> readEquipFile(Scanner scanner, int fileID) {
 		ArrayList<Item> itemContent = new ArrayList<>();

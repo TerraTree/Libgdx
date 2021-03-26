@@ -1,5 +1,7 @@
 package com.RPGproject.game;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class Equipment extends Item{
@@ -45,15 +47,33 @@ public class Equipment extends Item{
         setQuantity(1);
     }
 
+    @Override
+    public void save(FileWriter fileWrite) throws IOException {
+        fileWrite.write(getName()+": "+getCost()+"\n");
+        fileWrite.write("{"+getType()+"\n");
+        fileWrite.write(getEquipmentPosition()+"\n");
+        String str = "[";
+        for (int stat:stats) {
+            str+=(stat+",");
+        }
+        str+="]}";
+        fileWrite.write(str+"\n");
+    }
+
     public void Equip(Character target){
-        target.setDefense(target.getDefense()+stats.get(0));
-        //target.setDamage(target.getDefense()+stats.get(1));
-        target.setMaxHealth(target.getDefense()+stats.get(2));
-        target.setCurrentHealth(target.getCurrentHealth()+stats.get(2));
-        target.setStrength(target.getDefense()+stats.get(3));
-        target.setDexterity(target.getDefense()+stats.get(4));
-        target.setAgility(target.getDefense()+stats.get(5));
-        target.setWisdom(target.getDefense()+stats.get(6));
-        target.setIntelligence(target.getDefense()+stats.get(7));
+        try {
+            target.setDefense(target.getDefense() + stats.get(0));
+            //target.setDamage(target.getDefense()+stats.get(1));
+            target.setMaxHealth(target.getDefense() + stats.get(2));
+            target.setCurrentHealth(target.getCurrentHealth() + stats.get(2));
+            target.setStrength(target.getDefense() + stats.get(3));
+            target.setDexterity(target.getDefense() + stats.get(4));
+            target.setAgility(target.getDefense() + stats.get(5));
+            target.setWisdom(target.getDefense() + stats.get(6));
+            target.setIntelligence(target.getDefense() + stats.get(7));
+        }
+        catch(Exception e){
+
+        }
     }
 }

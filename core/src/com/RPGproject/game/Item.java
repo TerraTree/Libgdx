@@ -1,5 +1,7 @@
 package com.RPGproject.game;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class Item {
@@ -51,6 +53,10 @@ public class Item {
     }
 
     public Item(){
+
+    }
+
+    public void save(FileWriter fileWrite) throws IOException {
 
     }
 

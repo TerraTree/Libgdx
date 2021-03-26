@@ -1,5 +1,7 @@
 package com.RPGproject.game;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class Consumable extends Item{
@@ -40,6 +42,20 @@ public class Consumable extends Item{
         this.setMagic(true);
         this.setQuantity(1);
         this.setCost(cost);
+    }
+
+    @Override
+    public void save(FileWriter fileWrite) throws IOException {
+        fileWrite.write(getName()+": "+getCost()+"\n");
+        fileWrite.write("{"+getType()+"\n");
+        fileWrite.write(duration+"\n");
+        fileWrite.write(target+"\n");
+        String str = "[";
+        for (int stat:statChanges) {
+            str+=(stat+",");
+        }
+        str+="]}";
+        fileWrite.write(str+"\n");
     }
 
     public void Consume(entity target){

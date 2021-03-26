@@ -151,76 +151,69 @@ public class alternateUI extends ScreenAdapter {
 
             @Override
             public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-                int index=-1;
-                screenY=Gdx.graphics.getHeight()-screenY;
-                if(screenY>=Gdx.graphics.getHeight()-150 && screenY<=Gdx.graphics.getHeight()-50){
-                    index=(screenX-10)/((Gdx.graphics.getWidth()-20)/3);
+                int index = -1;
+                screenY = Gdx.graphics.getHeight() - screenY;
+                if (screenY >= Gdx.graphics.getHeight() - 150 && screenY <= Gdx.graphics.getHeight() - 50) {
+                    index = (screenX - 10) / ((Gdx.graphics.getWidth() - 20) / 3);
                     System.out.println(index);
                 }
-                if(uiType==1){
-                    if(index == 0){
+                if (uiType == 1) {
+                    if (index == 0) {
                         active = itemContent;
-                    }
-                    else if(index==1){
+                    } else if (index == 1) {
                         active = charParty.getItems();
+                    } else if (index == 2) {
+                        game.setScreen(new mainScreen(game, charParty));
                     }
-                    else if(index == 2){
-                        game.setScreen(new mainScreen(game,charParty));
-                    }
-                    int x=0;
+                    int x = 0;
                     for (int i = 0; i < active.size(); i++) {
-                    	int height = i;
-                    	if(i%2==1) {
-                    		height = i-1;
-                    	}
-                        if(screenY>=Gdx.graphics.getHeight() - 300 - 60 * height && screenY<=Gdx.graphics.getHeight()-200-(60*height)){
-                            if((screenX>=50 && screenX<=650 && i%2==0)||(screenX>=Gdx.graphics.getWidth()/2 +50 && screenX<=Gdx.graphics.getWidth()/2 +650 && i%2==1)){
-                                if(active==itemContent){
+                        int height = i;
+                        if (i % 2 == 1) {
+                            height = i - 1;
+                        }
+                        if (screenY >= Gdx.graphics.getHeight() - 300 - 60 * height && screenY <= Gdx.graphics.getHeight() - 200 - (60 * height)) {
+                            if ((screenX >= 50 && screenX <= 650 && i % 2 == 0) || (screenX >= Gdx.graphics.getWidth() / 2 + 50 && screenX <= Gdx.graphics.getWidth() / 2 + 650 && i % 2 == 1)) {
+                                if (active == itemContent) {
                                     boolean buy = false;
-                                    for (Item j:charParty.getItems()) {
-                                        if(active.get(i).getName().equals(j.getName())){
-                                            j.setQuantity(j.getQuantity()+1);
-                                            buy=true;
+                                    for (Item j : charParty.getItems()) {
+                                        if (active.get(i).getName().equals(j.getName())) {
+                                            j.setQuantity(j.getQuantity() + 1);
+                                            buy = true;
                                         }
                                     }
-                                    if(buy==false){
+                                    if (buy == false) {
                                         charParty.getItems().add(active.get(i));
                                     }
-                                }
-                                else if(active==charParty.getItems()){
-                                    active.get(i).setQuantity(active.get(i).getQuantity()-1);
-                                    if(active.get(i).getQuantity()==0){
-                                    	active.get(i).setQuantity(1);
+                                } else if (active == charParty.getItems()) {
+                                    active.get(i).setQuantity(active.get(i).getQuantity() - 1);
+                                    if (active.get(i).getQuantity() == 0) {
+                                        active.get(i).setQuantity(1);
                                         active.remove(i);
                                         break;
                                     }
                                 }
-                            }
-                            else if(screenX>=Gdx.graphics.getWidth()/2 +50 && screenX<=Gdx.graphics.getWidth()/2 +650){
+                            } else if (screenX >= Gdx.graphics.getWidth() / 2 + 50 && screenX <= Gdx.graphics.getWidth() / 2 + 650) {
 
                             }
                         }
                     }
-                }
-                else if(uiType==2 || uiType==3) {
+                } else if (uiType == 2 || uiType == 3) {
                     if (index == 0) {
-                        currentChar=charParty.getChar1();
-                        active=new ArrayList<>();
-                        for (Equipment e:currentChar.getCharEquip()) {
+                        currentChar = charParty.getChar1();
+                        active = new ArrayList<>();
+                        for (Equipment e : currentChar.getCharEquip()) {
                             active.add(e);
                         }
-                    }
-                    else if(index == 1){
-                        currentChar=charParty.getChar2();
-                        active=new ArrayList<>();
-                        for (Equipment e:currentChar.getCharEquip()) {
+                    } else if (index == 1) {
+                        currentChar = charParty.getChar2();
+                        active = new ArrayList<>();
+                        for (Equipment e : currentChar.getCharEquip()) {
                             active.add(e);
                         }
+                    } else if (index == 2) {
+                        game.setScreen(new mainScreen(game, charParty));
                     }
-                    else if(index == 2){
-                        game.setScreen(new mainScreen(game,charParty));
-                    }
-                    if(uiType==3){
+                    if (uiType == 3) {
                         screenY = Gdx.graphics.getHeight() - screenY;
                         screenY = screenY - 180;
                         if (screenX >= 50 && screenX <= 650) {
@@ -229,39 +222,38 @@ public class alternateUI extends ScreenAdapter {
                                 System.out.println("yo2");
                                 index = screenY / 120;
                                 ArrayList<Item> swapEquip = new ArrayList<>();
-                                if(index<active.size() && index!=7) {
-                                    if(!active.equals(currentChar.getCharEquip())){
-                                        for (Equipment e:currentChar.getCharEquip()) {
-                                            if(e.getEquipmentPosition().equals(((Equipment) active.get(index)).getEquipmentPosition())){ //equipping an item
+                                if (index < active.size() && index != 7) {
+                                    if (!active.equals(currentChar.getCharEquip())) {
+                                        for (Equipment e : currentChar.getCharEquip()) {
+                                            if (e.getEquipmentPosition().equals(((Equipment) active.get(index)).getEquipmentPosition())) { //equipping an item
                                                 Equipment newEquip = (Equipment) active.get(index);
                                                 int i = charParty.getItems().indexOf(active.get(index));
-                                                charParty.getItems().get(i).setQuantity(charParty.getItems().get(i).getQuantity()-1);
-                                                if(charParty.getItems().get(i).getQuantity()==0){
+                                                charParty.getItems().get(i).setQuantity(charParty.getItems().get(i).getQuantity() - 1);
+                                                if (charParty.getItems().get(i).getQuantity() == 0) {
                                                     charParty.getItems().remove(i);
                                                 }
                                                 boolean inBag = false;
-                                                for(Item item: charParty.getItems()){
-                                                    if(e.getName().equals(item.getName())){
-                                                        item.setQuantity(item.getQuantity()+1);
-                                                        inBag=true;
+                                                for (Item item : charParty.getItems()) {
+                                                    if (e.getName().equals(item.getName())) {
+                                                        item.setQuantity(item.getQuantity() + 1);
+                                                        inBag = true;
                                                         break;
                                                     }
                                                 }
-                                                if(inBag==false){
+                                                if (inBag == false) {
                                                     charParty.getItems().add(e);
                                                 }
                                                 newEquip.Equip(currentChar);
-                                                currentChar.getCharEquip().set(currentChar.getCharEquip().indexOf(e),newEquip);
-                                                active=new ArrayList<>();
-                                                for (Equipment e2:currentChar.getCharEquip()) {
+                                                currentChar.getCharEquip().set(currentChar.getCharEquip().indexOf(e), newEquip);
+                                                active = new ArrayList<>();
+                                                for (Equipment e2 : currentChar.getCharEquip()) {
                                                     active.add(e2);
                                                 }
                                                 //currentChar.updateStats();
                                             }
                                         }
 
-                                    }
-                                    else {
+                                    } else {
                                         for (Item i : charParty.getItems()) {
                                             if (i.getType().equals(currentChar.getCharEquip().get(index).getType())) {
                                                 Equipment e = currentChar.getCharEquip().get(index);
@@ -273,28 +265,23 @@ public class alternateUI extends ScreenAdapter {
                                         }
                                         active = swapEquip;
                                     }
-                                }
-                                else if(index==active.size()){
-                                    if(active.equals(currentChar.getCharEquip())){
-                                        currentChar=null;
-                                    }
-                                    else{
-                                        active=new ArrayList<>();
-                                        for (Equipment e:currentChar.getCharEquip()) {
+                                } else if (index == active.size()) {
+                                    if (active.equals(currentChar.getCharEquip())) {
+                                        currentChar = null;
+                                    } else {
+                                        active = new ArrayList<>();
+                                        for (Equipment e : currentChar.getCharEquip()) {
                                             active.add(e);
                                         }
                                     }
-                                }
-                                else if(active.size()>6 && index==7){
-                                    if(screenX<= 50+ Gdx.graphics.getWidth()/4 - 10){
-                                    }
-                                    else if(screenX>50+Gdx.graphics.getWidth()/4 +10){
-                                        if(active.equals(currentChar.getCharEquip())){
-                                            currentChar=null;
-                                        }
-                                        else{
-                                            active=new ArrayList<>();
-                                            for (Equipment e:currentChar.getCharEquip()) {
+                                } else if (active.size() > 6 && index == 7) {
+                                    if (screenX <= 50 + Gdx.graphics.getWidth() / 4 - 10) {
+                                    } else if (screenX > 50 + Gdx.graphics.getWidth() / 4 + 10) {
+                                        if (active.equals(currentChar.getCharEquip())) {
+                                            currentChar = null;
+                                        } else {
+                                            active = new ArrayList<>();
+                                            for (Equipment e : currentChar.getCharEquip()) {
                                                 active.add(e);
                                             }
                                         }
@@ -303,23 +290,24 @@ public class alternateUI extends ScreenAdapter {
                             }
                         }
                     }
-                    if(uiType==4){
-                        if(screenX>Gdx.graphics.getWidth()/2-500 && screenX<Gdx.graphics.getWidth()+500){
-                            screenY=Gdx.graphics.getWidth()-screenY-700;
-                            int i =-1;
-                            if (screenY % 300 >= 100) {
-                                i = screenY / 300;
-                            }
-                            if(i!=-1){
-                                //saveFile("save"+i,);
-                            }
+                }
+                if (uiType == 4) {
+                    System.out.println("yo");
+                    if (screenX >= (Gdx.graphics.getWidth() / 2) - 500 && screenX <= (Gdx.graphics.getWidth() / 2) + 500) {
+                        screenY = Gdx.graphics.getWidth() - screenY - 700;
+                        int i = -1;
+                        if (screenY % 300 >= 100) {
+                            i = screenY / 300;
                         }
-                        //sr.rect(Gdx.graphics.getWidth()/2 -500,700-i*300,1000,200);
+                        System.out.println("i" + i);
+                        if (i != -1) {
+                            charParty.saveFile("text/" + "save" + 3 + ".txt");
+                        }
                     }
+                    //sr.rect(Gdx.graphics.getWidth()/2 -500,700-i*300,1000,200);
                 }
                 return false;
             }
-
             @Override
             public boolean mouseMoved(int screenX, int screenY) {
                 if (uiType == 3) {

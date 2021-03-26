@@ -157,6 +157,9 @@ public class mainScreen extends ScreenAdapter {
                         else if(inputString.equals("equipment")){//change equipment on characters
                             game.setScreen(new alternateUI(game,mainParty,3));
                         }
+                        else if(inputString.equals("save")){//change equipment on characters
+                            game.setScreen(new alternateUI(game,mainParty,4));
+                        }
                     }
                     else {
                         ui.getInputText().addChar(character,ui.getFont());
