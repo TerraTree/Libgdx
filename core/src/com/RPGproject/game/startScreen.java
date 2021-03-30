@@ -195,8 +195,8 @@ public class startScreen extends ScreenAdapter {
                             }
                     }
                     else if(flag==4){
-                        System.out.println("text/save"+(hoverNum+1)+".txt");
-                            loadFile("text/save"+(hoverNum+1)+".txt");
+                        //System.out.println("text/save"+(hoverNum+1)+".txt");
+                        loadFile("text/save"+(hoverNum+1)+".txt");
                     }
                 return false;
             }
@@ -238,10 +238,12 @@ public class startScreen extends ScreenAdapter {
             if(file.length()!=0) {
                 Scanner scanner = new Scanner(file);
                 int fileFlag = 0;
+                int index=0;
                 String text;
                 while (scanner.hasNextLine()) {
                     text = scanner.nextLine();
-                    if (fileFlag == 1 || fileFlag == 4) {
+                    System.out.println(text);
+                    if (fileFlag == 2 || fileFlag == 6) {
                         if (text.substring(0, text.indexOf(":")).equals("Name")) {
                             fileFlag++;
                             character = new Character(statList.get(2), statList.get(3), statList.get(4), statList.get(5), statList.get(6), statList.get(0), statList.get(1), statList.get(7), statList.get(8), texture);
@@ -254,23 +256,38 @@ public class startScreen extends ScreenAdapter {
                             statList.removeAll(statList);
                             text=scanner.nextLine();
                             String charClass=text;
+                            //text=scanner.nextLine();
                             fileFlag++;
                         } else {
                             statList.add(Integer.parseInt(text.substring(text.indexOf(":") + 1)));
-                            System.out.println(statList);
                         }
                     }
-                    else if (fileFlag == 3) {
+                    else if (fileFlag == 4 || fileFlag == 8) {
                         ArrayList<Item> itemContent = charParty.readEquipFile(scanner,-1);
                         for (Item i:itemContent) {
                             character.getCharEquip().add((Equipment) i);
                         }
-                        //charParty.getItems().add(text);
-                    }
-                    if (text.indexOf("/") == 0) {
                         fileFlag++;
                     }
+                    else if(fileFlag == 10){
+                        charParty.setMapName(text.substring(text.indexOf(":")+1));
+                        text=scanner.nextLine();
+                        charParty.setxCoord(Integer.parseInt(text.substring(text.indexOf(":")+1)));
+                        text=scanner.nextLine();
+                        charParty.setyCoord(Integer.parseInt(text.substring(text.indexOf(":")+1)));
+                        fileFlag++;
+                    }
+//                    else if(fileFlag == 12){
+//                        charParty.setItems(charParty.readEquipFile(scanner,-1));
+//                    }
+                    if (text.indexOf("/") == 0) {
+                        fileFlag++;
+                        if(fileFlag==12){
+                            charParty.setItems(charParty.readEquipFile(scanner,-1));
+                        }
+                    }
                 }
+                charParty.setSprite(charParty.getChar1().getSprite());
                 game.setScreen(new mainScreen(game, charParty));
             }
         }

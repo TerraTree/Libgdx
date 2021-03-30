@@ -54,6 +54,7 @@ public class Consumable extends Item{
         for (int stat:statChanges) {
             str+=(stat+",");
         }
+        str=str.substring(0,str.length()-1);
         str+="]}";
         fileWrite.write(str+"\n");
     }

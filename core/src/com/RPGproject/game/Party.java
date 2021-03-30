@@ -120,6 +120,7 @@ public class Party {
 					e.save(fileWrite);
 				}
 				fileWrite.write(""+"\n");
+				index++;
 			}
 			fileWrite.write("/LOCATION DATA"+"\n");
 			fileWrite.write("Map:"+mapName+"\n");
@@ -139,14 +140,19 @@ public class Party {
 	}
 
 	public ArrayList<Item> readEquipFile(Scanner scanner, int fileID) {
+		System.out.println("yo");
 		ArrayList<Item> itemContent = new ArrayList<>();
 		String item;
 		boolean reading = false;
+		if(fileID==-1){
+			reading = true;
+		}
 		while (scanner.hasNextLine()) {
 			item = scanner.nextLine();
 			System.out.println("item:" + item);
 			if (reading) {
 				if(item.equals("")){
+					System.out.println("read items");
 					break;
 				}
 				String target = "";
@@ -161,23 +167,28 @@ public class Party {
 				String itemType = item.substring(item.indexOf("{") + 1);
 
 				item = scanner.nextLine();
+				System.out.println("item:" + item);
 				if (itemType.equals("consumable")) {
 					duration = Integer.parseInt(item);
 					item = scanner.nextLine();
+					System.out.println("item:" + item);
 					target = item;
 				} else if (itemType.equals("equipment")) {
 					equipmentPosition = item;
 				}
 				item = scanner.nextLine();
+				System.out.println("item:" + item);
 				String value = "";
 				ArrayList<Integer> stats = new ArrayList<>();
-				System.out.println(item);
+				System.out.println("newt:"+item);
 				for (int i = 0; i < Math.max(0, item.length() - 1); i++) {
 					System.out.println(i);
 					String chr = String.valueOf(item.charAt(i));
 					if (!chr.equals("[")) {
 						if (chr.equals(",") || chr.equals("]")) {
+							if(value!=""){
 							stats.add(Integer.parseInt(value));
+							}
 							value = "";
 						} else {
 							value += chr;
