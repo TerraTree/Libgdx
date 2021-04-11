@@ -43,9 +43,14 @@ public class Attack {
     public void attacking(Queue<Attack> battleQueue,ArrayList<ArrayList<Character>> playerGrid, ArrayList<ArrayList<enemy>> enemyGrid){
         boolean interruption = false;
         Vector2 checkEnemyExist = battleQueue.peek().getEnemyPos();
-        if(enemyGrid.get((int) checkEnemyExist.x).get((int) checkEnemyExist.y)==null){
+        System.out.println(checkEnemyExist.x);
+        System.out.println(checkEnemyExist.y);
+        System.out.println(enemyGrid.get((int) checkEnemyExist.x).get((int) checkEnemyExist.y));
+        if((enemyGrid.get((int) checkEnemyExist.x).get((int) checkEnemyExist.y))==null){
             battleQueue.poll();
-            battleQueue.peek().attacking(battleQueue, playerGrid, enemyGrid);
+            if(battleQueue.size()>0) {
+                battleQueue.peek().attacking(battleQueue, playerGrid, enemyGrid);
+            }
         }
         else {
             if (isPlayerAttacking) {
@@ -58,7 +63,6 @@ public class Attack {
                                     c.setExp(c.getExp() + enemy.getExp());
                                     System.out.println("exp time for " + c.getName() + ": " + c.getExp());
                                     interruption = c.getCharClass().levelUp(c);
-                                    System.out.println(interruption);
                                 }
                             }
                         }

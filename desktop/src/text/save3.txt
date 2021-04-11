@@ -21,11 +21,11 @@ Name:1
 Class:fighter
 Equipment:
 Bare Hands: 0
-{weapon
+{equipment
 Fists
 []}
 empty: 0
-{null
+{equipment
 off hand
 []}
 Bronze Helmet: 800
@@ -55,11 +55,11 @@ Name:2
 Class:fighter
 Equipment:
 Bare Hands: 0
-{weapon
+{equipment
 Fists
 []}
 empty: 0
-{null
+{equipment
 off hand
 []}
 Cloth Cap: 5

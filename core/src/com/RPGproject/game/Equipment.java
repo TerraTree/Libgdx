@@ -53,12 +53,17 @@ public class Equipment extends Item{
         fileWrite.write("{"+getType()+"\n");
         fileWrite.write(getEquipmentPosition()+"\n");
         String str = "[";
-        //System.out.println("str: "+str);
+        System.out.println("str: "+str);
         for (int stat:stats) {
             str+=(stat+",");
+            System.out.println("str: "+str);
         }
-        str=str.substring(0,str.length()-1);
+        if(str.length()>1) {
+            str = str.substring(0, str.length() - 1);
+        }
+        System.out.println("str: "+str);
         str+="]}";
+        System.out.println("str: "+str);
         fileWrite.write(str+"\n");
     }
 

@@ -1,5 +1,6 @@
 package com.RPGproject.game;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
 import java.io.FileWriter;
@@ -19,6 +20,7 @@ public class Party {
 	public Party() {
 		items = new ArrayList<>();
 		money=0;
+		sprite=new Sprite(new Texture("smile.png"));
 	}
 
 	public int getMoney() {
@@ -149,7 +151,6 @@ public class Party {
 		}
 		while (scanner.hasNextLine()) {
 			item = scanner.nextLine();
-			System.out.println("item:" + item);
 			if (reading) {
 				if(item.equals("")){
 					System.out.println("read items");

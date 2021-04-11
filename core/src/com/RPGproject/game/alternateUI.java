@@ -200,6 +200,7 @@ public class alternateUI extends ScreenAdapter {
                 } else if (uiType == 2 || uiType == 3) {
                     if (index == 0) {
                         currentChar = charParty.getChar1();
+                        //System.out.println("Size: "+currentChar.getCharEquip().size());
                         active = new ArrayList<>();
                         for (Equipment e : currentChar.getCharEquip()) {
                             active.add(e);
@@ -214,15 +215,14 @@ public class alternateUI extends ScreenAdapter {
                         game.setScreen(new mainScreen(game, charParty));
                     }
                     if (uiType == 3) {
-                        screenY = Gdx.graphics.getHeight() - screenY;
-                        screenY = screenY - 180;
-                        if (screenX >= 50 && screenX <= 650) {
+                        screenY = Gdx.graphics.getHeight() - screenY - 180;
+                        if (screenX >= 50 && screenX <= Gdx.graphics.getWidth()/2 -100) {
                             System.out.println(screenY % 120);
                             if (screenY % 120 >= 20) {
                                 System.out.println("yo2");
                                 index = screenY / 120;
                                 ArrayList<Item> swapEquip = new ArrayList<>();
-                                if (index < active.size() && index != 7) {
+                                if (index < active.size() && index != 7 && currentChar!=null) {
                                     if (!active.equals(currentChar.getCharEquip())) {
                                         for (Equipment e : currentChar.getCharEquip()) {
                                             if (e.getEquipmentPosition().equals(((Equipment) active.get(index)).getEquipmentPosition())) { //equipping an item
@@ -265,7 +265,8 @@ public class alternateUI extends ScreenAdapter {
                                         }
                                         active = swapEquip;
                                     }
-                                } else if (index == active.size()) {
+                                } else if (index == active.size() && currentChar!=null) {
+                                    System.out.println(active);
                                     if (active.equals(currentChar.getCharEquip())) {
                                         currentChar = null;
                                     } else {
@@ -292,7 +293,6 @@ public class alternateUI extends ScreenAdapter {
                     }
                 }
                 if (uiType == 4) {
-                    System.out.println("yo");
                     if (screenX >= (Gdx.graphics.getWidth() / 2) - 500 && screenX <= (Gdx.graphics.getWidth() / 2) + 500) {
                         screenY = Gdx.graphics.getWidth() - screenY - 700;
                         int i = -1;
@@ -301,7 +301,7 @@ public class alternateUI extends ScreenAdapter {
                         }
                         System.out.println("i" + i);
                         if (i != -1) {
-                            charParty.saveFile("text/" + "save" + 3 + ".txt");
+                            charParty.saveFile("text/" + "save" + i + ".txt");
                         }
                     }
                     //sr.rect(Gdx.graphics.getWidth()/2 -500,700-i*300,1000,200);

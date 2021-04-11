@@ -114,7 +114,7 @@ public class mainScreen extends ScreenAdapter {
         mainParty.getSprite().setScale(0.3f);
     	mainParty.getSprite().setX(Gdx.graphics.getWidth()/2 - mainParty.getSprite().getWidth()/2);
         mainParty.getSprite().setY(Gdx.graphics.getHeight()/2 + mainParty.getSprite().getHeight()/2);
-    	//map=new Map(mainParty.getMapName());
+    	//map=new Map(mainParty.getMapName()+".txt");
         map.setOriginX(Gdx.graphics.getWidth()/2 - mainParty.getxCoord());
         map.setOriginY(Gdx.graphics.getHeight()/2 + mainParty.getyCoord());
     	Gdx.input.setInputProcessor(new InputAdapter() {

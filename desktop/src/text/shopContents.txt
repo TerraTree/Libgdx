@@ -48,6 +48,6 @@ Magic Trousers: 1000
 leggings
 [3,0,0,0,0,0,2,2]}
 longsword: 400
-{weapon
+{equipment
 sword
 [0,6]}

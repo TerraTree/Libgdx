@@ -58,13 +58,13 @@ public class Character extends entity{
         for (int i = 0; i < 5; i++) {
             charEquip.add(null);
         }
+        this.setStatusEffects(new ArrayList<Consumable>());
         this.setStrength(str);
         this.setDexterity(dex);
         this.setAgility(agi);
         this.setWisdom(wis);
         this.setIntelligence(intel);
         this.setCharEquip(new ArrayList<Equipment>());
-        //int[] array = {0,2};
 		this.getCharEquip().add(new Equipment("Fists","weapon","Bare Hands",new ArrayList<Integer>(),0));
 		this.getCharEquip().add(new Equipment("off hand",null,"empty",new ArrayList<Integer>(),0));
 		this.getCharEquip().add(new Equipment("helmet","equipment","Cloth Cap",new ArrayList<Integer>(),5));
@@ -87,10 +87,12 @@ public class Character extends entity{
     }
     public Character(int str, int dex, int agi, int wis, int intel,int level,int exp,int currentHp,int maxHp, Texture texture) {
 
-        charEquip=new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
-            charEquip.add(null);
-        }
+        //charEquip=new ArrayList<>();
+//        for (int i = 0; i < 5; i++) {
+//            charEquip.add(null);
+//        }
+        this.setStatusEffects(new ArrayList<Consumable>());
+        this.setCharEquip(new ArrayList<Equipment>());
         this.setStrength(str);
         this.setDexterity(dex);
         this.setAgility(agi);
@@ -99,11 +101,11 @@ public class Character extends entity{
         this.setMaxHealth(maxHp);
         this.setCurrentHealth(currentHp);
         int equipDefense=0;
-        for (Equipment e:charEquip) {
-            if(e!=null) {
-                equipDefense += e.getStats().get(0);
-            }
-        }
+//        for (Equipment e:charEquip) {
+//            if(e!=null) {
+//                equipDefense += e.getStats().get(0);
+//            }
+//        }
         this.setDefense(equipDefense + this.getDexterity() * 2 + this.getLevel());
         this.setSprite(new Sprite(texture));
         this.level = level;
@@ -129,7 +131,7 @@ public class Character extends entity{
             }
         }
         this.setDefense(equipDefense + this.getDexterity() * 2 + this.getLevel());
-        this.setMaxHealth(level*2+getAgility()*3+10 + equipHealth);
+        this.setMaxHealth((level*2)+getAgility()*2+10 + equipHealth);
     }
 
     public void renderLevelUp(ShapeRenderer sr, SpriteBatch batch){

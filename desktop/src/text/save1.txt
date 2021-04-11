@@ -1,31 +1,129 @@
-/visual information\
+/visual information
+1
+1
 
-/CHAR1\
+2
+1
+
+0
+
+/CHAR1
 Level:1
-EXP:500
+EXP:0
+Strength:9
+Dexterity:9
+Agility:9
+Wisdom:11
+Intelligence:11
+CurrentHealth:19
+MaxHealth:25
+Name:1
+Class:fighter
+Equipment:
+Bare Hands: 0
+{equipment
+Fists
+[]}
+empty: 0
+{equipment
+off hand
+[]}
+Bronze Helmet: 800
+{equipment
+helmet
+[7]}
+Magic Tunic: 900
+{equipment
+chestplate
+[3,0,3,0,0,1,4,5]}
+Magic Trousers: 1000
+{equipment
+leggings
+[3,0,0,0,0,0,2,2]}
+
+/CHAR2
+Level:1
+EXP:0
 Strength:1
 Dexterity:1
 Agility:1
 Wisdom:1
 Intelligence:1
-CurrentHealth:20
-MaxHealth:20
-Name:Jim
+CurrentHealth:16
+MaxHealth:17
+Name:2
+Class:fighter
+Equipment:
+Bare Hands: 0
+{equipment
+Fists
+[]}
+empty: 0
+{equipment
+off hand
+[]}
+Cloth Cap: 5
+{equipment
+helmet
+[]}
+Cloth Shirt: 5
+{equipment
+chestplate
+[]}
+Cloth Trousers: 5
+{equipment
+leggings
+[]}
 
-/CHAR2\
-Level:1
-EXP:500
-Strength:1
-Dexterity:1
-Agility:1
-Wisdom:1
-Intelligence:1
-CurrentHealth:20
-MaxHealth:20
-Name:Bill
+/LOCATION DATA
+Map:startArea
+X:200
+Y:200
 
-/LOCATION DATA\
-
-
-/INVENTORY\
-3x potion
+/INVENTORY
+Iron Chestplate: 500
+{equipment
+chestplate
+[6]}
+Iron Leggings: 400
+{equipment
+leggings
+[4]}
+Magic Hat: 1200
+{equipment
+helmet
+[2,0,2,0,0,1,3,3]}
+Bronze Leggings: 800
+{equipment
+leggings
+[8]}
+Bronze Chestplate: 1000
+{equipment
+chestplate
+[13]}
+Iron Helmet: 400
+{equipment
+helmet
+[4]}
+Big Potion: 200
+{consumable
+0
+player
+[0,0,40]}
+Potion: 10
+{consumable
+0
+player
+[0,0,20]}
+Cloth Shirt: 5
+{equipment
+chestplate
+[]}
+Cloth Trousers: 5
+{equipment
+leggings
+[]}
+Cloth Cap: 5
+{equipment
+helmet
+[]}

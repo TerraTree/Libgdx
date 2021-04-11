@@ -242,7 +242,6 @@ public class startScreen extends ScreenAdapter {
                 String text;
                 while (scanner.hasNextLine()) {
                     text = scanner.nextLine();
-                    System.out.println(text);
                     if (fileFlag == 2 || fileFlag == 6) {
                         if (text.substring(0, text.indexOf(":")).equals("Name")) {
                             fileFlag++;
@@ -257,6 +256,11 @@ public class startScreen extends ScreenAdapter {
                             text=scanner.nextLine();
                             String charClass=text;
                             //text=scanner.nextLine();
+                            character.setActions(new ArrayList<String>());
+                            character.getActions().add("attack");
+                            character.getActions().add("items");
+                            character.getActions().add("run");
+                            character.updateStats();
                             fileFlag++;
                         } else {
                             statList.add(Integer.parseInt(text.substring(text.indexOf(":") + 1)));
@@ -284,11 +288,14 @@ public class startScreen extends ScreenAdapter {
                         fileFlag++;
                         if(fileFlag==12){
                             charParty.setItems(charParty.readEquipFile(scanner,-1));
+                            //charParty.setSprite(charParty.getChar1().getSprite());
+                            fileFlag++;
+                            game.setScreen(new mainScreen(game,charParty));
                         }
                     }
                 }
-                charParty.setSprite(charParty.getChar1().getSprite());
-                game.setScreen(new mainScreen(game, charParty));
+//                charParty.setSprite(charParty.getChar1().getSprite());
+//                game.setScreen(new mainScreen(game,charParty));
             }
         }
         catch(Exception e){

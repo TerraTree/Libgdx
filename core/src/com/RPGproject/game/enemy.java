@@ -14,7 +14,7 @@ public class enemy extends entity{
     private Vector2 battlePos;
 
     public enemy(int str, int dex, int agi, int wis, int intel,int health,int defense,int level,int exp) {
-
+        this.setStatusEffects(new ArrayList<Consumable>());
         this.setStrength(str);
         this.setDexterity(dex);
         this.setAgility(agi);

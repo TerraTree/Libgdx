@@ -100,7 +100,6 @@ public class battleScreen extends ScreenAdapter {
 				}
 			}
 			if(turnCount==turnOrder.size() || (turnCount==0 && battleQueue.size()>0)){
-                System.out.println(battleQueue.size());
                 battleQueue.peek().attacking(battleQueue,playerGrid,enemyGrid);
 				turnCount=0;
 				for (entity e:turnOrder) {
@@ -113,7 +112,6 @@ public class battleScreen extends ScreenAdapter {
 						System.out.println("yo");
 					}
 				}
-                System.out.println("past peek "+battleQueue.size());
                 if(mainParty.getChar1().getCharClass().getLevelUpChange().size()>0){
                 	flag=-1;
                 	battleQueue.poll();
