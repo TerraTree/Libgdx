@@ -109,7 +109,6 @@ public class battleScreen extends ScreenAdapter {
 							c.durationEnd(e);
 							e.getStatusEffects().remove(c);
 						}
-						System.out.println("yo");
 					}
 				}
                 if(mainParty.getChar1().getCharClass().getLevelUpChange().size()>0){
@@ -290,7 +289,13 @@ public class battleScreen extends ScreenAdapter {
 									}
 									index++;
 								}
-								int damage = 4; //currentChar.getDexterity()+10; //damage based on weapon and character selected, not implemented yet
+								int damage;
+								if(currentChar.getCharEquip().get(0).getStats().size()>=2){
+									damage=currentChar.getDexterity()/4+2+currentChar.getCharEquip().get(0).getStats().get(1);
+								}
+								else{
+									damage=currentChar.getDexterity()/4+2;
+								}
 								Attack charAttack = new Attack(currentEnemy,enemyPos,currentChar,playerPos,true,"sword",damage);
 								battleQueue.add(charAttack);
 								endTurn();
