@@ -81,16 +81,12 @@ public class Character extends entity{
         this.level=1;
         this.setActive(true);
         this.charClass= new CharClass("fighter");
-        this.charClass.getActions().add("attack");
-        this.charClass.getActions().add("items");
-        this.charClass.getActions().add("run");
+//        this.charClass.getActions().add("attack");
+//        this.charClass.getActions().add("items");
+//        this.charClass.getActions().add("run");
     }
     public Character(int str, int dex, int agi, int wis, int intel,int level,int exp,int currentHp,int maxHp, Texture texture) {
 
-        //charEquip=new ArrayList<>();
-//        for (int i = 0; i < 5; i++) {
-//            charEquip.add(null);
-//        }
         this.setStatusEffects(new ArrayList<Consumable>());
         this.setCharEquip(new ArrayList<Equipment>());
         this.setStrength(str);
@@ -101,25 +97,19 @@ public class Character extends entity{
         this.setMaxHealth(maxHp);
         this.setCurrentHealth(currentHp);
         int equipDefense=0;
-//        for (Equipment e:charEquip) {
-//            if(e!=null) {
-//                equipDefense += e.getStats().get(0);
-//            }
-//        }
         this.setDefense(equipDefense + this.getDexterity() * 2 + this.getLevel());
         this.setSprite(new Sprite(texture));
         this.level = level;
         this.setExp(exp);
         this.setActive(true);
         this.charClass= new CharClass("fighter");
-        this.charClass.getActions().add("attack");
-        this.charClass.getActions().add("items");
-        this.charClass.getActions().add("run");
+//        this.charClass.getActions().add("attack");
+//        this.charClass.getActions().add("items");
+//        this.charClass.getActions().add("run");
     }
 
     public void updateStats(){
 
-        //this.setCurrentHealth(this.getMaxHealth());
         int equipDefense=0;
         int equipHealth=0;
         for (Equipment e:charEquip) {

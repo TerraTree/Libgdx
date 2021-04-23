@@ -123,8 +123,12 @@ public class CharClass {
             int oldDefense = character.getDefense();
             character.updateStats();
             levelUpChange.set(5,character.getMaxHealth()-oldHp);
+            System.out.println("HEalth increase: "+levelUpChange.get(5));
             levelUpChange.set(6,character.getDefense()-oldDefense);
             character.setCurrentHealth(character.getCurrentHealth()+levelUpChange.get(5));
+            if(character.getCurrentHealth()>character.getMaxHealth()) {
+            	character.setCurrentHealth(character.getMaxHealth());
+            }
         }
         return levelUp;
     }

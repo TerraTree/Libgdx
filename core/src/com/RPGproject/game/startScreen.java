@@ -149,16 +149,42 @@ public class startScreen extends ScreenAdapter {
                                     else{
                                         increment=0;
                                     }
+                                    int value;
                                     if (trueIndex == 0) {
-                                        currentChar.setIntelligence(Math.max(1, currentChar.getIntelligence() + increment));
+                                    	value = currentChar.getIntelligence() + increment;
+                                    	if(value==0) {
+                                    		increment=0;
+                                    		value=1;
+                                    	}
+                                    	currentChar.setIntelligence(value);
                                     } else if (trueIndex == 1) {
-                                        currentChar.setWisdom(Math.max(1, currentChar.getWisdom() + increment));
+                                    	value = currentChar.getWisdom() + increment;
+                                    	if(value==0) {
+                                    		increment=0;
+                                    		value=1;
+                                    	}
+                                        currentChar.setWisdom(value);
                                     } else if (trueIndex == 2) {
-                                        currentChar.setAgility(Math.max(1, currentChar.getAgility() + increment));
+                                    	value = currentChar.getAgility() + increment;
+                                    	if(value==0) {
+                                    		increment=0;
+                                    		value=1;
+                                    	}
+                                        currentChar.setAgility(value);
                                     } else if (trueIndex == 3) {
-                                        currentChar.setDexterity(Math.max(1, currentChar.getDexterity() + increment));
+                                    	value = currentChar.getDexterity() + increment;
+                                    	if(value==0) {
+                                    		increment=0;
+                                    		value=1;
+                                    	}
+                                        currentChar.setDexterity(value);
                                     } else if (trueIndex == 4) {
-                                        currentChar.setStrength(Math.max(1, currentChar.getStrength() + increment));
+                                    	value = currentChar.getStrength() + increment;
+                                    	if(value==0) {
+                                    		increment=0;
+                                    		value=1;
+                                    	}
+                                        currentChar.setStrength(value);
                                     }
                                     totalStatPoints = Math.min(20,totalStatPoints-increment);
                                 }
@@ -171,10 +197,6 @@ public class startScreen extends ScreenAdapter {
                             else if(x>=Gdx.graphics.getWidth()-400 && x<=Gdx.graphics.getWidth()-100 && y>=100 && y<=200){
                                 currentChar.updateStats();
                                 currentChar.setCurrentHealth(currentChar.getMaxHealth());
-                                currentChar.setActions(new ArrayList<String>());
-                                currentChar.getActions().add("attack");
-                                currentChar.getActions().add("items");
-                                currentChar.getActions().add("run");
                                 if(flag==2){
                                     flag++;
                                     charParty.setChar2(new Character(1, 1, 1, 1, 1, 1, new Texture("smile.png")));
@@ -195,7 +217,6 @@ public class startScreen extends ScreenAdapter {
                             }
                     }
                     else if(flag==4){
-                        //System.out.println("text/save"+(hoverNum+1)+".txt");
                         loadFile("text/save"+(hoverNum+1)+".txt");
                     }
                 return false;
@@ -255,12 +276,6 @@ public class startScreen extends ScreenAdapter {
                             statList.removeAll(statList);
                             text=scanner.nextLine();
                             String charClass=text;
-                            //text=scanner.nextLine();
-                            character.setActions(new ArrayList<String>());
-                            character.getActions().add("attack");
-                            character.getActions().add("items");
-                            character.getActions().add("run");
-                            character.updateStats();
                             fileFlag++;
                         } else {
                             statList.add(Integer.parseInt(text.substring(text.indexOf(":") + 1)));

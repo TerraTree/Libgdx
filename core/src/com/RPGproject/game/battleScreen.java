@@ -42,6 +42,7 @@ public class battleScreen extends ScreenAdapter {
 	SpriteBatch batch;
     public Queue<Attack> battleQueue;
     ArrayList<entity> turnOrder;
+    ArrayList<Item> battleItems;
     TextureRegion spriteGrid;
     Sprite sprite;
 
@@ -93,7 +94,7 @@ public class battleScreen extends ScreenAdapter {
 					else{
                         ui.getMainText().input(turnOrder.get(turnCount).getName()+"'s turn");
                         ui.getMenuText().clear();
-                        for (String action: turnOrder.get(turnCount).getActions()) {
+                        for (String action: ((Character) turnOrder.get(turnCount)).getCharClass().getActions()) {
                             ui.getMenuText().input(action);
                         }
                     }
@@ -189,6 +190,7 @@ public class battleScreen extends ScreenAdapter {
         //spriteGrid = new TextureRegion();
 
         //INITIALISATION
+    	battleItems = new ArrayList<>();
         typing=false;
 		offsetX = Gdx.graphics.getWidth()/6;
 		offsetY = Gdx.graphics.getHeight()/2 + 150;
@@ -246,21 +248,22 @@ public class battleScreen extends ScreenAdapter {
 					} else if (keycode == Input.Keys.DOWN && textPointer.yOffset < ui.getMenuText().getTextContent().size()-1) {
 						textPointer.yOffset += 1;
 						textPointer.sprite.setY(textPointer.getY()-textPointer.yOffset*30);
-						System.out.println(textPointer.sprite.getY());
 					}
 				}
             		if(keycode==Input.Keys.ENTER ) {
             			if(ui.getMenuText().getTextPointer().active){
             				ui.getMenuText().getTextPointer().active=false;
-            				item = mainParty.getItems().get(ui.getMenuText().getTextPointer().yOffset);
+            				item = battleItems.get(ui.getMenuText().getTextPointer().yOffset);
                             System.out.println(item.getQuantity());
             				item.setQuantity(item.getQuantity()-1);
             				if(item.getQuantity()==0){
-            					mainParty.getItems().remove(ui.getMenuText().getTextPointer().yOffset);
+            					mainParty.getItems().remove(mainParty.getItems().indexOf(item));
+            					battleItems.remove(battleItems.indexOf(item));
 							}
 							ui.getMenuText().clear();
 
             				if(item.getType().equals("consumable")){
+            					System.out.println("working");
             					Consumable usedItem= (Consumable) item;
             					items=true;
             					selector.active=true;
@@ -304,8 +307,8 @@ public class battleScreen extends ScreenAdapter {
             			else if(items){
 							entity target=null;
 							Consumable usedItem = (Consumable) item;
-							System.out.println(usedItem);
-							System.out.println(usedItem.getTarget());
+							System.out.println("item: "+usedItem);
+							//System.out.println(usedItem.getTarget());
             				if(usedItem.getTarget().equals("player")) {
 								 target = playerGrid.get(-selector.yOffset / 100).get(selector.xOffset / 100);
 								//currentChar.setCurrentHealth(Math.min(currentChar.getCurrentHealth() + 50, currentChar.getMaxHealth()));
@@ -382,15 +385,20 @@ public class battleScreen extends ScreenAdapter {
                             attacking=true;
                             selector.setX(ui.getScreenWidth()-offsetX-200);
                         }
-						else if(a==2){
-
-						    if(mainParty.getItems().size()>0) {
+						else if(a==2){ //items
+							battleItems = new ArrayList<>();
+							for(Item i: mainParty.getItems()) {
+								if(i.getType().equals("consumable")) {
+									battleItems.add(i);
+								}
+							}
+						    if(battleItems.size()>0) {
 								typing = false;
 								ui.getMenuText().getTextPointer().active = true;
 								for (int i = ui.getMenuText().getTextContent().size(); i > 0; i--) {
 									ui.getMenuText().getTextContent().remove(i - 1);
 								}
-								for (Item item : mainParty.getItems()) {
+								for (Item item : battleItems) {
 									ui.getMenuText().getTextContent().add(item.getQuantity()+"x "+item.getName());
 								}
 							}
