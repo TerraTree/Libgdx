@@ -26,6 +26,7 @@ public class Main extends ApplicationAdapter {
     Camera camera;
     Map currentMap;
     int menuTier;
+    boolean fileRead;
 
     public void create(){
     	currentTile="grass";
@@ -59,22 +60,27 @@ public class Main extends ApplicationAdapter {
 
             		}
             		else if (Gdx.input.isKeyPressed(Input.Keys.ENTER)){
+            			fileRead=false;
             			String inputString = ui.getMainText().input(ui.getInputText());
                         ArrayList<String> menuContent = ui.getMenuText().getTextContent();
-            			menuTier = tp.processing(inputString,menuTier,menuContent);
-            			tp.menuDialogue(menuTier,ui);
-            			if(tp.getFileName().length()!=0) {
-            			    currentMap = tp.fileChoice(tp.getFileName(),currentMap);
-            			    tp.setFileName("");
-            			    tp.setFileLoad(false);
-                        }
-            			if (tp.setFileSaving(true)) {
+                        if(tp.isFileLoad()==true) {
+            				currentMap=tp.fileChoice(inputString,currentMap);
+            				//tp.setFileName();
+            				tp.setFileLoad(false);
+            				fileRead=true;
+            			}
+            			else if (tp.isFileSaving()==true) {
             			    if(!inputString.equals("save")){
             			        currentMap.setFileName(inputString+".txt");
             			        tp.setFileSaving(false);
+            			        fileRead=true;
                             }
             				tp.fileSave(currentMap,ui);
             			}
+                        if(fileRead==false) {
+                        	menuTier = tp.processing(inputString,menuTier,menuContent);
+            				tp.menuDialogue(menuTier,ui);
+                        }
             		}
             		else {
             			ui.getInputText().addChar(character,ui.getFont());

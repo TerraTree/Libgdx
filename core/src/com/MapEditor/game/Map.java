@@ -42,8 +42,8 @@ public class Map {
 
     public Map(String fileName) {
         this.fileName = fileName;
-        this.originX=0;
-        this.originY=0;
+        this.originX=Gdx.graphics.getWidth()/2;
+        this.originY=Gdx.graphics.getHeight()/2;
         this.mapContent = new ArrayList<>();
         this.mapContent.add(new ArrayList<String>());
     }
@@ -52,8 +52,12 @@ public class Map {
     }
 
     public void tileAdd(int x, int y, String tileName) {
-        int newX = (x-(Gdx.graphics.getWidth()/2));
-        int newY = (-(y-Gdx.graphics.getHeight()/2));
+        //int newX = (x-(Gdx.graphics.getWidth()/2));
+    	int newX = x-originX;
+        System.out.println(newX);
+        //int newY = (-(y-Gdx.graphics.getHeight()/2));
+        int newY = y-originY;
+        System.out.println(newY);
         int counter = 0;
         int index = 0;
         index= Math.round(((newY-originY)/32));
@@ -63,6 +67,7 @@ public class Map {
             counter++;
             index=0;
         }
+        System.out.println(counter);
         newY = (newY)/32 *32;
         originY-=counter*32;
         if(index>=mapContent.size()-1) {
@@ -108,6 +113,8 @@ public class Map {
                     texture= new Texture(s+".png");
                     //System.out.println(s+".png");
                     //batch.draw(texture,100,100);
+//                    System.out.println(this.getOriginX()+column*32);
+//                    System.out.println(64+this.getOriginY()-row*32);
                     batch.draw(texture,this.getOriginX()+column*32,64+this.getOriginY()-row*32);
                     //batch.draw(texture,(column*32)+this.getOriginX(),-this.getOriginY()-(row*32)-32);
                     batch.end();

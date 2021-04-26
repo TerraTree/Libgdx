@@ -95,7 +95,7 @@ public class textProcessor {
     
     public Map fileChoice(String newFileName,Map currentMap){
         newFileName=newFileName+".txt";
-        System.out.println(newFileName);
+        //System.out.println(newFileName);
         try{
             File file = new File(newFileName);
                 Scanner lineReader = new Scanner(file);
@@ -122,7 +122,7 @@ public class textProcessor {
                     }
                 }
                 lineReader.close();
-                System.out.println("It is working");
+                System.out.println(currentMap.getMapContent().size());
                 currentMap.setFileName(newFileName);
         }
         catch (Exception e){
@@ -163,10 +163,9 @@ public class textProcessor {
         }
         else {
             try {
-                int intText = Character.getNumericValue(text.charAt(0));
-                System.out.println(intText);
+                int intText = Integer.parseInt(text);
+                		//Character.getNumericValue(text.charAt(0));
                 String action = menuContent.get(intText-1).substring(menuContent.get(intText-1).indexOf(":")+2);
-                System.out.println(action);
                 if(action.equals("back")){
                     System.out.println("true");
                     int mod = menuTier%10;
@@ -180,6 +179,7 @@ public class textProcessor {
                 }
                 else {
                     menuTier=(menuTier+intText-1)*10 +1;
+                    System.out.println(menuTier);
                     switch (menuTier) {
                         case 11:
                             System.out.println("hi");
