@@ -52,48 +52,59 @@ public class Map {
     }
 
     public void tileAdd(int x, int y, String tileName) {
-        //int newX = (x-(Gdx.graphics.getWidth()/2));
+        y=Gdx.graphics.getHeight()-y;
     	int newX = x-originX;
-        System.out.println(newX);
-        //int newY = (-(y-Gdx.graphics.getHeight()/2));
+        System.out.println("origin:"+originX);
         int newY = y-originY;
-        System.out.println(newY);
+        System.out.println("X: "+newX);
         int counter = 0;
         int index = 0;
-        index= Math.round(((newY-originY)/32));
-        while (newY<originY) {
-            mapContent.add(0,new ArrayList<String>());
-            newY+=32;
-            counter++;
-            index=0;
+        if(newY<0) {
+            while (newY < 0) {//if clicked above originY
+                mapContent.add(0, new ArrayList<String>()); //sets arrayLists above current originY
+                newY += 32;
+                counter++;
+                index=0;
+            }
+            originY -= counter * 32;
         }
-        System.out.println(counter);
-        newY = (newY)/32 *32;
-        originY-=counter*32;
-        if(index>=mapContent.size()-1) {
-            for(int i=mapContent.size();i<index+1;i++) {
-                mapContent.add(new ArrayList<String>());
+        else if(newY >= 0) {//if clicked below originY
+            index = (newY/32);
+            System.out.println("index:"+index);
+            if (index >= mapContent.size() - 1) {
+                for (int i = mapContent.size(); i < index + 1; i++) {
+                    mapContent.add(new ArrayList<String>());
+                }
             }
         }
         try{
-            mapContent.get(index).get((newX-originX)/32);
-            mapContent.get(index).set((newX-originX)/32, tileName);
+            mapContent.get(index).get((newX)/32);
+            mapContent.get(index).set((newX)/32, tileName);
+            System.out.println("simples");
         }
         catch(Exception e) {
             counter = 0;
-            int oldX=newX;
-            while(newX<originX) {
-                for(ArrayList<String> s: mapContent) {
-                    s.add(0,"");
+            int xIndex=0;
+            if(newX<0) {//clicked on the left side of originX
+                while (newX < 0) {
+                    for (ArrayList<String> s : mapContent) {
+                        s.add(0, "");
+                    }
+                    newX += 32;
+                    counter++;
+                    xIndex=0;
                 }
-                newX+=32;
-                counter++;
+                originX-=counter*32;
             }
-            originX-=counter*32;
-            int xIndex = (int) ((oldX-originX)/32);
-            if(xIndex>mapContent.get(index).size()-1) {
-                for(int i=mapContent.get(index).size();i<xIndex+1;i++) {
-                    mapContent.get(index).add("");
+            else if(newX>=0) {
+                System.out.println("newX: "+newX);
+                System.out.println("originX:"+originX);
+                xIndex = (newX) / 32;
+                System.out.println("xIndex: "+xIndex);
+                if (xIndex > mapContent.get(index).size() - 1) {
+                    for (int i = mapContent.get(index).size(); i < xIndex + 1; i++) {
+                        mapContent.get(index).add("");
+                    }
                 }
             }
             mapContent.get(index).set(xIndex, tileName);
@@ -115,7 +126,9 @@ public class Map {
                     //batch.draw(texture,100,100);
 //                    System.out.println(this.getOriginX()+column*32);
 //                    System.out.println(64+this.getOriginY()-row*32);
-                    batch.draw(texture,this.getOriginX()+column*32,64+this.getOriginY()-row*32);
+                    batch.draw(texture,this.getOriginX()+column*32,Gdx.graphics.getHeight()-(this.getOriginY()+row*32)-32);
+                    //System.out.println(this.getOriginX()+column*32);
+                    //System.out.println(this.getOriginY()+column*32);
                     //batch.draw(texture,(column*32)+this.getOriginX(),-this.getOriginY()-(row*32)-32);
                     batch.end();
                 }
