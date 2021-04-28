@@ -12,7 +12,7 @@ public class Map {
     int originY;
     String fileName;
 
-    public void setMapContent() {
+    public void setMapContent(ArrayList<ArrayList<String>> mapContent) {
         this.mapContent = mapContent;
     }
 
@@ -122,14 +122,7 @@ public class Map {
                 else {
                     batch.begin();
                     texture= new Texture(s+".png");
-                    //System.out.println(s+".png");
-                    //batch.draw(texture,100,100);
-//                    System.out.println(this.getOriginX()+column*32);
-//                    System.out.println(64+this.getOriginY()-row*32);
                     batch.draw(texture,this.getOriginX()+column*32,Gdx.graphics.getHeight()-(this.getOriginY()+row*32)-32);
-                    //System.out.println(this.getOriginX()+column*32);
-                    //System.out.println(this.getOriginY()+column*32);
-                    //batch.draw(texture,(column*32)+this.getOriginX(),-this.getOriginY()-(row*32)-32);
                     batch.end();
                 }
                 column++;

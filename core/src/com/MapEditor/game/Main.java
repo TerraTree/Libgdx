@@ -72,6 +72,7 @@ public class Main extends ApplicationAdapter {
             			else if (tp.isFileSaving()==true) {
             			    if(!inputString.equals("save")){
             			        currentMap.setFileName(inputString+".txt");
+            			        System.out.println("fileName:" +currentMap.getFileName());
             			        tp.setFileSaving(false);
             			        fileRead=true;
                             }
