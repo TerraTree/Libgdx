@@ -82,10 +82,19 @@ public class mainScreen extends ScreenAdapter {
     public void updatePlayerPos(Vector2 movement){
         mainParty.setxCoord((int) (mainParty.getxCoord()-movement.x));
         mainParty.setyCoord((int) (mainParty.getyCoord()+movement.y));
-        map.setOriginY((int) (map.getOriginY()+movement.y));
+        map.setOriginY((int) (map.getOriginY()-movement.y));
         map.setOriginX((int) (map.getOriginX()+movement.x));
-        int x = mainParty.getxCoord()/32;
-        int y = mainParty.getyCoord()/32;
+        int x=-1;
+        int y=-1;
+        if(mainParty.getxCoord()>=-32) {
+        	x = (mainParty.getxCoord()+32)/32;
+        }
+        if(mainParty.getyCoord()>=0) {
+        	y = (mainParty.getyCoord())/32;
+        }
+
+     
+        System.out.println("X: "+x);
         if(x < map.getMapContent().get(0).size() && x>=0 && y < map.getMapContent().size() && y>=0){
             System.out.println(map.getMapContent().get(y).get(x));
             if(map.getMapContent().get(y).get(x).equals("grass")){
@@ -115,8 +124,9 @@ public class mainScreen extends ScreenAdapter {
     	mainParty.getSprite().setX(Gdx.graphics.getWidth()/2 - mainParty.getSprite().getWidth()/2);
         mainParty.getSprite().setY(Gdx.graphics.getHeight()/2 + mainParty.getSprite().getHeight()/2);
     	//map=new Map(mainParty.getMapName()+".txt");
-        map.setOriginX(Gdx.graphics.getWidth()/2 - mainParty.getxCoord());
-        map.setOriginY(Gdx.graphics.getHeight()/2 + mainParty.getyCoord());
+        map.setOriginX(Gdx.graphics.getWidth()/2 - mainParty.getxCoord() -32);
+        map.setOriginY(Gdx.graphics.getHeight()/2 + (mainParty.getxCoord()/32)*32 -96);
+        //map.setOriginY(map.getMapContent().size()*32 -32- mainParty.getyCoord());
     	Gdx.input.setInputProcessor(new InputAdapter() {
             public boolean keyDown ( int keycode){
                 if(keycode==Input.Keys.ESCAPE) {
@@ -173,11 +183,11 @@ public class mainScreen extends ScreenAdapter {
     public void render(float delta){
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-    	ui.render();
         map.render(batch);
         batch.begin();
         mainParty.getSprite().draw(batch);
         batch.end();
+        ui.render();
     }
     public void hide(){
         Gdx.input.setInputProcessor(null);
