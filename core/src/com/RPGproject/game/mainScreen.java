@@ -92,12 +92,19 @@ public class mainScreen extends ScreenAdapter {
         if(mainParty.getyCoord()>=0) {
         	y = (mainParty.getyCoord())/32;
         }
-
+        String tile = map.getMapContent().get(y).get(x);
+        if(tile.equals("") | tile.equals("brick")){
+        	mainParty.setxCoord((int) (mainParty.getxCoord()+movement.x));
+            mainParty.setyCoord((int) (mainParty.getyCoord()-movement.y));
+            map.setOriginY((int) (map.getOriginY()+movement.y));
+            map.setOriginX((int) (map.getOriginX()-movement.x));
+        }
+        else {
      
         System.out.println("X: "+x);
         if(x < map.getMapContent().get(0).size() && x>=0 && y < map.getMapContent().size() && y>=0){
             System.out.println(map.getMapContent().get(y).get(x));
-            if(map.getMapContent().get(y).get(x).equals("grass")){
+            if(tile.equals("grass")){
                 double encounter = Math.random();
                 if(encounter<= 0.1){
                     enemy newEnemy = loadEnemy("enemies/slime.txt");
@@ -107,10 +114,9 @@ public class mainScreen extends ScreenAdapter {
                     game.setScreen(new battleScreen(game,mainParty,enemyParty));
                 }
             }
-            else if(map.getMapContent().get(y).get(x).equals("")){
-
-            }
         }
+        }
+        
     }
     @Override
     public void show() {
@@ -125,7 +131,7 @@ public class mainScreen extends ScreenAdapter {
         mainParty.getSprite().setY(Gdx.graphics.getHeight()/2 + mainParty.getSprite().getHeight()/2);
     	//map=new Map(mainParty.getMapName()+".txt");
         map.setOriginX(Gdx.graphics.getWidth()/2 - mainParty.getxCoord() -32);
-        map.setOriginY(Gdx.graphics.getHeight()/2 + (mainParty.getxCoord()/32)*32 -96);
+        map.setOriginY(Gdx.graphics.getHeight()/2 - (mainParty.getyCoord()) - 96);
         //map.setOriginY(map.getMapContent().size()*32 -32- mainParty.getyCoord());
     	Gdx.input.setInputProcessor(new InputAdapter() {
             public boolean keyDown ( int keycode){
@@ -148,6 +154,7 @@ public class mainScreen extends ScreenAdapter {
                     else if(Gdx.input.isKeyPressed(Input.Keys.T)){
                         typing=true;
                     }
+
                     System.out.println(mainParty.getyCoord());
                 }
                 else if(typing){
