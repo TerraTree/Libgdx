@@ -59,7 +59,7 @@ public class Map {
         System.out.println("X: "+newX);
         int counter = 0;
         int index = 0;
-        if(newY<0) {
+        if(newY<0 && !tileName.equals("")) {
             while (newY < 0) {//if clicked above originY
                 mapContent.add(0, new ArrayList<String>()); //sets arrayLists above current originY
                 newY += 32;
@@ -70,22 +70,26 @@ public class Map {
         }
         else if(newY >= 0) {//if clicked below originY
             index = (newY/32);
-            System.out.println("index:"+index);
-            if (index >= mapContent.size() - 1) {
+            if (index >= mapContent.size() - 1 && !tileName.equals("")) {
                 for (int i = mapContent.size(); i < index + 1; i++) {
                     mapContent.add(new ArrayList<String>());
                 }
             }
         }
         try{
+        	System.out.println(newX/32);
+        	if(newX>0){
             mapContent.get(index).get((newX)/32);
             mapContent.get(index).set((newX)/32, tileName);
-            System.out.println("simples");
+        	}
+        	else {
+        		mapContent.get(index).get(newX/32 -1);
+        	}
         }
         catch(Exception e) {
             counter = 0;
             int xIndex=0;
-            if(newX<0) {//clicked on the left side of originX
+            if(newX<0 && !tileName.equals("")) {//clicked on the left side of originX
                 while (newX < 0) {
                     for (ArrayList<String> s : mapContent) {
                         s.add(0, "");
@@ -101,14 +105,20 @@ public class Map {
                 System.out.println("originX:"+originX);
                 xIndex = (newX) / 32;
                 System.out.println("xIndex: "+xIndex);
-                if (xIndex > mapContent.get(index).size() - 1) {
+                if (xIndex > mapContent.get(index).size() - 1 && !tileName.equals("")) {
                     for (int i = mapContent.get(index).size(); i < xIndex + 1; i++) {
                         mapContent.get(index).add("");
                     }
                 }
             }
-            mapContent.get(index).set(xIndex, tileName);
+            if(xIndex<=mapContent.size()) {
+            	System.out.println(xIndex);
+            	mapContent.get(index).set(xIndex, tileName);
+            }
+            
         }
+       
+        
     }
     public void render(SpriteBatch batch){
         Texture texture;

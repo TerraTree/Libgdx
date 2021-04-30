@@ -167,7 +167,6 @@ public class textProcessor {
                 		//Character.getNumericValue(text.charAt(0));
                 String action = menuContent.get(intText-1).substring(menuContent.get(intText-1).indexOf(":")+2);
                 if(action.equals("back")){
-                    System.out.println("true");
                     int mod = menuTier%10;
                     String menuComp = Integer.toString(menuTier);
                     //menuComp = menuComp.substring(menuComp.length())
@@ -179,24 +178,33 @@ public class textProcessor {
                 }
                 else {
                     menuTier=(menuTier+intText-1)*10 +1;
-                    System.out.println(menuTier);
-                    switch (menuTier) {
-                        case 11:
-                            System.out.println("hi");
-                            break;
-                        case 21:
+                    System.out.println("yooooooo"+menuTier);
+                        if(menuTier == 21) {
                             fileSaving = true;
                             menuTier = 1;
                             System.out.println("it works!");
-                            break;
-                        case 31:
+                        }
+                        if(menuTier == 31) {
                             menuTier = 1;
                             System.out.println("loading file");
                             fileLoad = true;
-                            break;
+                        }
+                        if(menuTier == 141) {
+                        	tileName="";
+                        	menuTier = 1;
+                        }
+                        if(menuTier == Integer.parseInt("11"+intText+"1")) {
+                        	System.out.println("yo");
+                        	if(menuContent.size()>=intText) {
+                        		System.out.println("nooo");
+                        		menuTier = 1;
+                        		System.out.println("tilename: " + tileName);
+                        		tileName=menuContent.get(intText-1).substring(menuContent.get(intText-1).indexOf(":")+2);
+                        		System.out.println("tileName: "+tileName);
+                        	}
+                        }
                     }
-                }
-            } catch (Exception e) {
+                } catch (Exception e) {
 
             }
         }
